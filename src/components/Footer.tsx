@@ -1,5 +1,5 @@
 import Link from "next/link";
-import { site } from "@/lib/data";
+import { ext, site } from "@/lib/data";
 import { Icon } from "./Icon";
 
 const groups = [
@@ -34,7 +34,7 @@ export function Footer() {
             <div key={g.title} className="flex flex-col gap-2.5 text-[14.5px]">
               <h2 className="mb-1.5 font-mono text-[11.5px] font-medium uppercase tracking-[0.12em] text-white/40">{g.title}</h2>
               {g.links.map(([href, label]) => (
-                <Link key={label} href={href} className="w-fit transition-colors hover:text-white">
+                <Link key={label} href={href} {...ext(href)} className="w-fit transition-colors hover:text-white">
                   {label}
                 </Link>
               ))}
@@ -48,11 +48,12 @@ export function Footer() {
             {([
               ["linkedin", "LinkedIn", site.socials.linkedin],
               ["github", "GitHub", site.socials.github],
-              ["mail", "Email", "/contact"],
+              ["mail", "Email", `mailto:${site.email}`],
             ] as const).map(([icon, label, href]) => (
               <Link
                 key={label}
                 href={href}
+                {...ext(href)}
                 aria-label={label}
                 className="grid size-10 place-items-center rounded-full border border-white/10 text-white/70 transition hover:border-white/40 hover:text-white"
               >

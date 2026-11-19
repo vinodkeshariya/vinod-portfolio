@@ -3,7 +3,7 @@ import Link from "next/link";
 import { ContactForm } from "@/components/ContactForm";
 import { Icon } from "@/components/Icon";
 import { PageHero } from "@/components/ui";
-import { site, type IconName } from "@/lib/data";
+import { ext, site, type IconName } from "@/lib/data";
 
 export const metadata: Metadata = {
   title: "Contact",
@@ -11,8 +11,8 @@ export const metadata: Metadata = {
 };
 
 const cards: { icon: IconName; label: string; value: string; href?: string }[] = [
-  { icon: "mail", label: "Email", value: site.email, href: "#" },
-  { icon: "chat", label: "WhatsApp", value: site.phone, href: site.socials.whatsapp },
+  { icon: "mail", label: "Email", value: site.email, href: `mailto:${site.email}` },
+  { icon: "chat", label: "Phone · WhatsApp", value: site.phone, href: site.socials.whatsapp },
   { icon: "pin", label: "Location", value: site.location },
   { icon: "clock", label: "Availability", value: "Open for freelance projects" },
 ];
@@ -68,7 +68,7 @@ export default function ContactPage() {
                 </>
               );
               return c.href ? (
-                <Link key={c.label} href={c.href} className="card flex items-center gap-4 p-6 hover:border-accent">{inner}</Link>
+                <Link key={c.label} href={c.href} {...ext(c.href)} className="card flex items-center gap-4 p-6 hover:border-accent">{inner}</Link>
               ) : (
                 <div key={c.label} className="card flex items-center gap-4 p-6">{inner}</div>
               );
@@ -82,7 +82,7 @@ export default function ContactPage() {
                   ["github", "GitHub", site.socials.github],
                   ["upwork", "Upwork", site.socials.upwork],
                 ] as const).map(([icon, label, href]) => (
-                  <Link key={label} href={href} aria-label={label}
+                  <Link key={label} href={href} aria-label={label} {...ext(href)}
                     className="grid size-11 place-items-center rounded-xl border border-line-2 text-ink-2 transition hover:border-accent hover:bg-accent hover:text-white">
                     <Icon name={icon} className="size-4.5" />
                   </Link>

@@ -4,7 +4,7 @@ import Link from "next/link";
 import { Icon } from "@/components/Icon";
 import { ProfileCard } from "@/components/ProfileCard";
 import { CtaBand, PageHero, SectionHead } from "@/components/ui";
-import { certifications, education, experience, principles, projects, skillCards } from "@/lib/data";
+import { certifications, education, experience, principles, projects, site, skillCards } from "@/lib/data";
 
 export const metadata: Metadata = {
   title: "About",
@@ -25,7 +25,7 @@ export default function AboutPage() {
       >
         <div className="mt-2 flex flex-wrap gap-3">
           <Link href="/contact" className="btn btn-primary">Work with me <Icon name="arrow" /></Link>
-          <a href="#" className="btn btn-ghost">Download résumé <Icon name="download" /></a>
+          <a href={site.resume} download className="btn btn-ghost">Download résumé <Icon name="download" /></a>
         </div>
       </PageHero>
 

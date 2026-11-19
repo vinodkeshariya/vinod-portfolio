@@ -11,18 +11,23 @@ export const site = {
   company: "Krushna53",
   since: "June 2023",
   url: "https://example.com", // [REPLACE] with the live domain
-  email: "[hello@yourdomain.com]",
-  phone: "[+91 phone number]",
+  email: "keshariyavinod793@gmail.com",
+  phone: "+91 92651 21783",
+  resume: "/Vinod_Keshariya_Frontend_Developer.pdf",
   description:
     "AI-powered Next.js developer in Ahmedabad. Figma and WordPress to Next.js + Sanity CMS — fast websites your team can edit without code.",
   languages: ["English — Fluent", "Gujarati — Native", "Hindi — Conversational"],
   socials: {
-    linkedin: "#",
-    github: "#",
+    linkedin: "https://www.linkedin.com/in/ahir-vinod-keshariya-a747562b2/",
+    github: "https://github.com/vinodkeshariya",
     upwork: "#",
-    whatsapp: "#",
+    whatsapp: "https://wa.me/919265121783",
   },
 } as const;
+
+/** Props for links that leave the site (open in a new tab safely) */
+export const ext = (href: string) =>
+  href.startsWith("http") ? ({ target: "_blank", rel: "noopener noreferrer" } as const) : {};
 
 export const nav = [
   { href: "/", label: "Home" },

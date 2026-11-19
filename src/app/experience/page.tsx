@@ -1,7 +1,7 @@
 import type { Metadata } from "next";
 import { Icon } from "@/components/Icon";
 import { Chips, CtaBand, PageHero, SectionHead, TickList } from "@/components/ui";
-import { certifications, education, experience, skillCards } from "@/lib/data";
+import { certifications, education, experience, site, skillCards } from "@/lib/data";
 
 export const metadata: Metadata = {
   title: "Experience",
@@ -140,7 +140,7 @@ export default function ExperiencePage() {
         title="Want this experience on your project?"
         text="Next.js, Sanity and WordPress work — delivered fast with an AI-powered workflow and reviewed by hand."
         primary={{ href: "/contact", label: "Get in Touch" }}
-        secondary={{ href: "#", label: "Download Resume" }}
+        secondary={{ href: site.resume, label: "Download résumé" }}
       />
     </>
   );
