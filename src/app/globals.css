@@ -1,0 +1,175 @@
+@import "tailwindcss";
+
+/* ============================================================
+   Design tokens — "Modern Editorial"
+   Forest green + warm ivory + deep charcoal, soft lime accent.
+   Every colour in the UI comes from this block.
+   ============================================================ */
+@theme {
+  /* Backgrounds */
+  --color-paper: #f5f3ec;        /* warm ivory */
+  --color-paper-2: #edeae0;      /* alternate background */
+  --color-surface: #ffffff;      /* white */
+  --color-surface-2: #f0f1ea;    /* muted surface */
+
+  /* Borders */
+  --color-line: #e1e2d9;
+  --color-line-2: #cfd1c6;       /* stronger border for inputs / hover */
+
+  /* Typography */
+  --color-ink: #242824;          /* headings */
+  --color-ink-2: #3c423b;        /* strong body (lists, labels) */
+  --color-muted: #565d55;        /* body */
+  --color-faint: #6a7065;        /* muted text, darkened from #858b80 for AA contrast */
+  --color-placeholder: #858b80;
+
+  /* Primary — forest green */
+  --color-accent: #153d35;
+  --color-accent-hover: #1d5145;
+  --color-accent-active: #0f3029;
+  --color-accent-soft: #f1f6e3;  /* lime tint for chips / icon tiles */
+  --color-accent-line: #d6e6a6;
+  --color-accent-light: #b9d96c; /* accent text on dark sections */
+
+  /* Soft lime */
+  --color-lime: #b9d96c;
+  --color-lime-2: #d6e6a6;
+
+  /* Dark sections */
+  --color-night: #153d35;
+  --color-night-2: #204b41;
+  --color-night-muted: #d5dfd4;
+
+  /* Semantic */
+  --color-ok: #2f7d4f;
+
+  --font-sans: var(--font-inter), ui-sans-serif, system-ui, sans-serif;
+  --font-display: var(--font-manrope), ui-sans-serif, system-ui, sans-serif;
+  --font-mono: var(--font-jetbrains), ui-monospace, SFMono-Regular, Menlo, monospace;
+
+  --shadow-soft: 0 1px 2px rgb(36 40 36 / 0.04);
+  --shadow-card: 0 1px 2px rgb(36 40 36 / 0.03), 0 6px 18px -12px rgb(36 40 36 / 0.08);
+  --shadow-lift: 0 2px 4px rgb(36 40 36 / 0.04), 0 18px 36px -18px rgb(36 40 36 / 0.16);
+  --shadow-float: 0 1px 2px rgb(36 40 36 / 0.05), 0 24px 48px -22px rgb(36 40 36 / 0.22);
+
+  --animate-marquee: marquee 40s linear infinite;
+  --animate-pulse-dot: pulse-dot 2s ease-out infinite;
+
+  --animate-float: float 7s ease-in-out infinite;
+  --animate-float-slow: float 9s ease-in-out -3s infinite;
+
+  --animate-fade-up: fade-up 0.45s cubic-bezier(0.2, 0.7, 0.2, 1) both;
+
+  @keyframes fade-up {
+    from { opacity: 0; transform: translateY(12px); }
+    to { opacity: 1; transform: none; }
+  }
+  @keyframes float {
+    0%, 100% { translate: 0 0; }
+    50% { translate: 0 -10px; }
+  }
+  @keyframes marquee {
+    to { transform: translateX(-50%); }
+  }
+  @keyframes pulse-dot {
+    0%, 100% { box-shadow: 0 0 0 0 rgb(47 125 79 / 0.45); }
+    70% { box-shadow: 0 0 0 7px rgb(47 125 79 / 0); }
+  }
+}
+
+/* ============================================================
+   Base
+   ============================================================ */
+@layer base {
+  html { scroll-behavior: smooth; }
+  body {
+    @apply bg-paper text-ink font-sans antialiased;
+    font-size: 16px;
+    line-height: 1.6;
+  }
+  h1, h2, h3, h4 { @apply font-display text-balance; letter-spacing: -0.025em; line-height: 1.12; }
+  ::placeholder { color: var(--color-placeholder); }
+  p { text-wrap: pretty; }
+  h1, h2 { font-weight: 800; }
+  h3, h4 { font-weight: 700; }
+  ::selection { @apply bg-lime text-ink; }
+  :focus-visible { outline: 2px solid var(--color-accent); outline-offset: 3px; border-radius: 6px; }
+  /* Lime focus ring on forest backgrounds, where a green ring would disappear */
+  :is(.bg-forest, .bg-night, .bg-accent) :focus-visible, .btn-primary:focus-visible { outline-color: var(--color-lime); }
+  .btn-primary:focus-visible { box-shadow: 0 0 0 2px var(--color-accent); }
+}
+
+/* ============================================================
+   Reusable component classes
+   ============================================================ */
+@layer components {
+  .wrap { @apply mx-auto w-full max-w-[1280px] px-5 sm:px-8; }
+  .section { @apply py-20 md:py-24; }
+
+  /* Small mono label above headings */
+  .eyebrow {
+    @apply inline-flex items-center gap-2 font-mono text-[12px] font-medium uppercase tracking-[0.12em] text-faint;
+  }
+
+  .h-display { @apply font-display font-extrabold text-[clamp(40px,5.4vw,64px)] leading-[1.05] tracking-[-0.035em]; }
+  .h-page { @apply font-display font-extrabold text-[clamp(36px,4.6vw,56px)] leading-[1.06] tracking-[-0.035em]; }
+  .h-section { @apply font-display font-extrabold text-[clamp(30px,3.4vw,42px)] leading-[1.1] tracking-[-0.03em]; }
+  .lead { @apply max-w-[580px] text-[clamp(16.5px,1.4vw,18px)] leading-[1.7] text-muted; }
+
+  .btn {
+    @apply inline-flex min-h-11 cursor-pointer items-center justify-center gap-2 whitespace-nowrap rounded-full border border-transparent px-5 py-2.5 font-sans text-[14.5px] font-semibold leading-none transition-[background-color,border-color,color,box-shadow,transform] duration-200 ease-out active:translate-y-px disabled:pointer-events-none disabled:opacity-60;
+  }
+  .btn svg { @apply size-4 transition-transform duration-200; }
+  .btn:hover svg { transform: translateX(2px); }
+  .btn-primary { @apply bg-accent text-white hover:bg-accent-hover active:bg-accent-active; }
+  .btn-lime { @apply bg-lime text-ink hover:bg-lime-2; }
+  .btn-ghost { @apply border-line bg-surface text-ink hover:border-line-2 hover:bg-surface-2; }
+  .btn-ink { @apply bg-accent text-white hover:bg-accent-hover active:bg-accent-active; }
+  .btn-light { @apply bg-white text-ink hover:bg-paper; }
+  .btn-outline-light { @apply border-white/25 text-white hover:border-white/60 hover:bg-white/5; }
+  .btn-sm { @apply min-h-10 px-4 py-2 text-[13.5px]; }
+
+  .chip { @apply inline-flex items-center whitespace-nowrap rounded-full border border-line bg-surface px-3 py-1 text-[12.5px] font-medium text-ink-2; }
+  .chip-fill { @apply border-accent-line bg-accent-soft text-accent; }
+
+  .card {
+    @apply rounded-2xl border border-line bg-surface shadow-(--shadow-card) transition duration-300 ease-out;
+  }
+  .card-hover { @apply hover:-translate-y-0.5 hover:border-line-2 hover:shadow-(--shadow-lift); }
+
+  .icon-tile { @apply grid size-10 shrink-0 place-items-center rounded-xl border border-accent-line bg-accent-soft text-accent; }
+
+  .dot { @apply inline-block size-2 shrink-0 rounded-full bg-ok shadow-[0_0_0_3px_rgb(47_125_79/0.15)]; }
+  .dot-live { @apply animate-pulse-dot; }
+
+  .label-mono { @apply font-mono text-[11.5px] uppercase tracking-[0.1em] text-faint; }
+
+  /* Hero background: warm ivory with a faint dot grid (no glow) */
+  .hero-bg { @apply relative overflow-hidden bg-paper; }
+  .hero-bg::before {
+    content: "";
+    @apply pointer-events-none absolute inset-0;
+    background-image: radial-gradient(rgb(36 40 36 / 0.07) 1px, transparent 1px);
+    background-size: 22px 22px;
+    mask-image: radial-gradient(ellipse 60% 70% at 75% 10%, #000 0%, transparent 70%);
+  }
+
+  /* Gradients — use sparingly */
+  .bg-forest { background: linear-gradient(135deg, var(--color-night) 0%, var(--color-night-2) 100%); }
+  .bg-ivory { background: linear-gradient(180deg, var(--color-paper) 0%, var(--color-paper-2) 100%); }
+  .bg-lime-grad { background: linear-gradient(135deg, var(--color-lime) 0%, var(--color-lime-2) 100%); }
+}
+
+/* Scroll reveal (progressive enhancement — content is visible without JS) */
+.js-reveal [data-reveal] {
+  opacity: 0;
+  transform: translateY(18px);
+  transition: opacity 0.7s cubic-bezier(0.2, 0.7, 0.2, 1), transform 0.7s cubic-bezier(0.2, 0.7, 0.2, 1);
+}
+.js-reveal [data-reveal].is-in { opacity: 1; transform: none; }
+
+@media (prefers-reduced-motion: reduce) {
+  .js-reveal [data-reveal] { opacity: 1; transform: none; transition: none; }
+  .animate-marquee, .animate-pulse-dot, .animate-float, .animate-float-slow, .animate-fade-up { animation: none; }
+  html { scroll-behavior: auto; }
+}
