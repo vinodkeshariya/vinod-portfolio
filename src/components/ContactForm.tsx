@@ -33,7 +33,7 @@ export function ContactForm() {
     if (Object.keys(next).length) return;
 
     setStatus("sending");
-    const body = `Name: ${name}\nEmail: ${email}\nProject type: ${data.get("type")}\nBudget: ${data.get("budget") || "—"}\n\n${message}`;
+    const body = `Name: ${name}\nEmail: ${email}\nCompany / website: ${String(data.get("company") || "").trim() || "—"}\nProject type: ${data.get("type")}\nBudget: ${data.get("budget") || "—"}\n\n${message}`;
     window.location.href = `mailto:${site.email}?subject=${encodeURIComponent(`Project inquiry from ${name}`)}&body=${encodeURIComponent(body)}`;
     setTimeout(() => setStatus("sent"), 400);
   }
@@ -60,7 +60,7 @@ export function ContactForm() {
 
       <div className="grid gap-5 sm:grid-cols-2">
         <div className="flex flex-col gap-2">
-          <label htmlFor="name" className="text-sm font-medium text-ink-2">Full name *</label>
+          <label htmlFor="name" className="text-sm font-medium text-ink-2">Your name *</label>
           <input id="name" name="name" autoComplete="name" placeholder="Your name" className={field}
             aria-invalid={!!errors.name} aria-describedby={errors.name ? "name-err" : undefined} />
           {errors.name && <span id="name-err" className="text-[13px] text-red-700">{errors.name}</span>}
@@ -71,6 +71,13 @@ export function ContactForm() {
             aria-invalid={!!errors.email} aria-describedby={errors.email ? "email-err" : undefined} />
           {errors.email && <span id="email-err" className="text-[13px] text-red-700">{errors.email}</span>}
         </div>
+      </div>
+
+      <div className="flex flex-col gap-2">
+        <label htmlFor="company" className="text-sm font-medium text-ink-2">
+          Company / Website <span className="font-normal text-faint">(optional)</span>
+        </label>
+        <input id="company" name="company" autoComplete="organization" placeholder="Company name or https://yourwebsite.com" className={field} />
       </div>
 
       <fieldset className="flex flex-col gap-2.5">
@@ -88,7 +95,7 @@ export function ContactForm() {
       </fieldset>
 
       <div className="flex flex-col gap-2">
-        <label htmlFor="budget" className="text-sm font-medium text-ink-2">Estimated budget</label>
+        <label htmlFor="budget" className="text-sm font-medium text-ink-2">Budget <span className="font-normal text-faint">(optional)</span></label>
         <select id="budget" name="budget" defaultValue="" className={field}>
           <option value="">Select a range (optional)</option>
           {budgets.map((b) => <option key={b}>{b}</option>)}

@@ -1,31 +1,36 @@
 // Single source of truth for site content.
-// Values in [BRACKETS] are placeholders for Vinod to replace with real details
-// (email, phone and social links).
+// Update text here rather than in the page components.
 
 export const site = {
   name: "Vinod Keshariya",
   initials: "VK",
-  role: "AI-Powered Next.js Developer",
-  short: "Next.js + Sanity Developer",
+  role: "AI-Powered Full-Stack Developer",
+  short: "AI + Next.js Specialist",
   location: "Ahmedabad, Gujarat, India",
   company: "Krushna53",
   since: "June 2023",
-  url: "https://example.com", // [REPLACE] with the live domain
+  url: "https://vinodkeshariya.netlify.app",
   email: "keshariyavinod793@gmail.com",
   phone: "+91 92651 21783",
   resume: "/Vinod_Keshariya_Frontend_Developer.pdf",
+  availability: "Open for freelance projects worldwide",
+  hours: "30+ hours/week",
+  tagline:
+    "Building intelligent web experiences and modern digital products using AI-powered development workflows and modern web technologies.",
   description:
-    "AI-powered Next.js developer in Ahmedabad. Figma and WordPress to Next.js + Sanity CMS — fast websites your team can edit without code.",
-  languages: ["English — Fluent", "Gujarati — Native", "Hindi — Conversational"],
+    "Vinod Keshariya is an AI-powered Full-Stack Developer specializing in Claude Code, AI integrations, Next.js, React, Sanity CMS, and WordPress. Available for freelance projects worldwide.",
+  languages: ["English — Fluent", "Gujarati — Native or Bilingual", "Hindi — Conversational"],
   socials: {
     linkedin: "https://www.linkedin.com/in/ahir-vinod-keshariya-a747562b2/",
     github: "https://github.com/vinodkeshariya",
-    upwork: "#",
+    upwork: "#", // add the Upwork profile URL to show the "Hire me on Upwork" buttons
     whatsapp: "https://wa.me/919265121783",
   },
 } as const;
 
-/** Props for links that leave the site (open in a new tab safely) */
+/** True once a real Upwork profile URL has been added */
+export const hasUpwork = (site.socials.upwork as string) !== "#";
+
 export const ext = (href: string) =>
   href.startsWith("http") ? ({ target: "_blank", rel: "noopener noreferrer" } as const) : {};
 
@@ -39,66 +44,101 @@ export const nav = [
 ] as const;
 
 export const stats = [
-  { label: "Professional experience", value: "3+ yrs" },
-  { label: "Average response time", value: "0–4 hrs" },
+  { label: "Experience", value: "3+ Years" },
   { label: "Availability", value: "30+ hrs/wk" },
-  { label: "Core stack", value: "Next.js + Sanity" },
+  { label: "Response time", value: "0–4 hrs" },
+  { label: "Core expertise", value: "AI + Next.js + React" },
 ];
 
 /** Tools shown as chips under the hero */
-export const toolkit = ["Next.js", "React", "Sanity CMS", "TypeScript", "Tailwind CSS", "WordPress", "Vercel", "Figma", "Claude Code", "MCP"];
-
-/** Common website problems the home page addresses */
-export const problems = [
-  { title: "Pages load slowly.", text: "Heavy themes and plugins drag down Core Web Vitals — and your search rankings with them." },
-  { title: "Updates feel risky.", text: "Plugins need constant updating, and each one is another security worry." },
-  { title: "Content changes wait on a developer.", text: "Your team should be able to edit pages, images and blog posts on its own." },
+export const toolkit = [
+  "Claude", "Claude Code", "ChatGPT", "MCP", "Next.js", "React", "TypeScript",
+  "Sanity CMS", "Tailwind CSS", "WordPress", "Elementor", "Vercel", "Figma", "Git",
 ];
 
-/** Three headline services shown on the home page */
+/** Common challenges the home page addresses */
+export const problems = [
+  {
+    title: "Slow and outdated websites.",
+    text: "Heavy WordPress themes, unnecessary plugins, and unoptimized assets can affect loading speed and user experience.",
+  },
+  {
+    title: "Difficult content management.",
+    text: "Your team shouldn't need a developer for every small content change. Manage pages, images, and blog posts through a structured CMS.",
+  },
+  {
+    title: "Repetitive development work.",
+    text: "Manual coding and repetitive tasks can slow down projects. AI-assisted development helps accelerate component creation, debugging, and testing.",
+  },
+  {
+    title: "Missing intelligent features.",
+    text: "Modern websites can do more than display information. AI integrations can help users search, discover, and interact with your content.",
+  },
+];
+
+/** Four headline services shown on the home page */
 export const featuredServices = [
   {
-    title: "Figma to Next.js + Sanity",
-    text: "Pixel-perfect, responsive websites where your team edits every page, image and blog post without touching code.",
-    points: ["Figma frames turned into reusable components", "Sanity Studio set up around your content", "Hosted on Vercel, scales automatically"],
-    outcome: "Your design, live — and fully editable.",
+    title: "AI Integration & Development",
+    text: "Bring intelligent features into your website or application using AI APIs and modern development technologies.",
+    points: ["AI assistants and chat interfaces", "AI-powered content experiences", "Claude API integrations", "Intelligent search and Q&A features", "AI API integration with Next.js"],
+    tag: "AI",
+    href: "/services#service-1",
+    icon: "spark" as IconName,
+  },
+  {
+    title: "Next.js & React Development",
+    text: "Build modern, responsive, high-performance websites and web applications.",
+    points: ["Custom Next.js development", "Reusable React components", "Responsive interfaces", "SEO-friendly architecture", "API integrations"],
+    tag: "Next.js",
+    href: "/services#service-3",
+    icon: "code" as IconName,
+  },
+  {
+    title: "Figma to Next.js + Sanity CMS",
+    text: "Turn your Figma designs into pixel-perfect websites with a fully editable CMS.",
+    points: ["Figma-to-code implementation", "Reusable components", "Sanity Studio setup", "Editable pages and content", "Responsive implementation"],
     tag: "Figma",
+    href: "/services#service-4",
     icon: "pen" as IconName,
   },
   {
-    title: "WordPress → Next.js migration",
-    text: "Move your content, keep your SEO and URLs, and get a website that loads in a fraction of the time.",
-    points: ["Pages, posts, images and categories moved to Sanity", "Same URLs, with redirects where anything changes", "No more plugin updates or security patches"],
-    outcome: "Same content, a much faster site.",
+    title: "WordPress to Next.js Migration",
+    text: "Modernize your WordPress website while protecting content and SEO.",
+    points: ["Content and image migration", "Sanity CMS integration", "URL preservation and redirects", "Modern Next.js frontend", "SEO metadata migration"],
     tag: "Migration",
+    href: "/services#service-5",
     icon: "layers" as IconName,
-  },
-  {
-    title: "Next.js landing pages",
-    text: "Landing pages and marketing sites built for speed, SEO and conversions.",
-    points: ["Metadata, sitemap and social previews included", "Optimised images and fonts for fast loading", "Contact forms and analytics connected"],
-    outcome: "A launch-ready page in days.",
-    tag: "Landing page",
-    icon: "bolt" as IconName,
   },
 ];
 
-/** AI-assisted workflow points */
+/** Traditional WordPress vs. Next.js + Sanity (home, dark section) */
+export const compare = [
+  { k: "Performance", wp: "Heavy themes and plugins", nx: "Optimized frontend architecture" },
+  { k: "Maintenance", wp: "Frequent plugin updates", nx: "Fewer plugin dependencies" },
+  { k: "Architecture", wp: "Larger plugin dependency", nx: "Decoupled architecture" },
+  { k: "Editing", wp: "Complex page-builder editing", nx: "Structured Sanity Studio" },
+  { k: "Hosting", wp: "Traditional server management", nx: "Vercel deployment" },
+];
+
+/** AI-assisted development workflow */
 export const aiWorkflow = {
-  tools: ["Claude", "Claude Code", "MCP", "ChatGPT", "Cursor"],
+  tools: ["Claude", "Claude Code", "ChatGPT", "MCP", "Cursor"],
   points: [
-    { title: "Figma → components, faster", text: "AI drafts components, Sanity schemas and migration scripts — so I deliver in days what usually takes weeks." },
-    { title: "Every line reviewed", text: "I review every component myself and test on real devices and browsers before delivery." },
-    { title: "AI features with MCP", text: "I also build AI into websites with Claude and MCP — for example, an assistant that answers from your own content." },
+    { title: "AI-assisted planning & coding", text: "Use AI tools to understand requirements, plan features, generate React components, and accelerate repetitive development tasks." },
+    { title: "Claude Code development", text: "Work with existing codebases, build Next.js features, create reusable components, write TypeScript code, and improve implementation workflows." },
+    { title: "CMS & API workflows", text: "Accelerate Sanity schema creation, content modeling, API integrations, and website migration tasks." },
+    { title: "Human review & testing", text: "Review generated code, debug issues, verify functionality, and test the final experience across browsers and devices." },
   ],
+  closing: "AI accelerates the process. Engineering judgment ensures the quality.",
 };
 
-/** Skill cards with chips (home + about) */
+/** Skill groups with chips (about + experience) */
 export const skillCards: { title: string; icon: IconName; items: string[] }[] = [
-  { title: "Frontend", icon: "code", items: ["Next.js", "React", "TypeScript", "JavaScript", "Tailwind CSS", "HTML / CSS"] },
-  { title: "CMS & platforms", icon: "layers", items: ["Sanity CMS", "WordPress", "Elementor", "Vercel", "Git"] },
-  { title: "Design handoff", icon: "pen", items: ["Figma", "PSD to CMS", "Responsive design", "Pixel-perfect QA"] },
-  { title: "AI development", icon: "spark", items: ["Claude", "Claude Code", "MCP", "AI integration", "Content migration"] },
+  { title: "AI & AI-assisted development", icon: "spark", items: ["Claude", "Claude Code", "ChatGPT", "MCP", "Cursor", "AI API Integration", "AI-Assisted Coding"] },
+  { title: "Frontend", icon: "code", items: ["Next.js", "React", "TypeScript", "JavaScript", "Tailwind CSS"] },
+  { title: "CMS", icon: "layers", items: ["Sanity CMS", "WordPress", "Elementor"] },
+  { title: "Other technologies", icon: "pen", items: ["HTML", "CSS", "PHP", "Vercel", "Git", "Figma"] },
 ];
 
 /* ------------------------------------------------------------------ */
@@ -142,14 +182,14 @@ export const projects: Project[] = [
     tint: "#edeae0",
     title: "Fashion E-commerce Store",
     client: "Aurelle — concept brand",
-    category: "Next.js + Sanity",
+    category: "E-commerce Website",
     filters: ["nextjs", "ecommerce"],
     role: "Design build & CMS",
     stack: "Next.js, Sanity, Tailwind",
     year: "2025",
-    summary: "An editorial fashion storefront with a Sanity-powered product catalog the brand team updates themselves.",
+    summary: "An editorial-style fashion storefront with a structured product catalog powered by Sanity CMS, making it easy for the team to manage products and content.",
     tagline: "A premium storefront with a product catalog the merchant edits in Sanity Studio.",
-    tags: ["Next.js", "Sanity", "Tailwind CSS", "Vercel"],
+    tags: ["Next.js", "Sanity CMS", "Tailwind CSS", "Vercel"],
     cover: img("fashion-catalog", "cover"),
     overview:
       "A fashion storefront built with Next.js and Sanity CMS. Products, collections, lookbooks and homepage sections all live in Sanity, so the brand team can launch a new drop without a developer.",
@@ -180,14 +220,14 @@ export const projects: Project[] = [
     tint: "#f0f1ea",
     title: "AI SaaS Landing Page",
     client: "Lumen Analytics — concept brand",
-    category: "Figma → Next.js",
+    category: "AI Product Website",
     filters: ["nextjs", "landing"],
     role: "Frontend development",
     stack: "Next.js, Tailwind CSS",
     year: "2025",
-    summary: "A high-fidelity Figma design turned into a fast, responsive Next.js landing page for an AI analytics product.",
+    summary: "A modern, responsive landing page for an AI analytics product, translating a high-fidelity Figma design into a clean web experience.",
     tagline: "Absolute design fidelity, clean components and excellent responsive behaviour.",
-    tags: ["Next.js", "Tailwind CSS", "Figma", "Responsive"],
+    tags: ["Next.js", "Tailwind CSS", "Figma", "Responsive Design"],
     cover: img("ai-saas-landing", "cover"),
     overview:
       "A pixel-perfect conversion of a Figma design into a production Next.js landing page — hero, product preview, features, pricing and FAQ — built for speed and conversions.",
@@ -201,7 +241,7 @@ export const projects: Project[] = [
       "Reusable section components",
       "Pricing toggle and FAQ accordion",
       "SEO metadata and OG images",
-      "Strong Core Web Vitals",
+      "Optimised images and fonts",
     ],
     tech: ["Next.js", "React", "Tailwind CSS", "Figma", "Vercel"],
     gallery: [
@@ -217,14 +257,14 @@ export const projects: Project[] = [
     tint: "#edeae0",
     title: "WordPress Blog Migration",
     client: "Field Notes — concept publication",
-    category: "WordPress → Next.js + Sanity",
+    category: "Website Migration",
     filters: ["migration", "nextjs"],
     role: "Migration & development",
     stack: "Next.js, Sanity, WordPress",
     year: "2025",
-    summary: "A content-heavy WordPress blog moved to Next.js + Sanity — every post, image and URL kept, SEO intact.",
-    tagline: "Hundreds of posts moved by script, same URLs, much faster pages.",
-    tags: ["Migration", "Next.js", "Sanity", "SEO"],
+    summary: "A content-heavy WordPress website migrated to Next.js and Sanity CMS, with content, images, and URL structures carefully handled.",
+    tagline: "Posts, images and authors moved by script, with the URL structure and SEO metadata carefully preserved.",
+    tags: ["WordPress", "Next.js", "Sanity CMS", "SEO"],
     cover: img("blog-migration", "cover"),
     overview:
       "A long-running blog on WordPress was slow, plugin-heavy and hard to maintain. I migrated it to Next.js with Sanity CMS — posts, categories, authors and images — while keeping every URL and its rankings.",
@@ -254,14 +294,14 @@ export const projects: Project[] = [
     tint: "#f0f1ea",
     title: "Creative Agency Website",
     client: "Northwind Studio — concept agency",
-    category: "Figma → Next.js + Sanity",
+    category: "Business Website",
     filters: ["nextjs"],
     role: "Design build & CMS",
     stack: "Next.js, Sanity, Tailwind",
     year: "2025",
-    summary: "A bold agency site with case studies, services and team pages — all editable in Sanity Studio.",
+    summary: "A modern agency website with editable content, service pages, and project presentations.",
     tagline: "Big type, bold layouts, and case studies the team publishes themselves.",
-    tags: ["Next.js", "Sanity", "Figma", "Animation"],
+    tags: ["Next.js", "Sanity CMS", "Tailwind CSS"],
     cover: img("creative-agency", "cover"),
     overview:
       "A portfolio website for a creative studio, built from their Figma design. Case studies, services, team members and open roles are managed in Sanity, with a flexible page builder for new landing pages.",
@@ -291,14 +331,14 @@ export const projects: Project[] = [
     tint: "#edeae0",
     title: "Restaurant Website with Editable Menu",
     client: "Saffron & Salt — concept restaurant",
-    category: "Next.js + Sanity",
+    category: "Restaurant Website",
     filters: ["nextjs"],
     role: "Development & CMS",
     stack: "Next.js, Sanity, Tailwind",
     year: "2025",
-    summary: "A warm restaurant website where staff update dishes, prices and specials in Sanity in seconds.",
+    summary: "A responsive restaurant website with CMS-managed menu items, dish descriptions, and pricing.",
     tagline: "The menu changes daily — now the website does too, without a developer.",
-    tags: ["Next.js", "Sanity", "Responsive", "Local SEO"],
+    tags: ["Next.js", "Sanity CMS", "Tailwind CSS"],
     cover: img("restaurant-menu", "cover"),
     overview:
       "A restaurant website with menu, specials, gallery and reservations. The menu is fully managed in Sanity — categories, dishes, prices, dietary tags and sold-out flags — and updates on the live site instantly.",
@@ -329,14 +369,14 @@ export const projects: Project[] = [
     tint: "#f0f1ea",
     title: "Business Website on WordPress",
     client: "Meridian Builders — concept company",
-    category: "PSD → WordPress + Elementor",
+    category: "WordPress Development",
     filters: ["wordpress"],
     role: "WordPress development",
     stack: "WordPress, Elementor, PHP",
     year: "2024",
-    summary: "A PSD design turned into a responsive WordPress + Elementor site for a construction company.",
+    summary: "A business website built from a PSD design using WordPress and Elementor.",
     tagline: "A professional company website the team edits with Elementor.",
-    tags: ["WordPress", "Elementor", "PSD to CMS", "Speed"],
+    tags: ["WordPress", "Elementor", "HTML", "CSS"],
     cover: img("business-wordpress", "cover"),
     overview:
       "A multi-page business website for a construction company — services, projects, about and contact — built in WordPress with Elementor from a PSD design, optimised for speed and mobile.",
@@ -383,79 +423,83 @@ export type IconName =
 
 export const services: {
   title: string; short: string; body: string; tags: string[]; icon: IconName;
-  image: string; imageAlt: string; points: string[];
+  image: string; imageAlt: string; points: string[]; tagsLabel?: string;
 }[] = [
   {
+    title: "AI Integration & Development",
+    image: "/images/services/ai-assistant.webp",
+    imageAlt: "Help center concept with an AI assistant answering questions",
+    short: "Bring intelligent functionality into your website or application.",
+    body: "Bring intelligent functionality into your website or application with AI APIs and modern development technologies.",
+    points: ["Claude API integration", "AI chat interfaces", "AI-powered content assistants", "Context-aware Q&A features", "AI-powered search experiences", "AI API integration with Next.js"],
+    tags: ["Next.js", "React", "TypeScript", "Claude API", "AI APIs"],
+    icon: "spark",
+  },
+  {
+    title: "Claude Code & AI-Assisted Development",
+    image: "/images/services/ai-coding.webp",
+    imageAlt: "Code editor with an AI coding assistant panel next to a React component",
+    short: "Accelerate your development workflow using modern AI coding tools.",
+    body: "Accelerate your development workflow using modern AI coding tools — with every change reviewed and tested by me.",
+    points: ["Next.js feature development", "React component generation", "Codebase analysis", "Debugging and refactoring", "API integration assistance", "CMS schema development", "Development workflow improvements"],
+    tags: ["Claude Code", "Claude", "ChatGPT", "Cursor"],
+    tagsLabel: "Tools",
+    icon: "code",
+  },
+  {
+    title: "Next.js & React Development",
+    image: "/images/projects/ai-saas-landing/cover.webp",
+    imageAlt: "SaaS landing page built with Next.js",
+    short: "Build fast, modern, and responsive websites and applications.",
+    body: "Build fast, modern, and responsive websites and web applications with Next.js, React and TypeScript.",
+    points: ["Custom Next.js websites", "React application development", "Landing pages", "Responsive UI development", "TypeScript implementation", "API integrations", "Vercel deployment"],
+    tags: ["Next.js", "React", "TypeScript", "Vercel"],
+    icon: "react",
+  },
+  {
     title: "Figma to Next.js + Sanity CMS",
-    image: "/images/projects/creative-agency/cover.webp",
-    imageAlt: "Agency website built from a Figma design",
-    points: ["Figma frames turned into reusable components", "Sanity Studio with page-builder blocks", "Deployed on Vercel with preview links"],
-    short: "Pixel-perfect websites your team can edit without code.",
-    body: "Your Figma design turned into a fast, responsive Next.js website with Sanity CMS — every page, image and blog post editable from a clean dashboard.",
-    tags: ["Next.js", "Sanity", "Tailwind", "Figma"],
+    image: "/images/projects/restaurant-menu/studio.webp",
+    imageAlt: "Content studio editing a menu item",
+    short: "Convert your Figma designs into responsive websites with easy content editing.",
+    body: "Convert your Figma designs into responsive websites with easy content editing in Sanity Studio.",
+    points: ["Pixel-perfect Figma conversion", "Reusable React components", "Sanity Studio configuration", "Custom content schemas", "Editable pages and blogs", "Responsive implementation"],
+    tags: ["Figma", "Next.js", "Sanity CMS", "Tailwind CSS"],
     icon: "pen",
   },
   {
     title: "WordPress to Next.js Migration",
     image: "/images/projects/blog-migration/cover.webp",
     imageAlt: "Blog migrated from WordPress to Next.js",
-    points: ["Pages, posts and images moved by script", "Every old URL kept or redirected", "Editors trained on Sanity Studio"],
-    short: "Keep your content, URLs and SEO. Lose the plugin chaos.",
-    body: "Pages, posts, images and categories moved into Sanity by script, the same URLs with proper redirects, and a website that loads in a fraction of the time.",
-    tags: ["Migration", "Next.js", "Sanity", "SEO"],
+    short: "Modernize your WordPress website with a modern frontend and structured CMS.",
+    body: "Modernize your existing WordPress website with a modern frontend and a structured CMS.",
+    points: ["WordPress content migration", "Page and post migration", "Image migration", "Sanity CMS setup", "URL preservation and redirects", "SEO metadata migration", "Next.js frontend development"],
+    tags: ["WordPress", "Next.js", "Sanity CMS", "SEO"],
     icon: "layers",
   },
   {
-    title: "Next.js Landing Pages",
-    image: "/images/projects/ai-saas-landing/cover.webp",
-    imageAlt: "SaaS landing page built with Next.js",
-    points: ["Pixel-perfect from your design", "Metadata, sitemap and social previews", "Forms and analytics connected"],
-    short: "Marketing sites built for speed, SEO and conversions.",
-    body: "Landing pages and marketing sites with SEO built in, strong Core Web Vitals, and forms, analytics and integrations wired up.",
-    tags: ["Next.js", "React", "SEO", "Vercel"],
-    icon: "bolt",
-  },
-  {
-    title: "Add Sanity CMS to Next.js",
-    image: "/images/projects/restaurant-menu/studio.webp",
-    imageAlt: "Content studio editing a menu item",
-    points: ["Content schemas for your pages", "Live preview while editing", "Publish updates in seconds"],
-    short: "Make your existing Next.js site editable.",
-    body: "Content schemas, Sanity Studio and live preview added to your existing Next.js website, so your team stops waiting on developers for text and image changes.",
-    tags: ["Sanity", "Next.js", "TypeScript"],
-    icon: "code",
-  },
-  {
-    title: "WordPress & Elementor Websites",
+    title: "WordPress & Elementor Development",
     image: "/images/projects/business-wordpress/cover.webp",
     imageAlt: "Business website built with WordPress and Elementor",
-    points: ["Global styles and reusable templates", "Lean plugin setup for speed", "On-page SEO configured"],
-    short: "Business websites your team manages in WordPress.",
-    body: "Custom WordPress and Elementor websites from PSD or Figma — lean setup, global styles, speed and mobile optimisation, and on-page SEO.",
-    tags: ["WordPress", "Elementor", "PHP", "PSD to CMS"],
+    short: "Build professional business websites and landing pages.",
+    body: "Build professional business websites and landing pages your team manages in WordPress.",
+    points: ["Custom Elementor websites", "Figma and PSD to WordPress", "Responsive business websites", "Landing page development", "On-page SEO", "Speed and mobile optimization"],
+    tags: ["WordPress", "Elementor", "PHP", "CSS"],
     icon: "browser",
   },
   {
-    title: "Figma / PSD to HTML & Tailwind",
-    image: "/images/projects/fashion-catalog/cover.webp",
-    imageAlt: "Fashion storefront converted from design to code",
-    points: ["Semantic, accessible HTML", "Tailwind CSS matched to your tokens", "Checked on every breakpoint"],
-    short: "Clean, responsive code from your design.",
-    body: "High-fidelity designs translated into semantic HTML and Tailwind CSS with careful attention to spacing, typography and every breakpoint.",
-    tags: ["HTML", "CSS", "Tailwind", "Responsive"],
-    icon: "react",
-  },
-  {
-    title: "AI Integration",
-    image: "/images/services/ai-assistant.webp",
-    imageAlt: "Help center with an AI assistant answering from articles",
-    points: ["Assistant trained on your own content", "Built with Claude and MCP", "Clear fallbacks and error handling"],
-    short: "Chat assistants, smart search and content helpers.",
-    body: "AI features built into your website with Claude and MCP — assistants that answer from your content, smart search and editorial helpers, with reliable error handling.",
-    tags: ["Claude", "MCP", "AI Development", "APIs"],
-    icon: "spark",
+    title: "Website Maintenance & Improvements",
+    image: "/images/projects/creative-agency/cover.webp",
+    imageAlt: "Agency website maintained with regular updates",
+    short: "Keep your website updated and performing well.",
+    body: "Keep your website updated and performing well with regular fixes, improvements and new features.",
+    points: ["Bug fixing", "New feature development", "Content and layout updates", "Performance improvements", "Technical maintenance"],
+    tags: ["Next.js", "WordPress", "Sanity CMS"],
+    icon: "shield",
   },
 ];
+
+/** Development approach shown on the services page */
+export const approach = ["Understand requirements", "Plan", "AI-assisted development", "Human code review", "Testing", "Deployment"];
 
 export const packages = [
   {
@@ -463,21 +507,21 @@ export const packages = [
     title: "Landing Page",
     text: "One high-converting page in Next.js, React or WordPress, from your design.",
     points: ["Responsive, pixel-perfect build", "SEO and speed setup", "Contact form & analytics"],
-    price: "Fixed quote",
+    price: "Project estimate",
     featured: false,
   },
   {
     name: "Most popular",
     title: "Next.js + Sanity Website",
     text: "A multi-page website or WordPress migration your team edits in Sanity.",
-    points: ["Custom pages & components", "Sanity Studio for your content", "SEO, redirects & Core Web Vitals"],
-    price: "Fixed quote",
+    points: ["Custom pages & components", "Sanity Studio for your content", "SEO metadata & redirects"],
+    price: "Project estimate",
     featured: true,
   },
   {
     name: "Ongoing",
     title: "Monthly Support",
-    text: "A dedicated developer for updates, new features and speed care.",
+    text: "A dedicated developer for updates, new features and ongoing improvements.",
     points: ["Reserved hours each month", "Priority response", "Bug fixes & improvements"],
     price: "Monthly retainer",
     featured: false,
@@ -485,10 +529,10 @@ export const packages = [
 ];
 
 export const process = [
-  { title: "Share your project", text: "Send your Figma file or current website link, with a few lines about your goals." },
-  { title: "Plan & fixed quote", text: "I reply with a clear plan, timeline and fixed quote — work starts only once you agree." },
-  { title: "Build & preview", text: "You follow progress on a live preview link and give feedback as pages come together." },
-  { title: "Test & launch", text: "Every page is tested on real devices and browsers, then deployed with SEO and redirects checked." },
+  { title: "Share your requirements", text: "Send your Figma design, current website, or application idea. I'll understand your goals and technical requirements." },
+  { title: "Plan & estimate", text: "I'll suggest the right technologies, development approach, timeline, and project estimate." },
+  { title: "Build & review", text: "I use modern development practices and AI-assisted workflows to build your project efficiently. You'll receive progress updates and preview links." },
+  { title: "Test & launch", text: "I review the implementation, test responsive layouts, fix issues, and prepare your website for deployment." },
 ];
 
 /* ------------------------------------------------------------------ */
@@ -496,42 +540,51 @@ export const process = [
 /* ------------------------------------------------------------------ */
 
 export const principles: { title: string; text: string; icon: IconName }[] = [
-  { title: "Editable by your team", text: "A website should never need a developer to change a headline or publish a post.", icon: "users" },
-  { title: "Performance is a feature", text: "Fast load times and good Core Web Vitals are non-negotiable for real users.", icon: "bolt" },
-  { title: "Design fidelity", text: "What ships should look exactly like the Figma file, on every screen size.", icon: "pen" },
-  { title: "AI speed, human quality", text: "AI speeds up the work; every component is reviewed and tested by me.", icon: "spark" },
+  { title: "AI-powered productivity", text: "AI tools help me move faster on planning, coding, debugging and migration work.", icon: "spark" },
+  { title: "Clean code", text: "Reusable components, typed code and a structure that stays easy to extend.", icon: "code" },
+  { title: "Practical problem-solving", text: "The right tool for the requirement — Next.js, Sanity or WordPress — not the trendiest one.", icon: "bolt" },
+  { title: "Careful testing", text: "Every implementation is reviewed and tested across browsers and devices before delivery.", icon: "shield" },
+];
+
+/** "What I do" cards on the about page */
+export const aboutFocus: { title: string; text: string; icon: IconName }[] = [
+  { title: "AI-Powered Development", text: "I use AI tools to accelerate development, improve coding workflows, debug issues, and build modern digital solutions.", icon: "spark" },
+  { title: "AI Integration", text: "I help integrate AI capabilities into web applications using suitable APIs and modern development technologies.", icon: "chat" },
+  { title: "Next.js & React Development", text: "I build responsive websites, reusable components, and modern web applications.", icon: "code" },
+  { title: "CMS & Website Solutions", text: "I develop editable websites using Sanity CMS and create or migrate WordPress websites.", icon: "layers" },
 ];
 
 export const experience = {
   role: "Full Stack Developer",
   company: "Krushna53",
-  place: "Ahmedabad",
+  place: "Ahmedabad, India",
   period: "June 2023 – Present",
-  summary: "Building, migrating and maintaining client websites with Next.js, Sanity CMS and WordPress.",
+  summary: "Building, migrating, and maintaining client websites using Next.js, React, Sanity CMS, and WordPress.",
   points: [
-    "Convert Figma and PSD designs into fast, responsive Next.js websites with Sanity CMS",
-    "Set up Sanity CMS: content schemas, Sanity Studio and editable pages, images and posts",
-    "Migrate WordPress websites to Next.js + Sanity, keeping content, URLs and SEO intact",
-    "Build and customise WordPress websites for clients",
-    "Maintain live client websites: updates, bug fixes, speed improvements and new features",
-    "Use AI tools like Claude to speed up development, content migration and testing",
+    "Build responsive Next.js websites from Figma and PSD designs.",
+    "Develop reusable React components.",
+    "Configure Sanity CMS schemas and Studio.",
+    "Migrate WordPress websites to Next.js and Sanity.",
+    "Maintain URLs, content, and SEO during migrations.",
+    "Develop and customize WordPress websites.",
+    "Fix bugs and improve existing client websites.",
+    "Use Claude and Claude Code for AI-assisted development.",
+    "Review, debug, and test implementations.",
   ],
-  tags: ["Next.js", "React", "Sanity", "TypeScript", "Tailwind CSS", "WordPress", "PHP", "Figma", "Vercel", "Git", "Claude"],
+  tags: ["Next.js", "React", "TypeScript", "Sanity CMS", "Tailwind CSS", "WordPress", "Elementor", "PHP", "Vercel", "Git", "Figma", "Claude Code"],
 };
 
 export const education = {
-  degree: "B.A. Geography",
+  degree: "Bachelor of Arts (Geography)",
   school: "Gujarat University",
   period: "2018 – 2020",
   text: "A structured way of thinking about systems and relationships — now applied to content models, component architecture and information hierarchy.",
 };
 
 export const certifications = [
-  { date: "June 2025", issuer: "WP Academy", title: "WordPress eCommerce Development", text: "Store architecture, WooCommerce customisation and payments." },
   { date: "February 2025", issuer: "Udemy", title: "Next.js", text: "App Router, data fetching, rendering strategies and deployment." },
   { date: "January 2025", issuer: "Udemy", title: "Full Stack Developer", text: "Frontend, backend and APIs — building complete web applications." },
   { date: "November 2024", issuer: "Udemy", title: "Frontend (React & Next.js)", text: "Modern React patterns, components and Next.js fundamentals." },
-  { date: "August 2024", issuer: "Udemy", title: "Figma to HTML, CSS & JavaScript", text: "Translating design files into accurate, responsive code." },
 ];
 
 /* ------------------------------------------------------------------ */
@@ -546,17 +599,26 @@ export const certifications = [
 export const testimonials: { quote: string; name: string; meta: string; initials: string }[] = [];
 
 export const faqs = [
-  { q: "Will my SEO survive a WordPress to Next.js migration?", a: "Yes. I keep your existing URLs, add redirects for anything that has to change, and carry over titles, descriptions and structured data — so search engines see the same site, only faster." },
-  { q: "Who updates the content after launch?", a: "Your team does. Sanity Studio gives you a clean dashboard for pages, images and blog posts, and I show you how everything works before handover." },
-  { q: "Why Next.js + Sanity instead of WordPress?", a: "Much faster page loads and better Core Web Vitals, no plugin updates, fewer security issues, and hosting on Vercel that scales automatically. If WordPress suits you better, I build that too." },
-  { q: "How long does a project take?", a: "A landing page usually takes a few days. A full website or migration takes 1–4 weeks depending on pages and content. You get a clear timeline before any work starts." },
-  { q: "How do you use AI in your work?", a: "Claude and Claude Code help me turn Figma designs into components, write Sanity schemas, migrate content and test. I review every component myself and test on real devices and browsers." },
-  { q: "What do you need from me to start?", a: "Your Figma file or current website link, and a short note about your goals. I'll come back with a plan, timeline and fixed quote." },
+  { q: "What services do you offer?", a: "I specialize in AI-powered development, AI API integrations, Next.js and React websites, Figma-to-Next.js development, Sanity CMS, and WordPress migrations." },
+  { q: "How do you use AI in development?", a: "I use Claude, Claude Code, ChatGPT, and related AI tools for planning, coding, component development, debugging, content migration, and testing. I review and validate the final implementation myself." },
+  { q: "Can you integrate AI into my existing website?", a: "Yes. I can help integrate suitable AI APIs and intelligent features into existing Next.js applications and websites, depending on your requirements and available API capabilities." },
+  { q: "Do you work with Claude Code?", a: "Yes. Claude Code is part of my development workflow for understanding codebases, building features, generating components, debugging, and improving code." },
+  { q: "What is your experience with Next.js and Sanity?", a: "I have been working with Next.js, React, Sanity CMS, and WordPress in client website development since June 2023." },
+  { q: "Can you migrate my WordPress website to Next.js?", a: "Yes. I can migrate pages, posts, images, and structured content to Sanity CMS, build a Next.js frontend, and configure redirects and SEO metadata." },
+  { q: "How long does a project take?", a: "A landing page may take a few days, while a full website or migration may take 1–4 weeks, depending on scope, content, and requirements." },
+  { q: "Do you work with international clients?", a: "Yes. I'm based in Ahmedabad, India, and available to work with clients and businesses worldwide." },
+  { q: "What do you need to start?", a: "Share your Figma design, existing website URL, or project idea. I'll review it and provide a suitable plan, timeline, and estimate." },
 ];
 
 export const projectTypes = [
-  "Figma to Next.js + Sanity", "WordPress to Next.js migration", "Next.js landing page", "Add Sanity to Next.js",
-  "WordPress / Elementor", "Figma / PSD to HTML", "AI integration", "Other",
+  "AI Application Development", "AI Integration", "Claude Code / AI-Assisted Development", "Next.js / React Development",
+  "Figma to Next.js", "WordPress Migration", "WordPress Development", "Other",
+];
+
+/** "What can I help you build?" list on the contact page */
+export const helpWith = [
+  "AI-powered web applications", "Claude API integrations", "AI assistants and intelligent features", "Next.js and React websites",
+  "Figma to Next.js + Sanity CMS", "WordPress to Next.js migrations", "WordPress and Elementor websites",
 ];
 
 export const budgets = [

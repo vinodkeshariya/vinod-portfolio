@@ -1,29 +1,30 @@
-import type { Metadata } from "next";
 import Image from "next/image";
 import Link from "next/link";
 import { Icon } from "@/components/Icon";
 import { ImageStack } from "@/components/ImageStack";
 import { CtaBand, PageHero, SectionHead } from "@/components/ui";
-import { packages, process, services } from "@/lib/data";
+import { approach, packages, process, services } from "@/lib/data";
+import { pageMeta } from "@/lib/seo";
 
-export const metadata: Metadata = {
-  title: "Services",
-  description: "Figma to Next.js + Sanity, WordPress to Next.js migration, landing pages, WordPress & Elementor sites and AI integration.",
-};
+export const metadata = pageMeta({
+  title: "AI Development & Next.js Services | Vinod Keshariya",
+  description: "Explore AI integration, Claude Code development, Next.js, React, Sanity CMS, and WordPress migration services.",
+  path: "/services",
+});
 
 export default function ServicesPage() {
   return (
     <>
       <PageHero
         crumbs={[{ href: "/", label: "Home" }, { label: "Services" }]}
-        eyebrow="Services"
-        title={<>Fast websites your team <span className="text-accent">can actually edit.</span></>}
-        lead="Next.js + Sanity builds and migrations, plus WordPress when it fits — every project with a clear scope, a fixed quote and an AI-powered workflow."
+        eyebrow="What I Offer"
+        title={<>AI Development &amp; <span className="text-accent">Modern Web Solutions.</span></>}
+        lead="I help businesses build intelligent digital experiences and high-performance websites using AI-assisted workflows and modern web technologies."
         aside={
           <ImageStack
             priority
             back={{ src: "/images/projects/blog-migration/cover.webp", alt: "Blog migrated to Next.js" }}
-            front={{ src: "/images/projects/restaurant-menu/studio.webp", alt: "Content studio editing a menu item" }}
+            front={{ src: "/images/services/ai-assistant.webp", alt: "AI assistant answering questions in a help center" }}
             phone={{ src: "/images/projects/creative-agency/mobile-1.webp", alt: "Agency website on mobile" }}
           />
         }
@@ -63,11 +64,14 @@ export default function ServicesPage() {
                       </li>
                     ))}
                   </ul>
-                  <ul className="flex flex-wrap gap-1.5">
-                    {s.tags.map((t) => (
-                      <li key={t} className="rounded-full bg-surface-2 px-2.5 py-1 text-[12px] font-medium text-ink-2">{t}</li>
-                    ))}
-                  </ul>
+                  <div className="flex flex-wrap items-center gap-1.5">
+                    <span className="label-mono mr-1">{s.tagsLabel ?? "Technologies"}</span>
+                    <ul className="flex flex-wrap gap-1.5">
+                      {s.tags.map((t) => (
+                        <li key={t} className="rounded-full bg-surface-2 px-2.5 py-1 text-[12px] font-medium text-ink-2">{t}</li>
+                      ))}
+                    </ul>
+                  </div>
                   <Link href="/contact" className="btn btn-ghost btn-sm mt-1">
                     Discuss this service <Icon name="arrow" />
                   </Link>
@@ -99,7 +103,7 @@ export default function ServicesPage() {
           <SectionHead
             eyebrow="Engagements"
             title="Pick how we work together"
-            text="Every project gets a fixed scope and a clear quote before work starts."
+            text="Every project gets a clear scope and estimate before work starts."
           />
           <div className="grid gap-5 lg:grid-cols-3">
             {packages.map((p, i) => (
@@ -137,7 +141,17 @@ export default function ServicesPage() {
       {/* Process */}
       <section className="section">
         <div className="wrap">
-          <SectionHead eyebrow="Process" title="How every project runs" text="Clear steps, regular updates and a preview link at every stage." />
+          <SectionHead eyebrow="My Development Approach" title="AI speed with a human code review" text="Clear steps, regular updates and a preview link at every stage." />
+          <ol data-reveal aria-label="Development approach" className="mb-8 flex flex-wrap items-center gap-x-2 gap-y-2.5">
+            {approach.map((a, i) => (
+              <li key={a} className="flex items-center gap-2">
+                <span className={`rounded-full border px-3.5 py-1.5 text-[13.5px] font-medium ${a.includes("AI") || a.includes("review") ? "border-accent-line bg-accent-soft text-accent" : "border-line bg-surface text-ink-2"}`}>
+                  {a}
+                </span>
+                {i < approach.length - 1 && <Icon name="arrow" className="size-3.5 text-faint" />}
+              </li>
+            ))}
+          </ol>
           <ol className="grid gap-5 sm:grid-cols-2 lg:grid-cols-4">
             {process.map((p, i) => (
               <li key={p.title} data-reveal data-delay={i * 90} className="card flex flex-col gap-3 p-6">
@@ -151,9 +165,9 @@ export default function ServicesPage() {
       </section>
 
       <CtaBand
-        title="Not sure which service fits?"
-        text="Send your Figma file or website link — I'll suggest the right approach with a plan and fixed quote."
-        primary={{ href: "/contact", label: "Share your project" }}
+        title="Let's Discuss Your Project"
+        text="Share your project idea, design, or current website. I'll suggest the right solution and provide a clear estimate."
+        primary={{ href: "/contact", label: "Get a Project Quote" }}
       />
     </>
   );

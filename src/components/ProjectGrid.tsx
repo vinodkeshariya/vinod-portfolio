@@ -61,11 +61,11 @@ export function ProjectGrid() {
             <span className="font-mono text-[12px] font-medium uppercase tracking-[0.12em] text-accent">
               Project {String(projects.length + 1).padStart(2, "0")}
             </span>
-            <h2 className="text-[clamp(24px,2.6vw,32px)] font-extrabold tracking-[-0.03em]">Your website could be next.</h2>
-            <p className="text-[15px] text-muted">Send your Figma file or current website link — I&apos;ll reply with a plan, timeline and fixed quote.</p>
+            <h2 className="text-[clamp(24px,2.6vw,32px)] font-extrabold tracking-[-0.03em]">Interested in Working Together?</h2>
+            <p className="text-[15px] text-muted">Have a similar project? Let&apos;s discuss your requirements.</p>
           </div>
           <Link href="/contact" className="btn btn-primary">
-            Share your project <Icon name="arrow" />
+            Start a Project <Icon name="arrow" />
           </Link>
         </div>
       </div>

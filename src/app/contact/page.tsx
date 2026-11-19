@@ -1,20 +1,23 @@
-import type { Metadata } from "next";
 import Link from "next/link";
 import { ContactForm } from "@/components/ContactForm";
 import { Icon } from "@/components/Icon";
 import { PageHero } from "@/components/ui";
-import { ext, site, type IconName } from "@/lib/data";
+import { ext, hasUpwork, helpWith, site, type IconName } from "@/lib/data";
+import { pageMeta } from "@/lib/seo";
 
-export const metadata: Metadata = {
-  title: "Contact",
-  description: "Tell me about your project — I reply within 0–4 hours with clear next steps.",
-};
+export const metadata = pageMeta({
+  title: "Hire Vinod Keshariya | AI + Next.js Developer",
+  description:
+    "Contact Vinod Keshariya for AI-powered development, Next.js websites, AI integration, and modern web development projects.",
+  path: "/contact",
+});
 
 const cards: { icon: IconName; label: string; value: string; href?: string }[] = [
   { icon: "mail", label: "Email", value: site.email, href: `mailto:${site.email}` },
   { icon: "chat", label: "Phone · WhatsApp", value: site.phone, href: site.socials.whatsapp },
   { icon: "pin", label: "Location", value: site.location },
-  { icon: "clock", label: "Availability", value: "Open for freelance projects" },
+  { icon: "users", label: "Availability", value: "Open for Freelance Projects" },
+  { icon: "clock", label: "Response time", value: "Usually within 0–4 hours" },
 ];
 
 export default function ContactPage() {
@@ -30,7 +33,7 @@ export default function ContactPage() {
                 <ol className="mt-5 flex flex-col gap-4">
                   {[
                     ["You send the details", "Figma file, website link or a short brief."],
-                    ["I reply with a plan", "Questions, approach, timeline and a fixed quote."],
+                    ["I reply with a plan", "A practical approach, timeline and estimate."],
                     ["We start building", "Live preview link and regular updates."],
                   ].map(([t, d], i) => (
                     <li key={t} className="flex gap-4">
@@ -47,14 +50,31 @@ export default function ContactPage() {
           </div>
         }
         crumbs={[{ href: "/", label: "Home" }, { label: "Contact" }]}
-        eyebrow="Contact"
-        title={<>Have a project in mind? <span className="text-accent">Let&apos;s talk.</span></>}
-        lead="Share your Figma file, current website link or a short brief. I usually reply within 0–4 hours with a clear plan, timeline and fixed quote."
-      />
+        eyebrow="Get in Touch"
+        title={<>Let&apos;s Talk About Your <span className="text-accent">Next Project.</span></>}
+        lead="Looking for a developer to build an AI-powered application, integrate intelligent features, or create a modern website? I'm available to collaborate with startups, agencies, businesses, and individuals worldwide."
+      >
+        <p className="max-w-[580px] text-[15.5px] leading-relaxed text-muted">
+          Tell me about your idea, requirements, and goals. I&apos;ll review your project and respond with a practical approach and
+          estimated timeline.
+        </p>
+      </PageHero>
 
       <section className="section">
         <div className="wrap grid items-start gap-10 lg:grid-cols-[minmax(0,0.85fr)_minmax(0,1.55fr)] lg:gap-16">
           <div data-reveal className="flex flex-col gap-4">
+            <div className="card flex flex-col gap-4 p-6">
+              <h2 className="text-[18px] font-bold">What Can I Help You Build?</h2>
+              <ul className="flex flex-col gap-2.5">
+                {helpWith.map((h) => (
+                  <li key={h} className="flex gap-2.5 text-[14.5px] text-ink-2">
+                    <Icon name="check" strokeWidth={2.6} className="mt-0.5 size-4 shrink-0 text-accent" />
+                    {h}
+                  </li>
+                ))}
+              </ul>
+            </div>
+
             {cards.map((c) => {
               const inner = (
                 <>
@@ -80,7 +100,7 @@ export default function ContactPage() {
                 {([
                   ["linkedin", "LinkedIn", site.socials.linkedin],
                   ["github", "GitHub", site.socials.github],
-                  ["upwork", "Upwork", site.socials.upwork],
+                  ...(hasUpwork ? [["upwork", "Upwork", site.socials.upwork] as const] : []),
                 ] as const).map(([icon, label, href]) => (
                   <Link key={label} href={href} aria-label={label} {...ext(href)}
                     className="grid size-11 place-items-center rounded-xl border border-line-2 text-ink-2 transition hover:border-accent hover:bg-accent hover:text-white">
@@ -88,11 +108,17 @@ export default function ContactPage() {
                   </Link>
                 ))}
               </div>
+              {hasUpwork && (
+                <Link href={site.socials.upwork} {...ext(site.socials.upwork)} className="btn btn-ghost btn-sm self-start">
+                  Hire Me on Upwork <Icon name="arrowUpRight" />
+                </Link>
+              )}
             </div>
           </div>
 
-          <div data-reveal data-delay={120}>
+          <div data-reveal data-delay={120} className="flex flex-col gap-4">
             <ContactForm />
+            <p className="text-center text-[14.5px] text-muted">I look forward to hearing about your project.</p>
           </div>
         </div>
       </section>

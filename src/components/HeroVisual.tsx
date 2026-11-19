@@ -56,7 +56,7 @@ export function HeroVisual() {
       {/* 2 — BUILD (code editor) */}
       <div className="absolute right-0 top-[150px] w-[70%] animate-float overflow-hidden rounded-2xl border border-white/10 bg-night shadow-(--shadow-float)">
         <div className="flex items-center justify-between border-b border-white/10 px-3.5 py-2.5">
-          <Step n={2} label="Build" />
+          <Step n={2} label="Build · Claude Code" />
           <span className="rounded bg-white/10 px-2 py-0.5 font-mono text-[10.5px] text-white/70">Hero.tsx</span>
         </div>
         <pre className="overflow-hidden px-4 py-3.5 font-mono text-[11px] leading-[1.75] text-white/80">
@@ -70,7 +70,7 @@ export function HeroVisual() {
           {"}"}
         </pre>
         <div className="flex items-center gap-2 border-t border-white/10 px-4 py-2.5 font-mono text-[10.5px] text-white/55">
-          <span className="size-1.5 rounded-full bg-lime" /> Deployed to Vercel
+          <span className="size-1.5 rounded-full bg-lime" /> Reviewed by hand · Deployed to Vercel
         </div>
       </div>
 

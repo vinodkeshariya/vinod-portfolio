@@ -1,6 +1,6 @@
 # Vinod Keshariya — Portfolio
 
-Personal portfolio of Vinod Keshariya, an AI-powered Next.js + Sanity developer. Built with **Next.js 16 (App Router)**, **React 19**, **TypeScript** and **Tailwind CSS v4**, in a "Modern Editorial" style (forest green, warm ivory, soft lime).
+Personal portfolio of Vinod Keshariya, an AI-Powered Full-Stack Developer and AI + Next.js Specialist. Built with **Next.js 16 (App Router)**, **React 19**, **TypeScript** and **Tailwind CSS v4**, in a "Modern Editorial" style (forest green, warm ivory, soft lime).
 
 ## Run it
 
@@ -26,10 +26,10 @@ npm start        # serve the production build
 
 In `src/lib/data.ts`:
 
-- `site.url`, `site.email`, `site.phone` and `site.socials.*`
+- `site.socials.upwork`: add the Upwork profile URL to show the "Hire Me on Upwork" buttons
 - `testimonials`: add real client quotes only (the home page section appears once this list has entries)
 
-The "Download résumé" buttons link to `#` until a PDF is added.
+The "Download résumé" buttons serve `public/Vinod_Keshariya_Frontend_Developer.pdf` (`site.resume`).
 
 ## Images
 

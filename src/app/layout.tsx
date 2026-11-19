@@ -14,13 +14,22 @@ const jetbrains = JetBrains_Mono({ subsets: ["latin"], weight: ["400", "500"], v
 export const metadata: Metadata = {
   metadataBase: new URL(site.url),
   title: {
-    default: `${site.name} — ${site.role}`,
-    template: `%s — ${site.name}`,
+    default: "Vinod Keshariya | AI + Next.js Developer",
+    template: `%s | ${site.name}`,
   },
   description: site.description,
+  keywords: [
+    "AI-Powered Full-Stack Developer", "AI Developer", "Claude Code Developer", "Next.js Developer",
+    "AI Integration Developer", "React Developer", "AI Web Application Development", "MCP Developer",
+    "Sanity CMS Developer", "WordPress to Next.js Migration",
+  ],
+  authors: [{ name: site.name, url: site.url }],
+  creator: site.name,
   openGraph: {
     type: "website",
-    title: `${site.name} — ${site.role}`,
+    siteName: site.name,
+    url: "/",
+    title: "Vinod Keshariya | AI + Next.js Developer",
     description: site.description,
     images: [{ url: "/og.png", width: 1200, height: 630, alt: `${site.name} — ${site.role}` }],
   },

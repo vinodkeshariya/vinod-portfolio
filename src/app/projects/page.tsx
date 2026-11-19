@@ -1,13 +1,14 @@
-import type { Metadata } from "next";
 import { ImageStack } from "@/components/ImageStack";
 import { ProjectGrid } from "@/components/ProjectGrid";
 import { PageHero } from "@/components/ui";
 import { projects } from "@/lib/data";
+import { pageMeta } from "@/lib/seo";
 
-export const metadata: Metadata = {
-  title: "Projects",
-  description: "Next.js + Sanity websites, WordPress migrations, landing pages and WordPress builds — with desktop and mobile views of each project.",
-};
+export const metadata = pageMeta({
+  title: "Portfolio | Next.js, AI & Web Development",
+  description: "Explore web development projects built with Next.js, React, Sanity CMS, WordPress, and modern technologies.",
+  path: "/projects",
+});
 
 export default function ProjectsPage() {
   return (
@@ -22,9 +23,9 @@ export default function ProjectsPage() {
           />
         }
         crumbs={[{ href: "/", label: "Home" }, { label: "Projects" }]}
-        eyebrow="Portfolio"
-        title={<>Websites I&apos;ve designed, built <span className="text-accent">and migrated.</span></>}
-        lead="Next.js + Sanity builds, WordPress migrations and landing pages. Open any project for the full case study — challenge, approach, features and screens."
+        eyebrow="Selected Work"
+        title={<>A Collection of Websites &amp; <span className="text-accent">Digital Experiences.</span></>}
+        lead="I work on modern web development projects, CMS solutions, website migrations, and AI-related product interfaces. Explore some of my work built with Next.js, React, Sanity CMS, and WordPress."
       >
         <dl className="mt-3 flex flex-wrap gap-x-10 gap-y-4">
           {[

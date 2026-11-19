@@ -1,36 +1,31 @@
-import type { Metadata } from "next";
 import { ImageStack } from "@/components/ImageStack";
 import Link from "next/link";
 import { Icon } from "@/components/Icon";
 import { CtaBand, PageHero, SectionHead } from "@/components/ui";
-import { process, site, type IconName } from "@/lib/data";
+import { ext, hasUpwork, process, services, site, type IconName } from "@/lib/data";
+import { pageMeta } from "@/lib/seo";
 
-export const metadata: Metadata = {
-  title: "Hire Me",
-  description: "Hire an AI-powered Next.js developer — Figma and WordPress to Next.js + Sanity, with on-time delivery and clear communication.",
-};
+export const metadata = pageMeta({
+  title: "Hire an AI + Next.js Developer | Vinod Keshariya",
+  description:
+    "Hire Vinod Keshariya, an AI-powered Full-Stack Developer for AI integrations, Next.js and React websites, Sanity CMS and WordPress migrations.",
+  path: "/hire-me",
+});
 
 const getItems: { icon: IconName; title: string; text: string }[] = [
-  { icon: "layers", title: "Modern stack", text: "Next.js, React, Sanity CMS, TypeScript and Tailwind CSS — with WordPress and Elementor when that suits your team better." },
-  { icon: "spark", title: "AI-assisted workflow", text: "Claude and Claude Code turn designs into components, write schemas and migrate content — every line is reviewed and tested by me." },
-  { icon: "users", title: "Editable by your team", text: "Sanity Studio set up around your content, plus a walkthrough — so you never wait on a developer for text or images." },
+  { icon: "layers", title: "Modern stack", text: "Next.js, React, TypeScript, Tailwind CSS and Sanity CMS — with WordPress and Elementor when that suits your team better." },
+  { icon: "spark", title: "AI-powered workflow", text: "Claude, Claude Code and ChatGPT help me plan, build, debug and test faster — every implementation is reviewed and tested by me." },
+  { icon: "chat", title: "AI integration", text: "AI assistants, chat interfaces and intelligent search added to Next.js websites with suitable AI APIs." },
 ];
 
 const expect: { icon: IconName; title: string; text: string }[] = [
   { icon: "chat", title: "Transparent communication", text: "Regular updates and a clear timeline from day one." },
   { icon: "clock", title: "On-time delivery", text: "Realistic estimates and disciplined execution so deadlines are respected." },
-  { icon: "shield", title: "Reliable quality", text: "Design fidelity, performance awareness and production-ready code." },
+  { icon: "shield", title: "Reviewed quality", text: "AI speeds up the work; I review, debug and test every implementation before delivery." },
   { icon: "users", title: "Long-term thinking", text: "Solutions built to be extended and maintained, not just launched once." },
 ];
 
-const areas = [
-  "Figma to Next.js + Sanity",
-  "WordPress to Next.js Migration",
-  "Next.js Landing Pages",
-  "Add Sanity CMS to Next.js",
-  "WordPress & Elementor Websites",
-  "AI Integration",
-];
+const areas = services.map((sv) => sv.title);
 
 export default function HireMePage() {
   return (
@@ -50,12 +45,16 @@ export default function HireMePage() {
             <span className="dot dot-live" /> Open for work
           </span>
         }
-        title={<>Looking for a <span className="text-accent">reliable Next.js developer?</span></>}
-        lead="Fast Next.js + Sanity websites, built from your Figma design or migrated from WordPress — delivered quickly with an AI-powered workflow and clear communication throughout."
+        title={<>Looking for an <span className="text-accent">AI + Next.js developer?</span></>}
+        lead="AI integrations, modern Next.js and React websites, Sanity CMS and WordPress migrations — built with an AI-powered workflow, reviewed by hand, with clear communication throughout."
       >
         <div className="mt-1.5 flex flex-wrap gap-3.5">
-          <Link href="/contact" className="btn btn-primary">Share your project <Icon name="arrow" /></Link>
-          <Link href={site.socials.upwork} className="btn btn-ghost">View My Upwork Profile</Link>
+          <Link href="/contact" className="btn btn-primary">Let&apos;s Build Your Project <Icon name="arrow" /></Link>
+          {hasUpwork ? (
+            <Link href={site.socials.upwork} {...ext(site.socials.upwork)} className="btn btn-ghost">Hire Me on Upwork <Icon name="arrowUpRight" /></Link>
+          ) : (
+            <Link href="/projects" className="btn btn-ghost">Explore My Work</Link>
+          )}
         </div>
       </PageHero>
 
@@ -116,7 +115,7 @@ export default function HireMePage() {
           <SectionHead eyebrow="Services summary" title="Areas of focus" action={{ href: "/services", label: "Service details" }} />
           <div className="grid gap-5 sm:grid-cols-2 lg:grid-cols-3">
             {areas.map((a, i) => (
-              <Link key={a} href="/services" data-reveal data-delay={(i % 3) * 90} className="card card-hover group flex items-center justify-between gap-4 p-7">
+              <Link key={a} href={`/services#service-${i + 1}`} data-reveal data-delay={(i % 3) * 90} className="card card-hover group flex items-center justify-between gap-4 p-7">
                 <span>
                   <span className="block font-display text-[30px] font-bold leading-none text-accent">{String(i + 1).padStart(2, "0")}</span>
                   <span className="mt-3 block font-display text-xl font-bold">{a}</span>
@@ -130,9 +129,9 @@ export default function HireMePage() {
 
       <CtaBand
         title="Ready to start?"
-        text="Connect on Upwork or discuss the project directly — I'm ready to help."
-        primary={{ href: "/contact", label: "Share your project" }}
-        secondary={{ href: site.socials.upwork, label: "Upwork Profile" }}
+        text="Tell me about your project — I'll reply with a clear plan, timeline, and estimate, usually within 0–4 hours."
+        primary={{ href: "/contact", label: "Share Your Project" }}
+        secondary={hasUpwork ? { href: site.socials.upwork, label: "Hire Me on Upwork" } : { href: "/projects", label: "Explore My Work" }}
       />
     </>
   );

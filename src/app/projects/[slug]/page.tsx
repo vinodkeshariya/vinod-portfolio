@@ -3,7 +3,7 @@ import Image from "next/image";
 import Link from "next/link";
 import { notFound } from "next/navigation";
 import { Chips, CtaBand, PageHero, TickList } from "@/components/ui";
-import { projects } from "@/lib/data";
+import { projects, site } from "@/lib/data";
 
 type Props = { params: Promise<{ slug: string }> };
 
@@ -15,10 +15,20 @@ export async function generateMetadata({ params }: Props): Promise<Metadata> {
   const { slug } = await params;
   const project = projects.find((p) => p.slug === slug);
   if (!project) return {};
+  const title = `${project.title} — Case Study | ${site.name}`;
   return {
-    title: `${project.title} — Case Study`,
+    title: { absolute: title },
     description: project.summary,
-    openGraph: { images: [{ url: project.cover, width: 1440, height: 900 }] },
+    alternates: { canonical: `/projects/${project.slug}` },
+    openGraph: {
+      type: "article",
+      siteName: site.name,
+      url: `/projects/${project.slug}`,
+      title,
+      description: project.summary,
+      images: [{ url: project.cover, width: 1440, height: 900, alt: project.title }],
+    },
+    twitter: { card: "summary_large_image", title, description: project.summary, images: [project.cover] },
   };
 }
 
@@ -46,7 +56,7 @@ export default async function CaseStudyPage({ params }: Props) {
   return (
     <>
       <PageHero
-        crumbs={[{ href: "/", label: "Home" }, { href: "/projects", label: "Projects" }, { label: project.title }]}
+        crumbs={[{ href: "/", label: "Home" }, { href: "/projects", label: "Work" }, { label: project.title }]}
         eyebrow={`Case study · ${project.category}`}
         title={<>{first} <span className="text-accent">{titleRest.join(" ")}</span></>}
         lead={project.tagline}
