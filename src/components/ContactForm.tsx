@@ -1,43 +1,59 @@
 "use client";
 
-import { useState } from "react";
+import { useState, useTransition } from "react";
+import { sendInquiry } from "@/app/contact/actions";
 import { budgets, projectTypes, site } from "@/lib/data";
 import { Icon } from "./Icon";
 
-type Status = "idle" | "sending" | "sent";
+type Status = "idle" | "sent" | "failed" | "limited";
 
 const field =
   "w-full min-h-12 rounded-[12px] border border-line-2 bg-surface px-4 py-3 text-[15px] text-ink transition placeholder:text-placeholder hover:border-accent/50 focus:border-accent focus:outline-none focus:ring-4 focus:ring-lime/40 aria-[invalid=true]:border-red-600";
 
 const card = "relative rounded-[22px] border border-line bg-surface p-6 shadow-[0_2px_4px_rgb(36_40_36/0.05),0_40px_70px_-30px_rgb(21_61_53/0.35)] sm:p-8";
 
+const text = (data: FormData, key: string) => String(data.get(key) || "").trim();
+
+/** Pre-filled email for the fallback "open in your email app" link */
+function mailtoHref(data: FormData) {
+  const body = `Name: ${text(data, "name")}\nEmail: ${text(data, "email")}\nCompany / website: ${text(data, "company") || "—"}\nProject type: ${text(data, "type")}\nBudget: ${text(data, "budget") || "—"}\n\n${text(data, "message")}`;
+  return `mailto:${site.email}?subject=${encodeURIComponent(`Project inquiry from ${text(data, "name")}`)}&body=${encodeURIComponent(body)}`;
+}
+
 /**
- * Front-end only contact form. It validates input and opens the visitor's
- * email client with a pre-filled message. Swap `onSubmit` for an API route,
- * Formspree, Resend, etc. when a backend is ready.
+ * Contact form. Validates in the browser, then sends the inquiry to the inbox
+ * through the `sendInquiry` Server Action (Resend). If sending fails, the
+ * visitor can still open their email app with the message pre-filled.
  */
 export function ContactForm() {
   const [status, setStatus] = useState<Status>("idle");
   const [errors, setErrors] = useState<Record<string, string>>({});
+  const [fallback, setFallback] = useState(`mailto:${site.email}`);
+  const [sending, startSending] = useTransition();
 
   function onSubmit(e: React.FormEvent<HTMLFormElement>) {
     e.preventDefault();
     const data = new FormData(e.currentTarget);
-    const name = String(data.get("name") || "").trim();
-    const email = String(data.get("email") || "").trim();
-    const message = String(data.get("message") || "").trim();
 
     const next: Record<string, string> = {};
-    if (!name) next.name = "Please enter your name.";
-    if (!/^\S+@\S+\.\S+$/.test(email)) next.email = "Please enter a valid email address.";
-    if (message.length < 10) next.message = "Tell me a little more about the project (10+ characters).";
+    if (!text(data, "name")) next.name = "Please enter your name.";
+    if (!/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(text(data, "email"))) next.email = "Please enter a valid email address.";
+    if (text(data, "message").length < 10) next.message = "Tell me a little more about the project (10+ characters).";
     setErrors(next);
     if (Object.keys(next).length) return;
 
-    setStatus("sending");
-    const body = `Name: ${name}\nEmail: ${email}\nCompany / website: ${String(data.get("company") || "").trim() || "—"}\nProject type: ${data.get("type")}\nBudget: ${data.get("budget") || "—"}\n\n${message}`;
-    window.location.href = `mailto:${site.email}?subject=${encodeURIComponent(`Project inquiry from ${name}`)}&body=${encodeURIComponent(body)}`;
-    setTimeout(() => setStatus("sent"), 400);
+    setStatus("idle");
+    setFallback(mailtoHref(data));
+    startSending(async () => {
+      try {
+        const res = await sendInquiry(data);
+        if (res.ok) return setStatus("sent");
+        if (res.reason === "invalid") return setErrors(res.errors ?? {});
+        setStatus(res.reason === "limited" ? "limited" : "failed");
+      } catch {
+        setStatus("failed");
+      }
+    });
   }
 
   if (status === "sent") {
@@ -46,8 +62,8 @@ export function ContactForm() {
         <span className="grid size-14 place-items-center rounded-full bg-accent text-lime">
           <Icon name="check" strokeWidth={2.4} className="size-7" />
         </span>
-        <h2 className="text-[26px] font-bold text-accent">Thanks — your message is ready!</h2>
-        <p className="text-muted">Your email app should have opened with the details filled in. I usually reply within 0–4 hours.</p>
+        <h2 className="text-[26px] font-bold text-accent">Thanks — your message has been sent!</h2>
+        <p className="text-muted">I&apos;ve received your inquiry and usually reply within 0–4 hours, straight to the email address you shared.</p>
         <button type="button" className="btn btn-ghost btn-sm" onClick={() => setStatus("idle")}>Send another inquiry</button>
       </div>
     );
@@ -55,6 +71,12 @@ export function ContactForm() {
 
   return (
     <form noValidate onSubmit={onSubmit} className={`${card} flex flex-col gap-5`}>
+      {/* Honeypot: hidden from people and assistive tech; bots that fill it are ignored */}
+      <div aria-hidden="true" className="absolute left-[-9999px] size-px overflow-hidden">
+        <label htmlFor="botcheck">Leave this field empty</label>
+        <input id="botcheck" name="botcheck" type="text" tabIndex={-1} autoComplete="off" />
+      </div>
+
       <div className="flex items-start justify-between gap-4">
         <div>
           <h2 className="font-display text-[24px] font-bold tracking-[-0.02em] text-accent">Project Inquiry</h2>
@@ -119,9 +141,22 @@ export function ContactForm() {
         {errors.message && <span id="message-err" className="text-[13px] text-red-700">{errors.message}</span>}
       </div>
 
+      {(status === "failed" || status === "limited") && (
+        <div role="alert" className="flex flex-col items-start gap-3 rounded-[12px] border border-red-200 bg-red-50 p-4 text-[14px] text-red-800">
+          <p>
+            {status === "limited"
+              ? "You've sent several messages in a short time. Please wait a few minutes, or email me directly."
+              : "Sorry — your message couldn't be sent right now. You can send it from your email app instead; everything you typed is already filled in."}
+          </p>
+          <a href={fallback} className="btn btn-line btn-sm">
+            Send via email app <Icon name="mail" />
+          </a>
+        </div>
+      )}
+
       <div className="flex flex-col gap-3">
-        <button type="submit" className="btn btn-primary min-h-14 w-full text-[16px]" disabled={status === "sending"}>
-          {status === "sending" ? "Opening email…" : "Send Project Inquiry"} <Icon name="send" />
+        <button type="submit" className="btn btn-primary min-h-14 w-full text-[16px]" disabled={sending} aria-busy={sending}>
+          {sending ? "Sending…" : "Send Project Inquiry"} <Icon name="send" />
         </button>
         <span className="text-center text-[13px] text-muted">I usually reply within 0–4 hours.</span>
       </div>
