@@ -419,7 +419,8 @@ export const projectFilters = [
 export type IconName =
   | "browser" | "react" | "cart" | "store" | "pen" | "spark" | "bolt" | "code"
   | "layers" | "shield" | "clock" | "check" | "award" | "mail" | "chat" | "pin" | "arrow" | "arrowUpRight"
-  | "download" | "send" | "linkedin" | "github" | "upwork" | "menu" | "close" | "star" | "camera" | "users";
+  | "download" | "send" | "linkedin" | "github" | "upwork" | "menu" | "close" | "star" | "camera" | "users"
+  | "briefcase" | "monitor" | "cpu" | "cap" | "globe";
 
 export const services: {
   title: string; short: string; body: string; tags: string[]; icon: IconName;
@@ -572,13 +573,6 @@ export const experience = {
     "Review, debug, and test implementations.",
   ],
   tags: ["Next.js", "React", "TypeScript", "Sanity CMS", "Tailwind CSS", "WordPress", "Elementor", "PHP", "Vercel", "Git", "Figma", "Claude Code"],
-};
-
-export const education = {
-  degree: "Bachelor of Arts (Geography)",
-  school: "Gujarat University",
-  period: "2018 – 2020",
-  text: "A structured way of thinking about systems and relationships — now applied to content models, component architecture and information hierarchy.",
 };
 
 export const certifications = [

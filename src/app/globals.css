@@ -40,6 +40,9 @@
   --color-night-2: #204b41;
   --color-night-muted: #d5dfd4;
 
+  /* Leaf green — highlighted words in headings (same as the home page) */
+  --color-leaf: #6a9a3a;
+
   /* Semantic */
   --color-ok: #2f7d4f;
 
@@ -60,6 +63,17 @@
 
   --animate-fade-up: fade-up 0.45s cubic-bezier(0.2, 0.7, 0.2, 1) both;
 
+  --animate-fade-in: fade-in 0.9s cubic-bezier(0.2, 0.7, 0.2, 1) both;
+  --animate-gradient-pan: gradient-pan 14s ease-in-out infinite;
+
+  @keyframes fade-in {
+    from { opacity: 0; transform: translateY(16px) scale(0.98); }
+    to { opacity: 1; transform: none; }
+  }
+  @keyframes gradient-pan {
+    0%, 100% { background-position: 0% 50%; }
+    50% { background-position: 100% 50%; }
+  }
   @keyframes fade-up {
     from { opacity: 0; transform: translateY(12px); }
     to { opacity: 1; transform: none; }
@@ -106,14 +120,15 @@
   .wrap { @apply mx-auto w-full max-w-[1280px] px-5 sm:px-8; }
   .section { @apply py-20 md:py-24; }
 
-  /* Small mono label above headings */
+  /* Small mono label above headings, with the lime rule used on the home page */
   .eyebrow {
-    @apply inline-flex items-center gap-2 font-mono text-[12px] font-medium uppercase tracking-[0.12em] text-faint;
+    @apply inline-flex items-center gap-3 font-mono text-[12px] font-medium uppercase tracking-[0.14em] text-ink-2;
   }
+  .eyebrow::before { content: ""; @apply h-0.5 w-7 shrink-0 rounded-full bg-lime; }
 
   .h-display { @apply font-display font-extrabold text-[clamp(40px,5.4vw,64px)] leading-[1.05] tracking-[-0.035em]; }
   .h-page { @apply font-display font-extrabold text-[clamp(36px,4.6vw,56px)] leading-[1.06] tracking-[-0.035em]; }
-  .h-section { @apply font-display font-extrabold text-[clamp(30px,3.4vw,42px)] leading-[1.1] tracking-[-0.03em]; }
+  .h-section { @apply font-display font-extrabold text-[clamp(28px,3.2vw,42px)] leading-[1.08] tracking-[-0.03em] text-accent; }
   .lead { @apply max-w-[580px] text-[clamp(16.5px,1.4vw,18px)] leading-[1.7] text-muted; }
 
   .btn {
@@ -121,13 +136,15 @@
   }
   .btn svg { @apply size-4 transition-transform duration-200; }
   .btn:hover svg { transform: translateX(2px); }
-  .btn-primary { @apply bg-accent text-white hover:bg-accent-hover active:bg-accent-active; }
-  .btn-lime { @apply bg-lime text-ink hover:bg-lime-2; }
-  .btn-ghost { @apply border-line bg-surface text-ink hover:border-line-2 hover:bg-surface-2; }
+  .btn-primary { @apply bg-accent text-white hover:-translate-y-0.5 hover:bg-accent-hover hover:shadow-[0_12px_24px_-12px_rgb(21_61_53/0.55)] active:translate-y-0 active:bg-accent-active; }
+  .btn-lime { @apply bg-lime text-ink hover:-translate-y-0.5 hover:bg-lime-2 hover:shadow-[0_12px_24px_-12px_rgb(110_150_40/0.6)] active:translate-y-0; }
+  .btn-ghost { @apply border-accent bg-transparent text-accent hover:-translate-y-0.5 hover:bg-accent hover:text-white; }
   .btn-ink { @apply bg-accent text-white hover:bg-accent-hover active:bg-accent-active; }
   .btn-light { @apply bg-white text-ink hover:bg-paper; }
   .btn-outline-light { @apply border-white/25 text-white hover:border-white/60 hover:bg-white/5; }
   .btn-sm { @apply min-h-10 px-4 py-2 text-[13.5px]; }
+  /* Outlined forest button (matches "View all projects" on the home page) */
+  .btn-line { @apply border-accent bg-transparent text-accent hover:-translate-y-0.5 hover:bg-accent hover:text-white; }
 
   .chip { @apply inline-flex items-center whitespace-nowrap rounded-full border border-line bg-surface px-3 py-1 text-[12.5px] font-medium text-ink-2; }
   .chip-fill { @apply border-accent-line bg-accent-soft text-accent; }
@@ -135,7 +152,11 @@
   .card {
     @apply rounded-2xl border border-line bg-surface shadow-(--shadow-card) transition duration-300 ease-out;
   }
-  .card-hover { @apply hover:-translate-y-0.5 hover:border-line-2 hover:shadow-(--shadow-lift); }
+  .card-hover { @apply hover:-translate-y-1 hover:border-accent-line hover:shadow-(--shadow-lift); }
+
+  /* Home-page card: white, 16px radius, soft shadow; pair with .tile-hover on interactive cards */
+  .tile { @apply rounded-[16px] border border-line bg-surface shadow-(--shadow-card) transition duration-300 ease-out; }
+  .tile-hover { @apply hover:-translate-y-1 hover:border-accent-line hover:shadow-(--shadow-lift); }
 
   .icon-tile { @apply grid size-10 shrink-0 place-items-center rounded-xl border border-accent-line bg-accent-soft text-accent; }
 
@@ -164,12 +185,17 @@
 .js-reveal [data-reveal] {
   opacity: 0;
   transform: translateY(18px);
-  transition: opacity 0.7s cubic-bezier(0.2, 0.7, 0.2, 1), transform 0.7s cubic-bezier(0.2, 0.7, 0.2, 1);
+  /* reveal uses opacity/transform (with optional stagger); hover effects keep their own quick timing */
+  transition:
+    opacity 0.7s cubic-bezier(0.2, 0.7, 0.2, 1) var(--reveal-delay, 0ms),
+    transform 0.7s cubic-bezier(0.2, 0.7, 0.2, 1) var(--reveal-delay, 0ms),
+    translate 0.3s ease, scale 0.3s ease, box-shadow 0.3s ease, border-color 0.3s ease, background-color 0.3s ease;
 }
 .js-reveal [data-reveal].is-in { opacity: 1; transform: none; }
 
 @media (prefers-reduced-motion: reduce) {
   .js-reveal [data-reveal] { opacity: 1; transform: none; transition: none; }
-  .animate-marquee, .animate-pulse-dot, .animate-float, .animate-float-slow, .animate-fade-up { animation: none; }
+  .animate-marquee, .animate-pulse-dot, .animate-float, .animate-float-slow, .animate-fade-up, .animate-fade-in, .animate-gradient-pan { animation: none; }
+  .btn:hover, .btn:hover svg { translate: none; transform: none; }
   html { scroll-behavior: auto; }
 }

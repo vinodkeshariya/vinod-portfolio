@@ -2,6 +2,8 @@ import type { Metadata } from "next";
 import Image from "next/image";
 import Link from "next/link";
 import { notFound } from "next/navigation";
+import { CaseNav } from "@/components/CaseNav";
+import { JsonLd, abs, personRef } from "@/components/JsonLd";
 import { Chips, CtaBand, PageHero, TickList } from "@/components/ui";
 import { projects, site } from "@/lib/data";
 
@@ -49,16 +51,42 @@ export default async function CaseStudyPage({ params }: Props) {
   const project = projects[index];
   const prev = projects[index - 1];
   const next = projects[index + 1];
-  const [first, ...titleRest] = project.title.split(" ");
+  const [first, ...titleRest] = project.title.replace(/-/g, "‑").split(" ");
   const desktopShots = project.gallery.filter((g) => g.device === "desktop");
   const mobileShots = project.gallery.filter((g) => g.device === "mobile");
 
   return (
     <>
+      <JsonLd
+        data={{
+          "@context": "https://schema.org",
+          "@graph": [
+            {
+              "@type": "CreativeWork",
+              name: project.title,
+              headline: project.tagline,
+              description: project.summary,
+              url: abs(`/projects/${project.slug}`),
+              image: abs(project.cover),
+              dateCreated: project.year,
+              keywords: project.tech.join(", "),
+              creator: personRef,
+            },
+            {
+              "@type": "BreadcrumbList",
+              itemListElement: [
+                { "@type": "ListItem", position: 1, name: "Home", item: abs("/") },
+                { "@type": "ListItem", position: 2, name: "Work", item: abs("/projects") },
+                { "@type": "ListItem", position: 3, name: project.title, item: abs(`/projects/${project.slug}`) },
+              ],
+            },
+          ],
+        }}
+      />
       <PageHero
         crumbs={[{ href: "/", label: "Home" }, { href: "/projects", label: "Work" }, { label: project.title }]}
         eyebrow={`Case study · ${project.category}`}
-        title={<>{first} <span className="text-accent">{titleRest.join(" ")}</span></>}
+        title={<>{first} <span className="text-leaf">{titleRest.join(" ")}</span></>}
         lead={project.tagline}
       >
         <dl className="mt-4 grid grid-cols-2 gap-px overflow-hidden rounded-[18px] border border-line bg-line md:grid-cols-4">
@@ -77,7 +105,7 @@ export default async function CaseStudyPage({ params }: Props) {
       </PageHero>
 
       {/* Cover */}
-      <section className="pt-14">
+      <section className="bg-paper">
         <div className="wrap">
           <div data-reveal className="relative aspect-16/10 overflow-hidden rounded-[18px] border border-line-2 bg-surface shadow-(--shadow-lift)">
             <Image src={project.cover} alt={`${project.title} — homepage`} fill priority sizes="(min-width: 1200px) 1152px, 100vw" className="object-cover object-top" />
@@ -87,13 +115,7 @@ export default async function CaseStudyPage({ params }: Props) {
 
       <section className="section">
         <div className="wrap grid items-start gap-10 lg:grid-cols-[220px_minmax(0,1fr)] lg:gap-[72px]">
-          <nav aria-label="On this page" className="sticky top-28 hidden flex-col border-l border-line-2 lg:flex">
-            {sections.map((s) => (
-              <a key={s.id} href={`#${s.id}`} className="-ml-px border-l border-transparent py-2 pl-4 text-[15px] text-muted transition-colors hover:border-accent hover:text-ink">
-                {s.label}
-              </a>
-            ))}
-          </nav>
+          <CaseNav sections={sections} />
 
           <div className="flex min-w-0 flex-col gap-[72px]">
             {[
@@ -103,20 +125,20 @@ export default async function CaseStudyPage({ params }: Props) {
             ].map(([id, eyebrow, title, text]) => (
               <div key={id} id={id} data-reveal className="flex scroll-mt-28 flex-col gap-4">
                 <span className="eyebrow">{eyebrow}</span>
-                <h2 className="text-[32px] font-bold">{title}</h2>
+                <h2 className="text-[clamp(26px,3vw,32px)] font-bold text-accent">{title}</h2>
                 <p className="text-[17px] leading-[1.75] text-ink-2">{text}</p>
               </div>
             ))}
 
             <div id="features" data-reveal className="flex scroll-mt-28 flex-col gap-5">
               <span className="eyebrow">Features</span>
-              <h2 className="text-[32px] font-bold">Key features</h2>
+              <h2 className="text-[clamp(26px,3vw,32px)] font-bold text-accent">Key features</h2>
               <TickList items={project.features} twoCol />
             </div>
 
             <div id="gallery" className="flex scroll-mt-28 flex-col gap-5">
               <span className="eyebrow">Gallery</span>
-              <h2 className="text-[32px] font-bold">Screens</h2>
+              <h2 className="text-[clamp(26px,3vw,32px)] font-bold text-accent">Screens</h2>
               {desktopShots.map((g) => (
                 <figure key={g.src} data-reveal className="m-0">
                   <div className="relative aspect-16/10 overflow-hidden rounded-[18px] border border-line bg-surface">
@@ -139,16 +161,16 @@ export default async function CaseStudyPage({ params }: Props) {
 
             <div id="tech" data-reveal className="flex scroll-mt-28 flex-col gap-5">
               <span className="eyebrow">Stack</span>
-              <h2 className="text-[32px] font-bold">Technologies used</h2>
+              <h2 className="text-[clamp(26px,3vw,32px)] font-bold text-accent">Technologies used</h2>
               <Chips items={project.tech} fill />
             </div>
 
             <nav aria-label="More projects" className="grid gap-4 sm:grid-cols-2">
-              <Link href={prev ? `/projects/${prev.slug}` : "/projects"} className="card card-hover flex flex-col gap-1.5 p-7">
+              <Link href={prev ? `/projects/${prev.slug}` : "/projects"} className="tile tile-hover flex flex-col gap-1.5 p-7">
                 <small className="label-mono">{prev ? "← Previous project" : "← Back"}</small>
                 <strong className="font-display text-xl">{prev ? prev.title : "All projects"}</strong>
               </Link>
-              <Link href={next ? `/projects/${next.slug}` : "/projects"} className="card card-hover flex flex-col gap-1.5 p-7 sm:text-right">
+              <Link href={next ? `/projects/${next.slug}` : "/projects"} className="tile tile-hover flex flex-col gap-1.5 p-7 sm:text-right">
                 <small className="label-mono">{next ? "Next project →" : "Back to →"}</small>
                 <strong className="font-display text-xl">{next ? next.title : "All projects"}</strong>
               </Link>

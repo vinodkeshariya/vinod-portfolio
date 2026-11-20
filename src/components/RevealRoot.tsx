@@ -27,7 +27,7 @@ export function RevealRoot() {
     );
 
     document.querySelectorAll<HTMLElement>("[data-reveal]:not(.is-in)").forEach((el) => {
-      if (el.dataset.delay) el.style.transitionDelay = `${el.dataset.delay}ms`;
+      if (el.dataset.delay) el.style.setProperty("--reveal-delay", `${el.dataset.delay}ms`);
       io.observe(el);
     });
 

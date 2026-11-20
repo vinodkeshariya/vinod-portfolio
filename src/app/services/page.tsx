@@ -1,9 +1,9 @@
-import Image from "next/image";
 import Link from "next/link";
 import { Icon } from "@/components/Icon";
-import { ImageStack } from "@/components/ImageStack";
-import { CtaBand, PageHero, SectionHead } from "@/components/ui";
-import { approach, packages, process, services } from "@/lib/data";
+import { JsonLd, personRef } from "@/components/JsonLd";
+import { LayersArt } from "@/components/PageArt";
+import { CtaBand, MiniHead, PageHero } from "@/components/ui";
+import { approach, packages, process, services, type IconName } from "@/lib/data";
 import { pageMeta } from "@/lib/seo";
 
 export const metadata = pageMeta({
@@ -12,124 +12,177 @@ export const metadata = pageMeta({
   path: "/services",
 });
 
+const approachIcons: IconName[] = ["users", "pen", "spark", "shield", "check", "send"];
+const packageIcons: IconName[] = ["bolt", "layers", "clock"];
+const num = (i: number) => String(i + 1).padStart(2, "0");
+
+function Points({ items, cols = "" }: { items: string[]; cols?: string }) {
+  return (
+    <ul className={`grid gap-2 ${cols}`}>
+      {items.map((pt) => (
+        <li key={pt} className="flex gap-2.5 text-[14px] text-ink-2">
+          <Icon name="check" strokeWidth={2.8} className="mt-0.5 size-4 shrink-0 text-leaf" />
+          {pt}
+        </li>
+      ))}
+    </ul>
+  );
+}
+
+function Tags({ label, items }: { label: string; items: string[] }) {
+  return (
+    <div className="flex flex-wrap items-center gap-1.5">
+      <span className="label-mono mr-1">{label}</span>
+      {items.map((t) => (
+        <span key={t} className="rounded-[6px] border border-line bg-surface-2 px-2 py-1 text-[12px] font-medium text-ink-2">
+          {t}
+        </span>
+      ))}
+    </div>
+  );
+}
+
+function Discuss({ service }: { service: string }) {
+  return (
+    <Link href="/contact" className="group/link inline-flex items-center gap-1.5 text-[14px] font-semibold text-accent">
+      <span className="border-b-2 border-lime pb-0.5">
+        Discuss this service<span className="sr-only">: {service}</span>
+      </span>
+      <Icon name="arrow" className="size-4 transition-transform duration-300 group-hover/link:translate-x-1" />
+    </Link>
+  );
+}
+
 export default function ServicesPage() {
+  const grid = services.slice(0, 6);
+  const last = services[6];
+
   return (
     <>
+      <JsonLd
+        data={{
+          "@context": "https://schema.org",
+          "@graph": services.map((s) => ({
+            "@type": "Service",
+            name: s.title,
+            serviceType: s.title,
+            description: s.body,
+            areaServed: "Worldwide",
+            provider: personRef,
+          })),
+        }}
+      />
       <PageHero
-        crumbs={[{ href: "/", label: "Home" }, { label: "Services" }]}
-        eyebrow="What I Offer"
-        title={<>AI Development &amp; <span className="text-accent">Modern Web Solutions.</span></>}
-        lead="I help businesses build intelligent digital experiences and high-performance websites using AI-assisted workflows and modern web technologies."
-        aside={
-          <ImageStack
-            priority
-            back={{ src: "/images/projects/blog-migration/cover.webp", alt: "Blog migrated to Next.js" }}
-            front={{ src: "/images/services/ai-assistant.webp", alt: "AI assistant answering questions in a help center" }}
-            phone={{ src: "/images/projects/creative-agency/mobile-1.webp", alt: "Agency website on mobile" }}
-          />
+        eyebrow="Services"
+        title={
+          <>
+            AI Development &amp; <span className="text-leaf">Modern Web Solutions.</span>
+          </>
         }
+        lead="I help businesses build intelligent digital experiences and high-performance websites using AI-assisted workflows and modern web technologies."
+        aside={<LayersArt />}
       >
-        <nav aria-label="Jump to a service" className="mt-2 flex flex-wrap gap-2">
-          {services.map((s, i) => (
-            <a key={s.title} href={`#service-${i + 1}`} className="chip transition-colors hover:border-accent hover:text-accent">
-              {s.title}
-            </a>
-          ))}
-        </nav>
+        <div className="grid w-full gap-3 sm:flex sm:w-auto sm:flex-wrap">
+          <Link href="/contact" className="btn btn-primary min-h-13 px-7">
+            Get a Project Quote <Icon name="arrow" />
+          </Link>
+          <a href="#service-1" className="btn btn-line min-h-13 px-7">
+            Explore services
+          </a>
+        </div>
       </PageHero>
 
-      {/* Service rows */}
-      <section className="section">
-        <div className="wrap flex flex-col gap-20 md:gap-28">
-          {services.map((s, i) => {
-            const flip = i % 2 === 1;
-            return (
+      {/* ============ SERVICES GRID ============ */}
+      <section aria-label="Services" className="bg-paper pb-14 pt-4 md:pb-16">
+        <div className="wrap">
+          <div className="grid gap-5 md:grid-cols-2 lg:grid-cols-3">
+            {grid.map((s, i) => (
               <article
                 key={s.title}
                 id={`service-${i + 1}`}
-                className="grid scroll-mt-28 items-center gap-10 lg:grid-cols-2 lg:gap-16"
+                data-reveal
+                data-delay={(i % 3) * 90}
+                className="tile tile-hover group flex scroll-mt-28 flex-col gap-4 p-6"
               >
-                <div data-reveal className={`flex flex-col items-start gap-5 ${flip ? "lg:order-2" : ""}`}>
-                  <div className="flex items-center gap-3">
-                    <span className="icon-tile"><Icon name={s.icon} className="size-4.5" /></span>
-                    <span className="font-mono text-[12px] text-faint">Service {String(i + 1).padStart(2, "0")}</span>
-                  </div>
-                  <h2 className="text-[clamp(26px,2.8vw,36px)] font-extrabold leading-tight tracking-[-0.03em]">{s.title}</h2>
-                  <p className="text-[16.5px] leading-relaxed text-muted">{s.body}</p>
-                  <ul className="flex flex-col gap-2.5">
-                    {s.points.map((pt) => (
-                      <li key={pt} className="flex gap-2.5 text-[15px] text-ink-2">
-                        <Icon name="check" strokeWidth={2.6} className="mt-0.5 size-4.5 shrink-0 text-accent" />
-                        {pt}
-                      </li>
-                    ))}
-                  </ul>
-                  <div className="flex flex-wrap items-center gap-1.5">
-                    <span className="label-mono mr-1">{s.tagsLabel ?? "Technologies"}</span>
-                    <ul className="flex flex-wrap gap-1.5">
-                      {s.tags.map((t) => (
-                        <li key={t} className="rounded-full bg-surface-2 px-2.5 py-1 text-[12px] font-medium text-ink-2">{t}</li>
-                      ))}
-                    </ul>
-                  </div>
-                  <Link href="/contact" className="btn btn-ghost btn-sm mt-1">
-                    Discuss this service <Icon name="arrow" />
-                  </Link>
+                <div className="flex items-center justify-between">
+                  <span className="grid size-12 place-items-center rounded-[14px] bg-accent text-lime transition-transform duration-300 group-hover:-translate-y-0.5 group-hover:-rotate-6">
+                    <Icon name={s.icon} className="size-5.5" />
+                  </span>
+                  <span aria-hidden="true" className="font-display text-[15px] font-bold text-accent/40 transition-colors group-hover:text-leaf">{num(i)}</span>
                 </div>
-
-                <div data-reveal data-delay={120} className={flip ? "lg:order-1" : ""}>
-                  <div className="rounded-[18px] border border-line bg-surface p-2.5 shadow-(--shadow-card)">
-                    <div className="overflow-hidden rounded-[18px] border border-line">
-                      <div className="flex items-center gap-1.5 border-b border-line bg-surface-2 px-3.5 py-2.5">
-                        <i className="size-2.5 rounded-full bg-[#ff5f57]" />
-                        <i className="size-2.5 rounded-full bg-[#febc2e]" />
-                        <i className="size-2.5 rounded-full bg-[#28c840]" />
-                      </div>
-                      <div className="relative aspect-16/10">
-                        <Image src={s.image} alt={s.imageAlt} fill sizes="(min-width: 1024px) 600px, 100vw" className="object-cover object-left-top" />
-                      </div>
-                    </div>
-                  </div>
+                <div className="flex flex-col gap-2">
+                  <h2 className="text-[19px] font-bold leading-snug tracking-[-0.02em] text-ink">{s.title}</h2>
+                  <p className="text-[14.5px] leading-relaxed text-muted">{s.body}</p>
+                </div>
+                <Points items={s.points} />
+                <div className="mt-auto flex flex-col gap-4 border-t border-line pt-4">
+                  <Tags label={s.tagsLabel ?? "Tech"} items={s.tags} />
+                  <Discuss service={s.title} />
                 </div>
               </article>
-            );
-          })}
+            ))}
+          </div>
+
+          {/* 07 — full-width row */}
+          <article
+            id="service-7"
+            data-reveal
+            className="tile tile-hover group mt-5 grid scroll-mt-28 gap-6 p-6 md:p-7 lg:grid-cols-[1.1fr_1.3fr_auto] lg:items-center lg:gap-10"
+          >
+            <div className="flex items-start gap-4">
+              <span className="grid size-12 shrink-0 place-items-center rounded-[14px] bg-accent text-lime transition-transform duration-300 group-hover:-rotate-6">
+                <Icon name={last.icon} className="size-5.5" />
+              </span>
+              <div className="flex flex-col gap-1.5">
+                <span aria-hidden="true" className="font-display text-[15px] font-bold text-accent/40">07</span>
+                <h2 className="text-[19px] font-bold leading-snug tracking-[-0.02em] text-ink">{last.title}</h2>
+                <p className="text-[14.5px] leading-relaxed text-muted">{last.body}</p>
+              </div>
+            </div>
+            <div className="flex flex-col gap-4">
+              <Points items={last.points} cols="sm:grid-cols-2" />
+              <Tags label={last.tagsLabel ?? "Tech"} items={last.tags} />
+            </div>
+            <Discuss service={last.title} />
+          </article>
         </div>
       </section>
 
-      {/* Packages */}
-      <section className="section bg-surface">
+      {/* ============ ENGAGEMENT MODELS ============ */}
+      <section className="bg-paper pb-14 md:pb-16">
         <div className="wrap">
-          <SectionHead
-            eyebrow="Engagements"
-            title="Pick how we work together"
-            text="Every project gets a clear scope and estimate before work starts."
-          />
+          <div data-reveal>
+            <MiniHead text="Every project gets a clear scope and estimate before work starts.">Engagement Models</MiniHead>
+          </div>
           <div className="grid gap-5 lg:grid-cols-3">
             {packages.map((p, i) => (
               <div
                 key={p.title}
                 data-reveal
                 data-delay={i * 100}
-                className={`flex flex-col gap-4 rounded-[18px] p-7 ${
-                  p.featured ? "bg-forest text-white shadow-(--shadow-float)" : "border border-line bg-paper"
-                }`}
+                className={`tile tile-hover group flex flex-col gap-4 p-6 ${p.featured ? "border-accent-line ring-1 ring-accent-line" : ""}`}
               >
-                <span className={`font-mono text-[12px] uppercase tracking-[0.1em] ${p.featured ? "text-accent-light" : "text-faint"}`}>{p.name}</span>
-                <h3 className="text-[22px] font-bold">{p.title}</h3>
-                <p className={`text-[15px] ${p.featured ? "text-night-muted" : "text-muted"}`}>{p.text}</p>
-                <ul className="flex flex-col gap-2.5">
-                  {p.points.map((pt) => (
-                    <li key={pt} className={`flex gap-2.5 text-[14.5px] ${p.featured ? "text-white/85" : "text-ink-2"}`}>
-                      <Icon name="check" strokeWidth={2.6} className={`mt-0.5 size-4 shrink-0 ${p.featured ? "text-accent-light" : "text-accent"}`} />
-                      {pt}
-                    </li>
-                  ))}
-                </ul>
-                <div className={`mt-auto flex items-center justify-between gap-3 border-t pt-5 text-[14px] ${p.featured ? "border-white/10" : "border-line"}`}>
-                  <strong>{p.price}</strong>
-                  <Link href="/contact" className={`btn btn-sm ${p.featured ? "btn-lime" : "btn-ghost"}`}>
-                    Enquire <Icon name="arrow" />
+                <div className="flex items-center gap-3">
+                  <span className="icon-tile transition-colors duration-300 group-hover:border-accent group-hover:bg-accent group-hover:text-lime">
+                    <Icon name={packageIcons[i]} className="size-4.5" />
+                  </span>
+                  <div>
+                    <h3 className="text-[18px] font-bold text-ink">{p.title}</h3>
+                    {p.featured ? (
+                      <span className="mt-0.5 inline-block rounded-full bg-lime px-2 py-0.5 font-mono text-[10.5px] font-semibold uppercase tracking-[0.08em] text-accent">
+                        {p.name}
+                      </span>
+                    ) : (
+                      <span className="font-mono text-[11px] uppercase tracking-[0.1em] text-faint">{p.name}</span>
+                    )}
+                  </div>
+                </div>
+                <p className="text-[14.5px] leading-relaxed text-muted">{p.text}</p>
+                <Points items={p.points} />
+                <div className="mt-auto flex items-center justify-between gap-3 border-t border-line pt-4 text-[14px]">
+                  <strong className="text-ink">{p.price}</strong>
+                  <Link href="/contact" className={`btn btn-sm ${p.featured ? "btn-primary" : "btn-line"}`}>
+                    Enquire<span className="sr-only"> about {p.title}</span> <Icon name="arrow" />
                   </Link>
                 </div>
               </div>
@@ -138,26 +191,39 @@ export default function ServicesPage() {
         </div>
       </section>
 
-      {/* Process */}
-      <section className="section">
+      {/* ============ DEVELOPMENT PROCESS ============ */}
+      <section className="bg-paper pb-14 md:pb-16">
         <div className="wrap">
-          <SectionHead eyebrow="My Development Approach" title="AI speed with a human code review" text="Clear steps, regular updates and a preview link at every stage." />
-          <ol data-reveal aria-label="Development approach" className="mb-8 flex flex-wrap items-center gap-x-2 gap-y-2.5">
+          <div data-reveal>
+            <MiniHead text="AI speed with a human code review — clear steps, regular updates and a preview link at every stage.">
+              My Development Process
+            </MiniHead>
+          </div>
+          <ol data-reveal aria-label="Development approach" className="tile grid grid-cols-2 gap-y-6 p-6 sm:grid-cols-3 lg:grid-cols-6 lg:p-8">
             {approach.map((a, i) => (
-              <li key={a} className="flex items-center gap-2">
-                <span className={`rounded-full border px-3.5 py-1.5 text-[13.5px] font-medium ${a.includes("AI") || a.includes("review") ? "border-accent-line bg-accent-soft text-accent" : "border-line bg-surface text-ink-2"}`}>
-                  {a}
+              <li key={a} className="group relative flex flex-col items-center gap-3 px-2 text-center">
+                {i < approach.length - 1 && (
+                  <span aria-hidden="true" className="absolute left-[calc(50%+34px)] right-[calc(-50%+34px)] top-6 hidden items-center lg:flex">
+                    <span className="h-px flex-1 border-t border-dashed border-line-2" />
+                    <Icon name="arrow" className="size-3.5 text-faint" />
+                  </span>
+                )}
+                <span className="grid size-12 place-items-center rounded-full border border-accent-line bg-accent-soft text-accent transition-colors duration-300 group-hover:border-accent group-hover:bg-accent group-hover:text-lime">
+                  <Icon name={approachIcons[i]} className="size-5" />
                 </span>
-                {i < approach.length - 1 && <Icon name="arrow" className="size-3.5 text-faint" />}
+                <span className="text-[14px] font-semibold leading-snug text-ink-2">{a}</span>
               </li>
             ))}
           </ol>
-          <ol className="grid gap-5 sm:grid-cols-2 lg:grid-cols-4">
+
+          <ol className="mt-5 grid gap-5 sm:grid-cols-2 lg:grid-cols-4">
             {process.map((p, i) => (
-              <li key={p.title} data-reveal data-delay={i * 90} className="card flex flex-col gap-3 p-6">
-                <span className="grid size-10 place-items-center rounded-full bg-accent font-mono text-[13px] font-semibold text-white">0{i + 1}</span>
-                <h3 className="mt-2 text-[17px] font-bold">{p.title}</h3>
-                <p className="text-[14.5px] text-muted">{p.text}</p>
+              <li key={p.title} data-reveal data-delay={i * 90} className="tile tile-hover group flex flex-col gap-3 p-6">
+                <span className="grid size-10 place-items-center rounded-full bg-accent font-display text-[15px] font-bold text-lime transition-colors duration-300 group-hover:bg-lime group-hover:text-accent">
+                  {i + 1}
+                </span>
+                <h3 className="text-[18px] font-bold text-ink">{p.title}</h3>
+                <p className="text-[14.5px] leading-relaxed text-muted">{p.text}</p>
               </li>
             ))}
           </ol>
@@ -165,7 +231,7 @@ export default function ServicesPage() {
       </section>
 
       <CtaBand
-        title="Let's Discuss Your Project"
+        title="Let's Discuss Your Project."
         text="Share your project idea, design, or current website. I'll suggest the right solution and provide a clear estimate."
         primary={{ href: "/contact", label: "Get a Project Quote" }}
       />

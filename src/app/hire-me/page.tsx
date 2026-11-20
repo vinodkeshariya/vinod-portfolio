@@ -1,4 +1,4 @@
-import { ImageStack } from "@/components/ImageStack";
+import { HeroShowcase } from "@/components/HeroShowcase";
 import Link from "next/link";
 import { Icon } from "@/components/Icon";
 import { CtaBand, PageHero, SectionHead } from "@/components/ui";
@@ -31,98 +31,114 @@ export default function HireMePage() {
   return (
     <>
       <PageHero
-        aside={
-          <ImageStack
-            priority
-            back={{ src: "/images/projects/creative-agency/cover.webp", alt: "Agency website" }}
-            front={{ src: "/images/projects/ai-saas-landing/cover.webp", alt: "SaaS landing page" }}
-            phone={{ src: "/images/projects/fashion-catalog/mobile-1.webp", alt: "Fashion store on mobile" }}
-          />
-        }
-        crumbs={[{ href: "/", label: "Home" }, { label: "Hire Me" }]}
-        eyebrow={
-          <span className="inline-flex items-center gap-2.5 self-start rounded-full border border-line-2 bg-surface py-1.5 pl-3 pr-4 text-[13px] text-ink-2">
-            <span className="dot dot-live" /> Open for work
-          </span>
-        }
-        title={<>Looking for an <span className="text-accent">AI + Next.js developer?</span></>}
+        aside={<HeroShowcase />}
+        eyebrow="Hire Me · Open for work"
+        title={<>Looking for an <span className="text-leaf">AI + Next.js developer?</span></>}
         lead="AI integrations, modern Next.js and React websites, Sanity CMS and WordPress migrations — built with an AI-powered workflow, reviewed by hand, with clear communication throughout."
       >
-        <div className="mt-1.5 flex flex-wrap gap-3.5">
-          <Link href="/contact" className="btn btn-primary">Let&apos;s Build Your Project <Icon name="arrow" /></Link>
+        <div className="grid w-full gap-3 sm:flex sm:w-auto sm:flex-wrap">
+          <Link href="/contact" className="btn btn-primary min-h-13 px-7">Let&apos;s Build Your Project <Icon name="arrow" /></Link>
           {hasUpwork ? (
-            <Link href={site.socials.upwork} {...ext(site.socials.upwork)} className="btn btn-ghost">Hire Me on Upwork <Icon name="arrowUpRight" /></Link>
+            <Link href={site.socials.upwork} {...ext(site.socials.upwork)} className="btn btn-line min-h-13 px-7">Hire Me on Upwork <Icon name="arrowUpRight" /></Link>
           ) : (
-            <Link href="/projects" className="btn btn-ghost">Explore My Work</Link>
+            <Link href="/projects" className="btn btn-line min-h-13 px-7">Explore My Work</Link>
           )}
         </div>
       </PageHero>
 
-      <section className="section">
+      {/* ============ WHAT YOU GET ============ */}
+      <section className="bg-paper py-14 md:py-16">
         <div className="wrap">
-          <SectionHead eyebrow="What you get" title="Modern development expertise" />
-          <div className="grid gap-5 lg:grid-cols-3">
+          <SectionHead eyebrow="What you get" title={<>Modern development <span className="text-leaf">expertise.</span></>} />
+          <div className="grid gap-5 md:grid-cols-3">
             {getItems.map((g, i) => (
-              <div key={g.title} data-reveal data-delay={i * 100} className="card card-hover flex flex-col gap-3.5 p-7">
-                <span className="grid size-12 place-items-center rounded-[14px] bg-accent-soft text-accent">
+              <div key={g.title} data-reveal data-delay={i * 100} className="tile tile-hover group flex flex-col gap-3.5 p-6 lg:p-7">
+                <span className="grid size-12 place-items-center rounded-[14px] bg-accent text-lime transition-transform duration-300 group-hover:-rotate-6">
                   <Icon name={g.icon} className="size-5.5" />
                 </span>
-                <h3 className="text-xl font-bold">{g.title}</h3>
-                <p className="text-[15px] text-muted">{g.text}</p>
+                <h3 className="text-xl font-bold text-ink">{g.title}</h3>
+                <p className="text-[15px] leading-relaxed text-muted">{g.text}</p>
               </div>
             ))}
           </div>
         </div>
       </section>
 
-      <section className="section border-y border-line bg-paper-2">
+      {/* ============ PROCESS (same cards as the home page) ============ */}
+      <section className="bg-paper pb-14 md:pb-16">
         <div className="wrap">
-          <SectionHead eyebrow="Process" title="How we work together" />
-          <ol data-reveal className="grid gap-y-10 border-t border-line-2 sm:grid-cols-2 lg:grid-cols-4">
+          <SectionHead eyebrow="Process" title={<>How we work <span className="text-leaf">together.</span></>} />
+          <ol className="grid gap-5 sm:grid-cols-2 lg:grid-cols-4">
             {process.map((p, i) => (
-              <li key={p.title} className="relative flex flex-col gap-3 pr-7 pt-8">
-                <span aria-hidden="true" className="absolute -top-1.25 left-0 size-2.25 rounded-full bg-accent" />
-                <span className="font-display text-[44px] font-bold leading-none text-accent">0{i + 1}</span>
-                <h3 className="text-xl font-bold">{p.title}</h3>
-                <p className="text-[15px] text-muted">{p.text}</p>
+              <li key={p.title} data-reveal data-delay={i * 90} className="tile tile-hover group flex flex-col gap-3 p-6">
+                <span className="grid size-10 place-items-center rounded-full bg-accent font-display text-[15px] font-bold text-lime transition-colors duration-300 group-hover:bg-lime group-hover:text-accent">
+                  {i + 1}
+                </span>
+                <h3 className="text-[18px] font-bold text-ink">{p.title}</h3>
+                <p className="text-[14.5px] leading-relaxed text-muted">{p.text}</p>
               </li>
             ))}
           </ol>
         </div>
       </section>
 
-      <section className="section">
-        <div className="wrap grid items-start gap-10 lg:grid-cols-2 lg:gap-16">
+      {/* ============ WHY HIRE ME ============ */}
+      <section className="bg-paper pb-14 md:pb-16">
+        <div className="wrap grid items-start gap-10 lg:grid-cols-[1fr_1.3fr] lg:gap-16">
           <div data-reveal className="flex flex-col gap-3.5 lg:sticky lg:top-28">
             <span className="eyebrow">Why hire me</span>
-            <h2 className="h-section">What clients can expect</h2>
-            <p className="text-muted">Clear scope, honest timelines and code I stand behind.</p>
+            <h2 className="h-section">What clients can <span className="text-leaf">expect.</span></h2>
+            <p className="text-[15.5px] text-muted">Clear scope, honest timelines and code I stand behind.</p>
           </div>
           <div className="grid gap-5 sm:grid-cols-2">
             {expect.map((e, i) => (
-              <div key={e.title} data-reveal data-delay={i * 80} className="card flex flex-col gap-3 p-7">
-                <Icon name={e.icon} className="size-6 text-accent" />
-                <h3 className="text-lg font-bold">{e.title}</h3>
-                <p className="text-[15px] text-muted">{e.text}</p>
+              <div key={e.title} data-reveal data-delay={i * 80} className="tile tile-hover group flex flex-col gap-3 p-6">
+                <span className="icon-tile transition-colors duration-300 group-hover:border-accent group-hover:bg-accent group-hover:text-lime">
+                  <Icon name={e.icon} className="size-4.5" />
+                </span>
+                <h3 className="mt-1 text-[18px] font-bold text-ink">{e.title}</h3>
+                <p className="text-[14.5px] leading-relaxed text-muted">{e.text}</p>
               </div>
             ))}
           </div>
         </div>
       </section>
 
-      <section className="section border-y border-line bg-paper-2">
+      {/* ============ AREAS OF FOCUS ============ */}
+      <section className="bg-paper pb-14 md:pb-16">
         <div className="wrap">
-          <SectionHead eyebrow="Services summary" title="Areas of focus" action={{ href: "/services", label: "Service details" }} />
-          <div className="grid gap-5 sm:grid-cols-2 lg:grid-cols-3">
+          <SectionHead eyebrow="Services summary" title={<>Areas of <span className="text-leaf">focus.</span></>} />
+          <div className="grid gap-5 sm:grid-cols-2 lg:grid-cols-4">
             {areas.map((a, i) => (
-              <Link key={a} href={`/services#service-${i + 1}`} data-reveal data-delay={(i % 3) * 90} className="card card-hover group flex items-center justify-between gap-4 p-7">
-                <span>
-                  <span className="block font-display text-[30px] font-bold leading-none text-accent">{String(i + 1).padStart(2, "0")}</span>
-                  <span className="mt-3 block font-display text-xl font-bold">{a}</span>
+              <Link
+                key={a}
+                href={`/services#service-${i + 1}`}
+                data-reveal
+                data-delay={(i % 4) * 80}
+                className="tile tile-hover group flex flex-col justify-between gap-6 p-6"
+              >
+                <span className="flex items-start justify-between gap-3">
+                  <span className="font-display text-[26px] font-bold leading-none text-leaf">{String(i + 1).padStart(2, "0")}</span>
+                  <span className="grid size-9 shrink-0 place-items-center rounded-full border border-line text-accent transition-colors duration-300 group-hover:border-accent group-hover:bg-accent group-hover:text-lime">
+                    <Icon name="arrowUpRight" className="size-4" />
+                  </span>
                 </span>
-                <Icon name="arrowUpRight" className="size-5 shrink-0 text-faint transition group-hover:rotate-45 group-hover:text-accent" />
+                <span className="font-display text-[18px] font-bold leading-snug text-ink">{a}</span>
               </Link>
             ))}
+            <Link
+              href="/services"
+              data-reveal
+              data-delay={240}
+              className="group flex flex-col justify-between gap-6 rounded-[16px] bg-accent p-6 text-white transition duration-300 hover:-translate-y-1 hover:bg-accent-hover"
+            >
+              <span className="grid size-9 place-items-center rounded-full bg-lime text-accent">
+                <Icon name="arrow" className="size-4 transition-transform duration-300 group-hover:translate-x-0.5" />
+              </span>
+              <span className="font-display text-[18px] font-bold leading-snug">
+                Service details <span className="block text-[14px] font-medium text-night-muted">Scope, features and tools for each service</span>
+              </span>
+            </Link>
           </div>
         </div>
       </section>

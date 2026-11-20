@@ -5,8 +5,8 @@ export function Faq() {
   return (
     <div data-reveal data-delay={120} className="border-t border-line">
       {faqs.map((f, i) => (
-        <details key={f.q} open={i === 0} className="group border-b border-line">
-          <summary className="flex min-h-11 cursor-pointer list-none items-center justify-between gap-5 py-5 text-[16px] font-semibold md:text-[17px] [&::-webkit-details-marker]:hidden">
+        <details key={f.q} open={i === 0} className="group border-b border-line transition-colors">
+          <summary className="flex min-h-11 cursor-pointer list-none items-center justify-between gap-5 py-5 text-[16px] font-semibold md:text-[17px] transition-colors hover:text-accent [&::-webkit-details-marker]:hidden">
             {f.q}
             <span
               aria-hidden="true"
@@ -15,7 +15,7 @@ export function Faq() {
               +
             </span>
           </summary>
-          <p className="pb-5 pr-0 text-[15px] text-muted md:pr-12">{f.a}</p>
+          <p className="pb-5 pr-0 text-[15px] text-muted group-open:animate-fade-up md:pr-12">{f.a}</p>
         </details>
       ))}
     </div>

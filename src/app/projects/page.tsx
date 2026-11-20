@@ -1,6 +1,7 @@
-import { ImageStack } from "@/components/ImageStack";
+import { JsonLd, abs } from "@/components/JsonLd";
+import { DeviceArt } from "@/components/PageArt";
 import { ProjectGrid } from "@/components/ProjectGrid";
-import { PageHero } from "@/components/ui";
+import { CtaBand, PageHero } from "@/components/ui";
 import { projects } from "@/lib/data";
 import { pageMeta } from "@/lib/seo";
 
@@ -13,39 +14,40 @@ export const metadata = pageMeta({
 export default function ProjectsPage() {
   return (
     <>
+      <JsonLd
+        data={{
+          "@context": "https://schema.org",
+          "@type": "ItemList",
+          name: "Portfolio projects",
+          itemListElement: projects.map((p, i) => ({
+            "@type": "ListItem",
+            position: i + 1,
+            url: abs(`/projects/${p.slug}`),
+            name: p.title,
+          })),
+        }}
+      />
       <PageHero
-        aside={
-          <ImageStack
-            priority
-            back={{ src: "/images/projects/fashion-catalog/cover.webp", alt: "Fashion store homepage" }}
-            front={{ src: "/images/projects/business-wordpress/cover.webp", alt: "Construction company website" }}
-            phone={{ src: "/images/projects/restaurant-menu/mobile-2.webp", alt: "Restaurant menu on mobile" }}
-          />
+        eyebrow="Work"
+        title={
+          <>
+            A Collection of Websites &amp; <span className="text-leaf">Digital Experiences.</span>
+          </>
         }
-        crumbs={[{ href: "/", label: "Home" }, { label: "Projects" }]}
-        eyebrow="Selected Work"
-        title={<>A Collection of Websites &amp; <span className="text-accent">Digital Experiences.</span></>}
         lead="I work on modern web development projects, CMS solutions, website migrations, and AI-related product interfaces. Explore some of my work built with Next.js, React, Sanity CMS, and WordPress."
-      >
-        <dl className="mt-3 flex flex-wrap gap-x-10 gap-y-4">
-          {[
-            [String(projects.length), "Projects"],
-            [String(projects.filter((p) => p.filters.includes("nextjs")).length), "Next.js + Sanity"],
-            [String(projects.filter((p) => p.filters.includes("migration")).length), "Migration"],
-            [String(projects.filter((p) => p.filters.includes("wordpress")).length), "WordPress"],
-          ].map(([v, k]) => (
-            <div key={k} className="flex flex-col-reverse">
-              <dt className="text-[13px] text-muted">{k}</dt>
-              <dd className="text-[28px] font-extrabold tracking-[-0.03em]">{v}</dd>
-            </div>
-          ))}
-        </dl>
-      </PageHero>
-      <section className="py-10 md:py-15 lg:py-20">
+        aside={<DeviceArt />}
+      />
+      <section aria-label="Projects" className="bg-paper pb-14 pt-2 md:pb-16">
         <div className="wrap">
+          <h2 className="sr-only">All projects</h2>
           <ProjectGrid />
         </div>
       </section>
+      <CtaBand
+        title="Interested in Working Together?"
+        text="Have a similar project? Let's discuss your requirements."
+        primary={{ href: "/contact", label: "Start a Project" }}
+      />
     </>
   );
 }

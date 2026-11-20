@@ -1,7 +1,10 @@
 import Link from "next/link";
 import { ContactForm } from "@/components/ContactForm";
+import { Faq } from "@/components/Faq";
 import { Icon } from "@/components/Icon";
-import { PageHero } from "@/components/ui";
+import { JsonLd, abs } from "@/components/JsonLd";
+import { Cube } from "@/components/PageArt";
+import { CtaBand, MiniHead, PageHero } from "@/components/ui";
 import { ext, hasUpwork, helpWith, site, type IconName } from "@/lib/data";
 import { pageMeta } from "@/lib/seo";
 
@@ -12,7 +15,7 @@ export const metadata = pageMeta({
   path: "/contact",
 });
 
-const cards: { icon: IconName; label: string; value: string; href?: string }[] = [
+const details: { icon: IconName; label: string; value: string; href?: string }[] = [
   { icon: "mail", label: "Email", value: site.email, href: `mailto:${site.email}` },
   { icon: "chat", label: "Phone · WhatsApp", value: site.phone, href: site.socials.whatsapp },
   { icon: "pin", label: "Location", value: site.location },
@@ -20,108 +23,185 @@ const cards: { icon: IconName; label: string; value: string; href?: string }[] =
   { icon: "clock", label: "Response time", value: "Usually within 0–4 hours" },
 ];
 
+const steps = [
+  ["Send Details", "Figma file, website link or a short brief."],
+  ["Reply with Plan", "A practical approach, timeline and estimate."],
+  ["Start Building", "Live preview link and regular updates."],
+];
+
+const socials = [
+  ["linkedin", "LinkedIn", site.socials.linkedin],
+  ["github", "GitHub", site.socials.github],
+  ...(hasUpwork ? [["upwork", "Upwork", site.socials.upwork] as const] : []),
+] as const;
+
 export default function ContactPage() {
   return (
     <>
+      <JsonLd
+        data={{
+          "@context": "https://schema.org",
+          "@type": "ContactPage",
+          name: `Contact ${site.name}`,
+          url: abs("/contact"),
+          mainEntity: {
+            "@type": "Person",
+            name: site.name,
+            url: site.url,
+            email: `mailto:${site.email}`,
+            telephone: site.phone.replace(/\s/g, ""),
+          },
+        }}
+      />
       <PageHero
+        eyebrow="Contact"
+        title={
+          <>
+            Let&apos;s Talk About <span className="text-leaf">Your Next Project.</span>
+          </>
+        }
+        lead="Looking for a developer to build an AI-powered application, integrate intelligent features, or create a modern website? I'm available to collaborate with startups, agencies, businesses, and individuals worldwide."
         aside={
-          <div className="relative mx-auto w-full max-w-[480px] lg:mr-0">
-            <div className="bg-forest relative overflow-hidden rounded-[18px] p-7 text-white shadow-(--shadow-float) md:p-8">
-              <div className="relative">
-                <p className="flex items-center gap-2 text-[13px] text-white/70"><span className="dot dot-live" /> Online · replies in 0–4 hours</p>
-                <h2 className="mt-4 text-[24px] font-extrabold tracking-[-0.03em]">What happens next</h2>
-                <ol className="mt-5 flex flex-col gap-4">
-                  {[
-                    ["You send the details", "Figma file, website link or a short brief."],
-                    ["I reply with a plan", "A practical approach, timeline and estimate."],
-                    ["We start building", "Live preview link and regular updates."],
-                  ].map(([t, d], i) => (
-                    <li key={t} className="flex gap-4">
-                      <span className="grid size-8 shrink-0 place-items-center rounded-full bg-lime font-mono text-[12px] font-semibold text-ink">{i + 1}</span>
-                      <div>
-                        <p className="font-semibold">{t}</p>
-                        <p className="text-[13.5px] text-night-muted">{d}</p>
-                      </div>
-                    </li>
-                  ))}
-                </ol>
-              </div>
+          <div style={{ animationDelay: "200ms" }} className="animate-fade-in relative mx-auto w-full max-w-[560px] lg:mr-0">
+            <Cube tone="forest" className="absolute -right-10 -top-10 hidden w-40 animate-float-slow sm:block" />
+            <Cube tone="lime" className="absolute -bottom-8 -left-12 hidden w-28 animate-float sm:block" />
+            <div className="relative">
+              <ContactForm />
             </div>
+            <p className="relative mt-5 text-center text-[14.5px] text-muted">I look forward to hearing about your project.</p>
           </div>
         }
-        crumbs={[{ href: "/", label: "Home" }, { label: "Contact" }]}
-        eyebrow="Get in Touch"
-        title={<>Let&apos;s Talk About Your <span className="text-accent">Next Project.</span></>}
-        lead="Looking for a developer to build an AI-powered application, integrate intelligent features, or create a modern website? I'm available to collaborate with startups, agencies, businesses, and individuals worldwide."
       >
-        <p className="max-w-[580px] text-[15.5px] leading-relaxed text-muted">
+        <p className="max-w-[560px] text-[15.5px] leading-relaxed text-muted">
           Tell me about your idea, requirements, and goals. I&apos;ll review your project and respond with a practical approach and
           estimated timeline.
         </p>
+
+        {/* Contact details */}
+        <ul className="flex w-full max-w-[520px] flex-col gap-3.5">
+          {details.map((d) => {
+            const inner = (
+              <>
+                <span className="grid size-11 shrink-0 place-items-center rounded-full bg-accent text-lime transition-transform duration-300 group-hover:-rotate-6 group-hover:scale-105">
+                  <Icon name={d.icon} className="size-[18px]" />
+                </span>
+                <span className="min-w-0 leading-tight">
+                  <small className="block text-[12.5px] text-muted">{d.label}</small>
+                  <strong className="break-words text-[15.5px] font-semibold text-ink transition-colors group-hover:text-accent">{d.value}</strong>
+                </span>
+              </>
+            );
+            return (
+              <li key={d.label}>
+                {d.href ? (
+                  <Link href={d.href} {...ext(d.href)} className="group flex items-center gap-4">
+                    {inner}
+                  </Link>
+                ) : (
+                  <div className="group flex items-center gap-4">{inner}</div>
+                )}
+              </li>
+            );
+          })}
+        </ul>
+
+        <div className="flex items-center gap-3">
+          {socials.map(([icon, label, href]) => (
+            <Link
+              key={label}
+              href={href}
+              aria-label={label}
+              {...ext(href)}
+              className="grid size-11 place-items-center rounded-full border border-line-2 bg-surface text-accent transition duration-300 hover:-translate-y-1 hover:border-accent hover:bg-accent hover:text-lime"
+            >
+              <Icon name={icon} className="size-[18px]" />
+            </Link>
+          ))}
+          {hasUpwork && (
+            <Link href={site.socials.upwork} {...ext(site.socials.upwork)} className="btn btn-line btn-sm">
+              Hire Me on Upwork <Icon name="arrowUpRight" />
+            </Link>
+          )}
+        </div>
+
+        {/* Next steps */}
+        <div className="w-full max-w-[560px] pt-2">
+          <h2 className="mb-5 flex items-center gap-3 font-display text-[20px] font-bold text-accent">
+            <span aria-hidden="true" className="h-[3px] w-6 rounded-full bg-lime" /> Next Steps
+          </h2>
+          <ol className="grid grid-cols-3 gap-3">
+            {steps.map(([t, d], i) => (
+              <li key={t} className="relative flex flex-col gap-2">
+                {i < steps.length - 1 && (
+                  <span aria-hidden="true" className="absolute left-9 right-[-12px] top-4 border-t border-dashed border-line-2" />
+                )}
+                <span className="relative grid size-8 place-items-center rounded-full bg-lime font-display text-[13px] font-bold text-accent ring-4 ring-paper">
+                  {i + 1}
+                </span>
+                <span className="text-[14px] font-semibold text-ink">{t}</span>
+                <span className="text-[13px] leading-snug text-muted">{d}</span>
+              </li>
+            ))}
+          </ol>
+        </div>
       </PageHero>
 
-      <section className="section">
-        <div className="wrap grid items-start gap-10 lg:grid-cols-[minmax(0,0.85fr)_minmax(0,1.55fr)] lg:gap-16">
-          <div data-reveal className="flex flex-col gap-4">
-            <div className="card flex flex-col gap-4 p-6">
-              <h2 className="text-[18px] font-bold">What Can I Help You Build?</h2>
-              <ul className="flex flex-col gap-2.5">
-                {helpWith.map((h) => (
-                  <li key={h} className="flex gap-2.5 text-[14.5px] text-ink-2">
-                    <Icon name="check" strokeWidth={2.6} className="mt-0.5 size-4 shrink-0 text-accent" />
-                    {h}
-                  </li>
-                ))}
-              </ul>
-            </div>
-
-            {cards.map((c) => {
-              const inner = (
-                <>
-                  <span className="grid size-12 shrink-0 place-items-center rounded-[14px] border border-line-2 bg-surface-2 text-accent">
-                    <Icon name={c.icon} className="size-5.5" />
-                  </span>
-                  <span className="min-w-0">
-                    <small className="label-mono block">{c.label}</small>
-                    <strong className="break-words font-semibold">{c.value}</strong>
-                  </span>
-                </>
-              );
-              return c.href ? (
-                <Link key={c.label} href={c.href} {...ext(c.href)} className="card flex items-center gap-4 p-6 hover:border-accent">{inner}</Link>
-              ) : (
-                <div key={c.label} className="card flex items-center gap-4 p-6">{inner}</div>
-              );
-            })}
-
-            <div className="card flex flex-col gap-3.5 p-6">
-              <span className="label-mono">Elsewhere</span>
-              <div className="flex gap-2.5">
-                {([
-                  ["linkedin", "LinkedIn", site.socials.linkedin],
-                  ["github", "GitHub", site.socials.github],
-                  ...(hasUpwork ? [["upwork", "Upwork", site.socials.upwork] as const] : []),
-                ] as const).map(([icon, label, href]) => (
-                  <Link key={label} href={href} aria-label={label} {...ext(href)}
-                    className="grid size-11 place-items-center rounded-xl border border-line-2 text-ink-2 transition hover:border-accent hover:bg-accent hover:text-white">
-                    <Icon name={icon} className="size-4.5" />
-                  </Link>
-                ))}
-              </div>
-              {hasUpwork && (
-                <Link href={site.socials.upwork} {...ext(site.socials.upwork)} className="btn btn-ghost btn-sm self-start">
-                  Hire Me on Upwork <Icon name="arrowUpRight" />
-                </Link>
-              )}
-            </div>
+      {/* ============ WHAT CAN I HELP YOU BUILD ============ */}
+      <section className="bg-paper pb-14 pt-6 md:pb-16">
+        <div className="wrap">
+          <div data-reveal>
+            <MiniHead>What Can I Help You Build?</MiniHead>
           </div>
-
-          <div data-reveal data-delay={120} className="flex flex-col gap-4">
-            <ContactForm />
-            <p className="text-center text-[14.5px] text-muted">I look forward to hearing about your project.</p>
-          </div>
+          <ul className="grid gap-4 sm:grid-cols-2 lg:grid-cols-4">
+            {helpWith.map((h, i) => (
+              <li key={h} data-reveal data-delay={(i % 4) * 80} className="tile tile-hover group flex items-center gap-3.5 p-5">
+                <span className="grid size-8 shrink-0 place-items-center rounded-full bg-accent-soft text-accent transition-colors duration-300 group-hover:bg-accent group-hover:text-lime">
+                  <Icon name="check" strokeWidth={3} className="size-4" />
+                </span>
+                <span className="text-[15px] font-semibold text-ink-2">{h}</span>
+              </li>
+            ))}
+            <li data-reveal data-delay={240}>
+              <Link
+                href="/services"
+                className="group flex h-full items-center justify-between gap-3 rounded-[16px] bg-accent p-5 text-[15px] font-semibold text-white transition duration-300 hover:-translate-y-1 hover:bg-accent-hover"
+              >
+                See all services
+                <Icon name="arrow" className="size-4 text-lime transition-transform duration-300 group-hover:translate-x-1" />
+              </Link>
+            </li>
+          </ul>
         </div>
       </section>
+
+      {/* ============ FAQ ============ */}
+      <section aria-labelledby="faq-title" className="bg-paper pb-14 md:pb-16">
+        <div className="wrap grid gap-8 lg:grid-cols-[1fr_1.6fr] lg:gap-16">
+          <div data-reveal className="flex flex-col items-start gap-3 lg:sticky lg:top-28 lg:self-start">
+            <span className="eyebrow">FAQ</span>
+            <h2 id="faq-title" className="h-section">
+              Before you <span className="text-leaf">get in touch.</span>
+            </h2>
+            <p className="text-[15.5px] text-muted">Quick answers to the questions clients ask most often.</p>
+          </div>
+          <Faq />
+        </div>
+      </section>
+
+      <CtaBand
+        title="Prefer Email or WhatsApp?"
+        text={
+          <>
+            Write to me directly at{" "}
+            <a href={`mailto:${site.email}`} className="font-semibold text-accent underline underline-offset-4">
+              {site.email}
+            </a>{" "}
+            — I usually reply within 0–4 hours.
+          </>
+        }
+        primary={{ href: `mailto:${site.email}`, label: "Email Me" }}
+        secondary={{ href: site.socials.whatsapp, label: "WhatsApp" }}
+      />
     </>
   );
 }
