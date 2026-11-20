@@ -9,7 +9,8 @@ import remarkGfm from "remark-gfm";
 import remarkParse from "remark-parse";
 import remarkRehype from "remark-rehype";
 import { unified } from "unified";
-import { pillars, type Pillar, type Post, type PostMeta } from "./blog-meta";
+import { checkScene, defaultScenes, pillars, type Pillar, type Post, type PostMeta } from "./blog-meta";
+import { parseVisual, visualToHast } from "./blog-visuals";
 import { site } from "./data";
 
 export * from "./blog-meta";
@@ -27,12 +28,18 @@ export * from "./blog-meta";
  *   service                   related service link, e.g. "/services#service-5" (defaults to the pillar's)
  *   cover, coverAlt           cover image from /public/images (e.g. "/images/blog/my-post/cover.webp") and its
  *                             description; without one, a branded cover is generated automatically
+ *   coverScene                illustration for the generated cover/hero: { kind, labels } — see SCENES in ./blog-meta.ts
+ *                             (defaults to the category's scene)
  *   updated                   YYYY-MM-DD, when the post was meaningfully changed
- *   aiAssisted                true (default) shows "Drafted with AI, reviewed by Vinod"
+ *   aiAssisted                true (default) shows a note that AI helped write the post
+ *   reviewed                  true (default): "Drafted with AI, reviewed and edited by Vinod";
+ *                             false (auto-published posts): "Written with AI assistance, based on my workflow and services"
  *   draft                     true hides the post everywhere except `next dev`
  *
  * Images inside a post: ![What the image shows](/images/blog/my-post/screen.webp "Optional caption")
  * Every image needs a description and must exist in /public/images — the build stops otherwise.
+ *
+ * Designed visuals (steps / compare / checklist): a ```visual code block with JSON — see ./blog-visuals.ts.
  */
 
 const DIR = path.join(process.cwd(), "content", "blog");
@@ -97,6 +104,16 @@ const images = () => (tree: Node) =>
     }
   });
 
+/** Turns ```visual code blocks into designed diagrams (already validated in readMeta) */
+const visuals = () => (tree: Node) =>
+  walk(tree, (n) => {
+    const code = n.tagName === "pre" ? n.children?.find((c) => c.tagName === "code") : undefined;
+    const cls = code?.properties?.className;
+    if (code && Array.isArray(cls) && cls.includes("language-visual")) {
+      Object.assign(n, visualToHast(parseVisual(textOf(code))));
+    }
+  });
+
 /** Opens links to other websites in a new tab */
 const externalLinks = () => (tree: Node) =>
   walk(tree, (n) => {
@@ -110,8 +127,14 @@ function fail(file: string, problem: string): never {
   throw new Error(`[blog] content/blog/${file}: ${problem}`);
 }
 
-function readMeta(file: string): { meta: PostMeta; body: string } {
-  const { data, content } = matter(fs.readFileSync(path.join(DIR, file), "utf8"));
+/** Reads and validates a post file from /content/blog */
+function readMeta(file: string) {
+  return parsePost(file, fs.readFileSync(path.join(DIR, file), "utf8"));
+}
+
+/** Validates a post's Markdown source (frontmatter + body); throws a readable error when something is off */
+export function parsePost(file: string, raw: string): { meta: PostMeta; body: string } {
+  const { data, content } = matter(raw);
   const slug = file.replace(/\.md$/, "");
   if (!/^[a-z0-9]+(-[a-z0-9]+)*$/.test(slug)) fail(file, "file name must be lowercase-words-with-dashes.md");
   // YAML turns unquoted dates into Date objects
@@ -145,6 +168,24 @@ function readMeta(file: string): { meta: PostMeta; body: string } {
     if (!localImage(src)) fail(file, `image ${src} not found — put it in /public/images and link it as /images/...`);
   }
 
+  let scene: PostMeta["scene"] | null = null;
+  if (data.coverScene !== undefined) {
+    try {
+      scene = checkScene(data.coverScene);
+    } catch (e) {
+      fail(file, (e as Error).message);
+    }
+  }
+
+  // Designed visuals must be valid
+  for (const [, json] of content.matchAll(/```visual[^\S\n]*\n([\s\S]*?)```/g)) {
+    try {
+      parseVisual(json);
+    } catch (e) {
+      fail(file, (e as Error).message);
+    }
+  }
+
   // AI drafts leave "[Vinod: …]" notes where a personal detail is needed — never publish one unfilled
   if (data.draft !== true && /\[Vinod:/i.test(content)) {
     fail(file, "still has a [Vinod: …] note — fill it in or remove it before publishing (or keep `draft: true`)");
@@ -164,7 +205,9 @@ function readMeta(file: string): { meta: PostMeta; body: string } {
       tags: (data.tags as string[] | undefined) ?? [],
       service: (data.service as string | undefined) ?? pillars[pillar].service,
       cover,
+      scene: scene ?? defaultScenes[pillar],
       aiAssisted: data.aiAssisted !== false,
+      reviewed: data.reviewed !== false,
       draft: data.draft === true,
       readingMinutes: Math.max(1, Math.round(words / 220)),
     },
@@ -197,7 +240,11 @@ export function getPosts(): PostMeta[] {
 
 export async function getPost(slug: string): Promise<Post | null> {
   const entry = load().find((p) => p.meta.slug === slug);
-  if (!entry) return null;
+  return entry ? renderPost(entry) : null;
+}
+
+/** Turns a parsed post into HTML (+ its h2 headings for the "On this page" nav) */
+export async function renderPost(entry: { meta: PostMeta; body: string }): Promise<Post> {
   const headings: { id: string; label: string }[] = [];
   const file = await unified()
     .use(remarkParse)
@@ -207,6 +254,7 @@ export async function getPost(slug: string): Promise<Post | null> {
     .use(rehypeSlug)
     .use(collectHeadings(headings))
     .use(markReviewNotes)
+    .use(visuals)
     .use(images)
     .use(externalLinks)
     .use(rehypeStringify)

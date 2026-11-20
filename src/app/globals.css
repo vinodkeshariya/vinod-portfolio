@@ -204,6 +204,44 @@
   .article img { @apply h-auto w-full rounded-[14px] border border-line bg-surface; }
   .article figure { @apply my-8; }
   .article figcaption { @apply mt-2.5 text-center text-[14px] leading-snug text-muted; }
+  /* Designed visuals (```visual blocks — see src/lib/blog-visuals.ts) */
+  .article .viz { @apply my-10 rounded-[20px] p-5 sm:p-7; }
+  .article .viz ul, .article .viz ol { @apply list-none gap-3 p-0; }
+  .article .viz-title { @apply mt-0 mb-5 flex items-start gap-2.5 text-left font-mono text-[12px] font-medium uppercase leading-normal tracking-[0.12em]; }
+  .article .viz-title-dot { @apply mt-1.25 size-2 shrink-0 rounded-full bg-lime; }
+
+  .article .viz-steps { background: linear-gradient(135deg, var(--color-night) 0%, var(--color-night-2) 100%); }
+  .article .viz-steps .viz-title { @apply text-lime; }
+  .article .viz-steps-list { @apply grid sm:grid-cols-2; }
+  .article .viz-step { @apply flex gap-3.5 rounded-[14px] border border-white/10 bg-white/5 p-4; }
+  .article .viz-num { @apply grid size-8 shrink-0 place-items-center rounded-full bg-lime font-display text-[14px] font-bold text-accent; }
+  .article .viz-step-body { @apply flex flex-col gap-1; }
+  .article .viz-step strong { @apply text-[16px] leading-snug text-white; }
+  .article .viz-step-text { @apply text-[14.5px] leading-relaxed text-night-muted; }
+
+  .article .viz-compare { @apply border border-line bg-surface; }
+  .article .viz-compare .viz-title { @apply text-faint; }
+  .article .viz-compare-grid { @apply grid gap-4 sm:grid-cols-2; }
+  .article .viz-col { @apply flex flex-col gap-3 rounded-[14px] p-5; }
+  .article .viz-col-a { @apply bg-surface-2; }
+  .article .viz-col-b { background: linear-gradient(135deg, var(--color-night) 0%, var(--color-night-2) 100%); }
+  .article .viz-col-label { @apply font-display text-[17px] font-bold; }
+  .article .viz-col-a .viz-col-label { @apply text-ink; }
+  .article .viz-col-b .viz-col-label { @apply text-lime; }
+  .article .viz-col-list li { @apply flex gap-2.5 text-[15px] leading-snug; }
+  .article .viz-col-a li { @apply text-ink-2; }
+  .article .viz-col-b li { @apply text-white; }
+  .article .viz-mark { @apply mt-[7px] size-2 shrink-0 rounded-full; }
+  .article .viz-col-a .viz-mark { @apply bg-line-2; }
+  .article .viz-col-b .viz-mark { @apply bg-lime; }
+
+  .article .viz-checklist { @apply border border-accent-line bg-accent-soft; }
+  .article .viz-checklist .viz-title { @apply text-accent; }
+  .article .viz-check-list { @apply grid sm:grid-cols-2; }
+  .article .viz-check-list li { @apply flex items-start gap-3 rounded-[12px] border border-line bg-surface p-3.5 text-[15px] leading-snug text-ink-2; }
+  .article .viz-check { @apply relative mt-px grid size-6 shrink-0 place-items-center rounded-full bg-accent; }
+  .article .viz-check::after { content: ""; @apply -mt-0.5 h-1.5 w-2.5 -rotate-45 border-b-2 border-l-2 border-lime; }
+
   .article .review-note { @apply rounded-[10px] border-2 border-dashed border-lime-2 bg-lime/25 px-4 py-3 text-[15px] font-medium text-ink; }
 }
 
