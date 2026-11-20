@@ -9,7 +9,7 @@ export const site = {
   location: "Ahmedabad, Gujarat, India",
   company: "Krushna53",
   since: "June 2023",
-  url: "https://vinodkeshariya.netlify.app",
+  url: "https://vinodkeshariya.vercel.app",
   email: "keshariyavinod793@gmail.com",
   phone: "+91 92651 21783",
   resume: "/Vinod_Keshariya_Frontend_Developer.pdf",
