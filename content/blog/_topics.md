@@ -10,7 +10,7 @@ Pillars: ai-for-business, ai-development, web-development, honest-takes
 ## Topics
 
 - [x] ai-development | How I Use AI in Web Development — and Where I Don't | my real workflow: where AI speeds things up, where human review is non-negotiable
-- [ ] ai-for-business | What It Really Takes to Add an AI Chatbot to Your Website | for business owners: what a chatbot can answer, what you need to provide, the build process, what affects time and cost
+- [x] ai-for-business | What It Really Takes to Add an AI Chatbot to Your Website | for business owners: what a chatbot can answer, what you need to provide, the build process, what affects time and cost
 - [ ] ai-for-business | 5 AI Features a Small Business Website Can Actually Use | practical features (AI search, Q&A on your content, content assistant, smart forms), who each one suits, what to skip
 - [ ] ai-development | Claude Code on a Real Next.js Project: My Workflow | how Claude Code helps understand a codebase, build components and debug — and how I review its output
 - [ ] web-development | WordPress to Next.js Migration: A Checklist That Protects Your SEO | content, images, URLs and redirects, SEO metadata, Sanity setup — the steps in order
