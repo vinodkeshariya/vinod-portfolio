@@ -179,6 +179,32 @@
   .bg-forest { background: linear-gradient(135deg, var(--color-night) 0%, var(--color-night-2) 100%); }
   .bg-ivory { background: linear-gradient(180deg, var(--color-paper) 0%, var(--color-paper-2) 100%); }
   .bg-lime-grad { background: linear-gradient(135deg, var(--color-lime) 0%, var(--color-lime-2) 100%); }
+
+  /* Blog article body (rendered Markdown) */
+  .article { @apply text-[17px] leading-[1.8] text-ink-2; }
+  .article > * + * { @apply mt-5; }
+  .article h2 { @apply mt-12 scroll-mt-28 font-display text-[clamp(24px,2.6vw,30px)] font-bold leading-tight tracking-[-0.02em] text-accent; }
+  .article h3 { @apply mt-9 scroll-mt-28 font-display text-[20px] font-bold leading-snug text-ink; }
+  .article h2 + *, .article h3 + * { @apply mt-3; }
+  .article strong { @apply font-semibold text-ink; }
+  .article a { @apply font-medium text-accent underline decoration-lime decoration-2 underline-offset-4 transition-colors hover:decoration-accent; }
+  .article ul, .article ol { @apply flex flex-col gap-2 pl-6; }
+  .article ul { @apply list-disc; }
+  .article ol { @apply list-decimal; }
+  .article li::marker { @apply font-semibold text-leaf; }
+  .article li > ul, .article li > ol { @apply mt-2; }
+  .article blockquote { @apply rounded-r-[12px] border-l-4 border-lime bg-accent-soft px-5 py-4 text-ink; }
+  .article code { @apply rounded-[6px] bg-surface-2 px-1.5 py-0.5 font-mono text-[0.88em] text-ink; }
+  .article pre { @apply overflow-x-auto rounded-[14px] bg-night p-5 text-[14px] leading-relaxed; }
+  .article pre code { @apply bg-transparent p-0 text-night-muted; }
+  .article hr { @apply my-10 border-line; }
+  .article table { @apply block w-full overflow-x-auto border-collapse text-[15px]; }
+  .article th, .article td { @apply border border-line px-3.5 py-2.5 text-left align-top; }
+  .article th { @apply bg-surface-2 font-semibold text-ink; }
+  .article img { @apply h-auto w-full rounded-[14px] border border-line bg-surface; }
+  .article figure { @apply my-8; }
+  .article figcaption { @apply mt-2.5 text-center text-[14px] leading-snug text-muted; }
+  .article .review-note { @apply rounded-[10px] border-2 border-dashed border-lime-2 bg-lime/25 px-4 py-3 text-[15px] font-medium text-ink; }
 }
 
 /* Scroll reveal (progressive enhancement — content is visible without JS) */

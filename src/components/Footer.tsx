@@ -1,4 +1,5 @@
 import Link from "next/link";
+import { getPosts } from "@/lib/blog";
 import { ext, hasUpwork, nav, site } from "@/lib/data";
 import { Icon } from "./Icon";
 import { Logo } from "./Logo";
@@ -11,6 +12,9 @@ const socials = [
 ] as const;
 
 export function Footer() {
+  // "Blog" appears automatically once the first post is published
+  const links = [...nav.filter((n) => n.href !== "/"), ...(getPosts().some((p) => !p.draft) ? [{ href: "/blog", label: "Blog" }] : [])];
+
   return (
     <footer className="bg-paper">
       <div className="wrap">
@@ -19,15 +23,13 @@ export function Footer() {
 
           <nav aria-label="Footer">
             <ul className="flex flex-wrap gap-x-8 gap-y-3 text-[15px] font-medium text-ink-2">
-              {nav
-                .filter((n) => n.href !== "/")
-                .map((n) => (
-                  <li key={n.href}>
-                    <Link href={n.href} className="transition-colors hover:text-accent">
-                      {n.label}
-                    </Link>
-                  </li>
-                ))}
+              {links.map((n) => (
+                <li key={n.href}>
+                  <Link href={n.href} className="transition-colors hover:text-accent">
+                    {n.label}
+                  </Link>
+                </li>
+              ))}
             </ul>
           </nav>
 

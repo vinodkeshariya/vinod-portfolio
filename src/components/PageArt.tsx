@@ -1,4 +1,5 @@
 import Image from "next/image";
+import type { CoverImage, Pillar } from "@/lib/blog-meta";
 
 /*
  * Decorative 3D-style illustrations for the inner-page heroes.
@@ -187,6 +188,181 @@ export function MonitorArt() {
         </div>
       </div>
       <Cube tone="lime" className="absolute bottom-[6%] right-[4%] w-[34%] animate-float" />
+    </Stage>
+  );
+}
+
+/* ------------------------------------------------------------------ */
+/* Blog                                                                */
+/* ------------------------------------------------------------------ */
+
+const tilt = (z: number) => `perspective(1200px) rotateY(-18deg) rotateX(10deg) rotateZ(${z}deg)`;
+
+/** A skeleton text line */
+function Bar({ w, className = "", h = 9 }: { w: string; className?: string; h?: number }) {
+  return <span className={`block shrink-0 rounded-full ${className}`} style={{ width: w, height: h }} />;
+}
+
+/** Blog list — a stack of article cards */
+export function ArticlesArt() {
+  return (
+    <Stage>
+      <div className="absolute left-[34%] top-[5%] w-[50%] animate-float-slow">
+        <div
+          style={{ transform: tilt(7), boxShadow: `${depth(10, "#0b2621")}, ${drop}` }}
+          className="aspect-[4/5] rounded-[22px] bg-[linear-gradient(150deg,#2f6a59,#153d35_60%,#0f3029)]"
+        />
+      </div>
+      <div className="absolute left-[25%] top-[10%] w-[50%] animate-float-slow">
+        <div
+          style={{ transform: tilt(2), boxShadow: depth(10, "#97bf4b") }}
+          className="aspect-[4/5] rounded-[22px] bg-[linear-gradient(150deg,#e3efbf,#b9d96c)]"
+        />
+      </div>
+      <div className="absolute left-[12%] top-[15%] w-[54%] animate-float">
+        <div
+          style={{ transform: tilt(-4), boxShadow: `${depth(12, "#cfd1c6")}, ${drop}` }}
+          className="flex flex-col gap-3 rounded-[22px] bg-white p-[7%]"
+        >
+          <span className="relative block aspect-[16/9] overflow-hidden rounded-[12px] bg-[linear-gradient(135deg,#153d35,#204b41)]">
+            <span className="absolute -right-[18%] -top-[40%] aspect-square w-[70%] rounded-full border-2 border-lime/40" />
+            <span className="absolute bottom-[16%] left-[10%] flex w-[60%] flex-col gap-1.5">
+              <Bar w="40%" h={6} className="bg-lime" />
+              <Bar w="90%" h={8} className="bg-white/85" />
+              <Bar w="66%" h={8} className="bg-white/85" />
+            </span>
+          </span>
+          <Bar w="36%" h={12} className="bg-accent-soft ring-1 ring-accent-line" />
+          <Bar w="92%" h={11} className="bg-ink/80" />
+          <Bar w="62%" h={11} className="bg-ink/80" />
+          <Bar w="96%" h={7} className="bg-line-2" />
+          <Bar w="80%" h={7} className="bg-line-2" />
+          <Bar w="34%" className="bg-lime" />
+        </div>
+      </div>
+      <Cube tone="lime" className="absolute bottom-[7%] right-[6%] w-[20%] animate-float" />
+      <Cube tone="forest" className="absolute left-[3%] top-[6%] w-[10%] animate-float-slow" />
+    </Stage>
+  );
+}
+
+/** AI for business — an AI assistant chat window */
+function ChatArt() {
+  return (
+    <Stage>
+      <div className="absolute left-[12%] top-[10%] w-[66%] animate-float">
+        <div
+          style={{ transform: tilt(-4), boxShadow: `${depth(12, "#cfd1c6")}, ${drop}` }}
+          className="flex flex-col gap-3.5 rounded-[22px] bg-white p-[6%]"
+        >
+          <span className="flex items-center gap-2.5 border-b border-line pb-3">
+            <span className="grid size-8 place-items-center rounded-full bg-accent">
+              <svg viewBox="0 0 24 24" className="size-4 text-lime" fill="currentColor">
+                <path d="M12 2l1.9 6.1L20 10l-6.1 1.9L12 18l-1.9-6.1L4 10l6.1-1.9z" />
+              </svg>
+            </span>
+            <Bar w="34%" className="bg-ink/80" />
+            <span className="ml-auto size-2.5 rounded-full bg-ok" />
+          </span>
+          <span className="ml-auto flex w-[64%] flex-col gap-1.5 rounded-[14px] rounded-br-[4px] bg-accent p-3">
+            <Bar w="90%" h={7} className="bg-white/85" />
+            <Bar w="60%" h={7} className="bg-white/85" />
+          </span>
+          <span className="flex w-[78%] flex-col gap-1.5 rounded-[14px] rounded-bl-[4px] bg-accent-soft p-3 ring-1 ring-accent-line">
+            <Bar w="94%" h={7} className="bg-ink/55" />
+            <Bar w="82%" h={7} className="bg-ink/55" />
+            <Bar w="46%" h={7} className="bg-ink/55" />
+          </span>
+          <span className="ml-auto flex w-[44%] flex-col gap-1.5 rounded-[14px] rounded-br-[4px] bg-accent p-3">
+            <Bar w="80%" h={7} className="bg-white/85" />
+          </span>
+          <span className="mt-1 flex items-center gap-2 rounded-full border border-line-2 py-1.5 pl-3.5 pr-1.5">
+            <Bar w="52%" h={7} className="bg-line-2" />
+            <span className="ml-auto grid size-7 place-items-center rounded-full bg-lime">
+              <svg viewBox="0 0 24 24" className="size-3.5 text-accent" fill="none" stroke="currentColor" strokeWidth="3" strokeLinecap="round" strokeLinejoin="round">
+                <path d="M5 12h14M13 6l6 6-6 6" />
+              </svg>
+            </span>
+          </span>
+        </div>
+      </div>
+      <Cube tone="lime" className="absolute bottom-[6%] right-[4%] w-[24%] animate-float-slow" />
+      <Cube tone="forest" className="absolute right-[8%] top-[4%] w-[11%] animate-float-slow" />
+    </Stage>
+  );
+}
+
+/** Web development — a browser window with a page layout */
+function BrowserArt() {
+  return (
+    <Stage>
+      <div className="absolute left-[8%] top-[14%] w-[76%] animate-float">
+        <div
+          style={{ transform: tilt(-4), boxShadow: `${depth(12, "#cfd1c6")}, ${drop}` }}
+          className="flex flex-col gap-3 rounded-[20px] bg-white p-[4.5%]"
+        >
+          <span className="flex items-center gap-1.5">
+            <i className="size-2.5 rounded-full bg-[#ff5f57]" />
+            <i className="size-2.5 rounded-full bg-[#febc2e]" />
+            <i className="size-2.5 rounded-full bg-[#28c840]" />
+            <span className="ml-3 h-3.5 w-[56%] rounded-full bg-surface-2 ring-1 ring-line" />
+          </span>
+          <span className="flex flex-col gap-2 rounded-[12px] bg-[linear-gradient(135deg,#153d35,#204b41)] p-[6%]">
+            <Bar w="26%" h={6} className="bg-lime" />
+            <Bar w="70%" h={10} className="bg-white/90" />
+            <Bar w="48%" h={10} className="bg-white/90" />
+            <Bar w="22%" h={14} className="mt-1 bg-lime" />
+          </span>
+          <span className="grid grid-cols-3 gap-2.5">
+            {[0, 1, 2].map((i) => (
+              <span key={i} className="flex flex-col gap-1.5 rounded-[10px] bg-surface-2 p-2.5 ring-1 ring-line">
+                <span className={`size-4 rounded-[5px] ${i === 1 ? "bg-lime" : "bg-accent"}`} />
+                <Bar w="86%" h={6} className="bg-ink/60" />
+                <Bar w="60%" h={5} className="bg-ink/30" />
+              </span>
+            ))}
+          </span>
+        </div>
+      </div>
+      <Cube tone="forest" className="absolute bottom-[6%] left-[3%] w-[17%] animate-float-slow" />
+      <Cube tone="lime" className="absolute right-[3%] top-[4%] w-[12%] animate-float-slow" />
+    </Stage>
+  );
+}
+
+/** Honest takes — a quote mark on the forest tile */
+function QuoteArt() {
+  return (
+    <TileArt>
+      <svg viewBox="0 0 100 100" className="w-[56%] drop-shadow-[0_0_14px_rgb(185_217_108/0.6)]" fill="#b9d96c">
+        <path d="M18 70V52c0-14 7-25 22-30l4 8c-8 4-12 9-12 16h10v24zm40 0V52c0-14 7-25 22-30l4 8c-8 4-12 9-12 16h10v24z" />
+      </svg>
+    </TileArt>
+  );
+}
+
+/** Blog post hero art for a category */
+export function PillarArt({ pillar }: { pillar: Pillar }) {
+  if (pillar === "ai-for-business") return <ChatArt />;
+  if (pillar === "ai-development") return <MonitorArt />;
+  if (pillar === "web-development") return <BrowserArt />;
+  return <QuoteArt />;
+}
+
+/** Blog post hero art when the post has its own cover image */
+export function CoverFrameArt({ cover }: { cover: CoverImage }) {
+  return (
+    <Stage>
+      <div className="absolute left-[7%] top-[15%] w-[84%] animate-float">
+        <div
+          style={{ transform: "perspective(1300px) rotateY(-18deg) rotateX(9deg) rotateZ(-4deg)", boxShadow: `${depth(12, "#cfd1c6")}, ${drop}` }}
+          className="rounded-[20px] bg-white p-[2.6%]"
+        >
+          <Image src={cover.src} alt="" width={cover.width} height={cover.height} loading="eager" sizes="440px" className="h-auto w-full rounded-[12px]" />
+        </div>
+      </div>
+      <Cube tone="forest" className="absolute bottom-[6%] left-[3%] w-[16%] animate-float-slow" />
+      <Cube tone="lime" className="absolute right-[3%] top-[5%] w-[11%] animate-float-slow" />
     </Stage>
   );
 }
