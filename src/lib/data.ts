@@ -28,6 +28,16 @@ export const site = {
   },
 } as const;
 
+/**
+ * Google tools — paste the values here; empty means "off".
+ * - gaId: Google Analytics 4 measurement ID ("G-XXXXXXXXXX"). Loads only on the live Vercel site.
+ * - searchConsole: the `content` code from Search Console's "HTML tag" verification method.
+ */
+export const google = {
+  gaId: "G-E8HZGHQXZ6" as string,
+  searchConsole: "8xLfxyLK3cUBb3JjKyts2Qt5uo_Gw3GANt0Go1fBa_c" as string,
+};
+
 /** True once a real Upwork profile URL has been added */
 export const hasUpwork = (site.socials.upwork as string) !== "#";
 

@@ -2,6 +2,7 @@
 
 import { useState, useTransition } from "react";
 import { sendInquiry } from "@/app/contact/actions";
+import { track } from "@/lib/analytics";
 import { budgets, projectTypes, site } from "@/lib/data";
 import { Icon } from "./Icon";
 
@@ -47,7 +48,11 @@ export function ContactForm() {
     startSending(async () => {
       try {
         const res = await sendInquiry(data);
-        if (res.ok) return setStatus("sent");
+        if (res.ok) {
+          // no personal data — only what helps see which services bring leads
+          track("generate_lead", { form: "contact", project_type: text(data, "type"), budget: text(data, "budget") || "not_set" });
+          return setStatus("sent");
+        }
         if (res.reason === "invalid") return setErrors(res.errors ?? {});
         setStatus(res.reason === "limited" ? "limited" : "failed");
       } catch {

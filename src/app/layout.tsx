@@ -4,8 +4,12 @@ import { Footer } from "@/components/Footer";
 import { Header } from "@/components/Header";
 import { MobileCta } from "@/components/MobileCta";
 import { RevealRoot } from "@/components/RevealRoot";
-import { site } from "@/lib/data";
+import { Analytics } from "@/components/Analytics";
+import { google, site } from "@/lib/data";
 import "./globals.css";
+
+/** Analytics runs only on the live Vercel site — not on localhost, preview deploys or the old Netlify copy */
+const gaId = /^G-[A-Z0-9]+$/.test(google.gaId) && process.env.VERCEL_ENV === "production" ? google.gaId : null;
 
 const manrope = Manrope({ subsets: ["latin"], weight: ["600", "700", "800"], variable: "--font-manrope", display: "swap" });
 const inter = Inter({ subsets: ["latin"], weight: ["400", "500", "600", "700"], variable: "--font-inter", display: "swap" });
@@ -34,6 +38,7 @@ export const metadata: Metadata = {
     images: [{ url: "/og.png", width: 1200, height: 630, alt: `${site.name} — ${site.role}` }],
   },
   twitter: { card: "summary_large_image", images: ["/og.png"] },
+  ...(google.searchConsole && { verification: { google: google.searchConsole } }),
 };
 
 export const viewport: Viewport = {
@@ -64,6 +69,7 @@ export default function RootLayout({ children }: { children: React.ReactNode }) 
         <Footer />
         <MobileCta />
         <RevealRoot />
+        {gaId && <Analytics gaId={gaId} />}
       </body>
     </html>
   );
