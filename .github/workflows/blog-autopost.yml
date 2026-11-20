@@ -1,0 +1,125 @@
+# Weekly blog auto-post.
+#   1. Gemini writes the next topic from content/blog/_topics.md using the site's own data
+#   2. Checks: content rules + AI fact-check (one automatic fix), then the site build
+#   3. Approval mode (default): the post is opened as a draft pull request and Vinod gets an email
+#      with a "Preview & publish" link — it only goes live when he presses Publish.
+#      AUTO_PUBLISH=true: posts that pass every check are published straight away instead.
+# Run it by hand from the Actions tab ("Run workflow").
+#
+# Repository secrets: GEMINI_API_KEY, RESEND_API_KEY, BLOG_REVIEW_SECRET, BLOG_GITHUB_TOKEN
+# (BLOG_GITHUB_TOKEN = fine-grained token with Contents + Pull requests read/write on this repo)
+
+name: Blog auto-post
+
+on:
+  schedule:
+    - cron: "30 4 * * 1" # every Monday, 10:00 India time
+  workflow_dispatch:
+    inputs:
+      topic:
+        description: 'Optional: write about this instead of the next queued topic — "pillar | Title | angle"'
+        required: false
+        default: ""
+
+env:
+  AUTO_PUBLISH: "false" # "true" = publish posts that pass every check without asking
+
+permissions:
+  contents: write
+  pull-requests: write
+
+concurrency:
+  group: blog-autopost
+  cancel-in-progress: false
+
+jobs:
+  post:
+    runs-on: ubuntu-latest
+    timeout-minutes: 45
+    steps:
+      - uses: actions/checkout@v4
+
+      - uses: actions/setup-node@v4
+        with:
+          node-version: 24
+          cache: npm
+
+      - run: npm ci
+
+      - name: Write and check the post with Gemini
+        id: post
+        env:
+          GEMINI_API_KEY: ${{ secrets.GEMINI_API_KEY }}
+          TOPIC: ${{ github.event.inputs.topic }}
+        run: node scripts/blog/autopost.mjs
+
+      - name: Build the site with the new post
+        id: build
+        if: steps.post.outputs.status == 'publish' || steps.post.outputs.status == 'review'
+        continue-on-error: true
+        run: npm run build
+
+      - name: Send for approval (or publish)
+        id: ship
+        if: steps.post.outputs.status == 'publish' || steps.post.outputs.status == 'review'
+        env:
+          GH_TOKEN: ${{ secrets.BLOG_GITHUB_TOKEN || github.token }}
+          STATUS: ${{ steps.post.outputs.status }}
+          BUILD: ${{ steps.build.outcome }}
+          SLUG: ${{ steps.post.outputs.slug }}
+          TITLE: ${{ steps.post.outputs.title }}
+        run: |
+          git config user.name "github-actions[bot]"
+          git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
+          file="content/blog/$SLUG.md"
+          issues="$RUNNER_TEMP/blog-issues.md"
+
+          # a post that breaks the site build is never offered — try again next week
+          if [ "$BUILD" != "success" ]; then
+            echo "- The site build failed with this post (see the workflow log)." >> "$issues"
+            echo "result=failed" >> "$GITHUB_OUTPUT"
+            exit 0
+          fi
+
+          if [ "$AUTO_PUBLISH" = "true" ] && [ "$STATUS" = "publish" ]; then
+            git add "$file" content/blog/_topics.md
+            git commit -m "Blog: $TITLE"
+            git pull --rebase origin main
+            git push origin HEAD:main
+            echo "result=published" >> "$GITHUB_OUTPUT"
+            exit 0
+          fi
+
+          branch="blog-draft/$SLUG"
+          git checkout -b "$branch"
+          git add "$file"
+          git commit -m "Blog draft: $TITLE"
+          git push -f origin "$branch"
+          {
+            echo "This week's post, waiting for Vinod's approval (sent by email). Publishing from the email merges this pull request."
+            if [ -s "$issues" ]; then echo; echo "### What to check"; cat "$issues"; else echo; echo "All checks passed: content rules, AI fact-check, site build."; fi
+          } > "$RUNNER_TEMP/pr.md"
+          pr=$(gh pr create --base main --head "$branch" --title "Blog draft: $TITLE" --body-file "$RUNNER_TEMP/pr.md")
+          echo "pr=${pr##*/}" >> "$GITHUB_OUTPUT"
+
+          # mark the topic as used on main so next week moves on to a new one
+          git checkout main
+          git add content/blog/_topics.md
+          git commit -m "Blog topic queue: \"$TITLE\" sent for approval" || true
+          git pull --rebase origin main
+          git push origin HEAD:main
+          echo "result=approval" >> "$GITHUB_OUTPUT"
+
+      - name: Email the result
+        if: always()
+        env:
+          RESEND_API_KEY: ${{ secrets.RESEND_API_KEY }}
+          BLOG_REVIEW_SECRET: ${{ secrets.BLOG_REVIEW_SECRET }}
+          RESULT: ${{ steps.ship.outputs.result || steps.post.outputs.status || 'failed' }}
+          TITLE: ${{ steps.post.outputs.title }}
+          DESCRIPTION: ${{ steps.post.outputs.description }}
+          URL: ${{ steps.post.outputs.url }}
+          PR_NUMBER: ${{ steps.ship.outputs.pr }}
+          RUN_URL: ${{ github.server_url }}/${{ github.repository }}/actions/runs/${{ github.run_id }}
+          ISSUES_FILE: ${{ runner.temp }}/blog-issues.md
+        run: node scripts/blog/notify.mjs

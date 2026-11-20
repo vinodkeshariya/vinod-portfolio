@@ -1,0 +1,31 @@
+# Daily: reminds Vinod about a blog draft still waiting for approval after 3 days,
+# and removes drafts (unpublished) after 7 days. See scripts/blog/reminders.mjs.
+
+name: Blog approval reminders
+
+on:
+  schedule:
+    - cron: "0 5 * * *" # every day, 10:30 India time
+  workflow_dispatch:
+
+permissions:
+  contents: write
+  pull-requests: write
+
+jobs:
+  remind:
+    runs-on: ubuntu-latest
+    timeout-minutes: 10
+    steps:
+      - uses: actions/checkout@v4
+
+      - uses: actions/setup-node@v4
+        with:
+          node-version: 24
+
+      - name: Remind about waiting drafts, remove expired ones
+        env:
+          GITHUB_TOKEN: ${{ github.token }}
+          RESEND_API_KEY: ${{ secrets.RESEND_API_KEY }}
+          BLOG_REVIEW_SECRET: ${{ secrets.BLOG_REVIEW_SECRET }}
+        run: node scripts/blog/reminders.mjs
