@@ -2,6 +2,7 @@
 
 import { headers } from "next/headers";
 import { budgets, projectTypes, site } from "@/lib/data";
+import { inquiryEmail } from "@/lib/inquiry-email";
 
 export type InquiryResult = { ok: true } | { ok: false; reason: "invalid" | "limited" | "unavailable"; errors?: Record<string, string> };
 
@@ -55,18 +56,17 @@ export async function sendInquiry(data: FormData): Promise<InquiryResult> {
     return { ok: false, reason: "unavailable" };
   }
 
-  const text = [
-    `Name: ${name}`,
-    `Email: ${email}`,
-    `Company / website: ${company || "—"}`,
-    `Project type: ${(projectTypes as readonly string[]).includes(type) ? type : "—"}`,
-    `Budget: ${(budgets as readonly string[]).includes(budget) ? budget : "—"}`,
-    "",
+  const { subject, text, html } = inquiryEmail({
+    name,
+    email,
+    company,
+    // only accept the options the form offers
+    type: (projectTypes as readonly string[]).includes(type) ? type : "",
+    budget: (budgets as readonly string[]).includes(budget) ? budget : "",
     message,
-    "",
-    "—",
-    `Sent from the contact form on ${site.url}. Reply to this email to answer ${name} directly.`,
-  ].join("\n");
+    siteUrl: site.url,
+    receivedAt: new Date(),
+  });
 
   try {
     const res = await fetch("https://api.resend.com/emails", {
@@ -76,8 +76,9 @@ export async function sendInquiry(data: FormData): Promise<InquiryResult> {
         from: process.env.CONTACT_FROM || "Portfolio Contact <onboarding@resend.dev>",
         to: [site.email],
         reply_to: email,
-        subject: `New project inquiry from ${name}`,
+        subject,
         text,
+        html,
       }),
       signal: AbortSignal.timeout(10_000),
     });
