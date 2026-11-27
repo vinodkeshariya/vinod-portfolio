@@ -138,7 +138,8 @@ function CtaButton({ link, primary }: { link: CtaLink; primary?: boolean }) {
   const cls = primary
     ? "btn btn-primary min-h-14 w-full px-8 text-[16px] sm:w-auto"
     : "btn btn-line min-h-14 w-full px-7 text-[15.5px] sm:w-auto";
-  const isFile = link.href.startsWith("/") && /\.[a-z0-9]{2,4}$/i.test(link.href);
+  // a document (e.g. the résumé PDF, local or in Vercel Blob with ?download=1) is downloaded, not opened
+  const isFile = /\.(pdf|docx?)$/i.test(link.href.split(/[?#]/)[0]);
   const isRoute = link.href.startsWith("/") && !isFile;
   const icon = primary ? <Icon name="arrow" /> : isFile ? <Icon name="download" /> : null;
   return isRoute ? (
@@ -148,7 +149,7 @@ function CtaButton({ link, primary }: { link: CtaLink; primary?: boolean }) {
       href={link.href}
       className={cls}
       {...(isFile ? { download: "" } : {})}
-      {...(link.href.startsWith("http") ? { target: "_blank", rel: "noopener noreferrer" } : {})}
+      {...(link.href.startsWith("http") && !isFile ? { target: "_blank", rel: "noopener noreferrer" } : {})}
     >
       {link.label} {icon}
     </a>

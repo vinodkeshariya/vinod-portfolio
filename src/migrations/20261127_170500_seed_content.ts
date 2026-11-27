@@ -23,8 +23,10 @@ type Seed = {
 
 const ROOT = path.resolve(import.meta.dirname, '..', '..')
 const TYPES: Record<string, string> = { '.webp': 'image/webp', '.png': 'image/png', '.jpg': 'image/jpeg', '.pdf': 'application/pdf' }
-// the hooks that refresh the live pages have nothing to refresh while deploying
-const context = { skipRevalidate: true }
+// The hooks that refresh the live pages have nothing to refresh while deploying.
+// A NEW object for every call: Payload's storage plugin writes flags into the request context, and a
+// shared object would carry its "skip upload" flag into the next file (only the first file reached Blob).
+const ctx = () => ({ skipRevalidate: true })
 
 export async function up({ payload, req }: MigrateUpArgs): Promise<void> {
   const seed: Seed = JSON.parse(fs.readFileSync(path.join(import.meta.dirname, 'seed', 'content.json'), 'utf8'))
@@ -42,7 +44,7 @@ export async function up({ payload, req }: MigrateUpArgs): Promise<void> {
       data: { alt: m.alt },
       file: { data, mimetype: TYPES[ext] ?? 'application/octet-stream', name, size: data.length },
       req,
-      context,
+      context: ctx(),
     })
     ids.set(m.key, doc.id)
     urls.set(m.key, doc.url ?? '')
@@ -64,18 +66,18 @@ export async function up({ payload, req }: MigrateUpArgs): Promise<void> {
   const inline = (md: string) => md.replace(/\(@media:([^\s)]+)/g, (_, key: string) => `(${urls.get(key) ?? key}`)
 
   // 2. pages and settings
-  await payload.updateGlobal({ slug: 'site-settings', data: link(seed.siteSettings), req, context })
-  await payload.updateGlobal({ slug: 'home-page', data: link(seed.homePage), req, context })
-  await payload.updateGlobal({ slug: 'about-page', data: link(seed.aboutPage), req, context })
-  await payload.updateGlobal({ slug: 'services-page', data: link(seed.servicesPage), req, context })
-  await payload.updateGlobal({ slug: 'contact-page', data: link(seed.contactPage), req, context })
+  await payload.updateGlobal({ slug: 'site-settings', data: link(seed.siteSettings), req, context: ctx() })
+  await payload.updateGlobal({ slug: 'home-page', data: link(seed.homePage), req, context: ctx() })
+  await payload.updateGlobal({ slug: 'about-page', data: link(seed.aboutPage), req, context: ctx() })
+  await payload.updateGlobal({ slug: 'services-page', data: link(seed.servicesPage), req, context: ctx() })
+  await payload.updateGlobal({ slug: 'contact-page', data: link(seed.contactPage), req, context: ctx() })
 
   // 3. collections, in their original order
-  for (const p of seed.projects) await payload.create({ collection: 'projects', data: link(p) as never, req, context })
-  for (const f of seed.faqs) await payload.create({ collection: 'faqs', data: f as never, req, context })
+  for (const p of seed.projects) await payload.create({ collection: 'projects', data: link(p) as never, req, context: ctx() })
+  for (const f of seed.faqs) await payload.create({ collection: 'faqs', data: f as never, req, context: ctx() })
   for (const p of seed.posts) {
     const data = link({ ...p, content: inline(String(p.content)), source: 'manual', _status: 'published' })
-    await payload.create({ collection: 'posts', data: data as never, draft: false, req, context })
+    await payload.create({ collection: 'posts', data: data as never, draft: false, req, context: ctx() })
   }
   payload.logger.info(
     `[seed] ${seed.media.length} files, ${seed.projects.length} projects, ${seed.faqs.length} FAQs, ${seed.posts.length} blog posts and the page settings are in the CMS`,
