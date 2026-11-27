@@ -46,6 +46,9 @@ export default buildConfig({
   plugins: [
     vercelBlobStorage({
       enabled: Boolean(process.env.BLOB_READ_WRITE_TOKEN),
+      // keep the plugin's fields (e.g. `prefix`) in the schema even when the token is missing locally,
+      // so migrations made on a laptop match the live database
+      alwaysInsertFields: true,
       collections: { media: true },
       token: process.env.BLOB_READ_WRITE_TOKEN || "",
       clientUploads: true, // large files go straight from the browser to Blob (Vercel limits request bodies to 4.5 MB)
