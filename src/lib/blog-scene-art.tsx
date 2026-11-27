@@ -23,6 +23,15 @@ function loadFonts() {
   return fonts;
 }
 
+/** Vinod's round photo as a data URI (the generated images can't load site URLs while building) */
+let avatar: Promise<string> | null = null;
+function loadAvatar() {
+  avatar ??= readFile(join(process.cwd(), "public/images/vinod-photo-round.png")).then((b) => `data:image/png;base64,${b.toString("base64")}`);
+  return avatar;
+}
+
+type DrawProps = { l: string[]; avatar: string };
+
 /** Labels for a scene, padded / clipped to what the drawing expects */
 function labelsOf(scene: Scene) {
   const spec = SCENES[scene.kind].labels;
@@ -58,7 +67,7 @@ const Check = ({ size = 30, bg = C.forest, tick = C.lime }: { size?: number; bg?
 
 /* ---------- scenes (each about 430 px wide) ---------- */
 
-function Chat({ l }: { l: string[] }) {
+function Chat({ l }: DrawProps) {
   return (
     <div style={card("#ffffff", { width: 420, padding: 24, gap: 14 })}>
       <div style={row({ gap: 12, paddingBottom: 12, borderBottom: `2px solid ${C.line}` })}>
@@ -96,7 +105,7 @@ const codeLines: [number, number, string][] = [
   [0, 46, "#b9d96c"], [1, 64, "#8fc1e8"], [1, 50, "#e3c48a"], [2, 70, "#d5dbd2"], [2, 40, "#b9d96c"], [1, 58, "#8fc1e8"], [0, 26, "#d5dbd2"], [0, 52, "#b9d96c"],
 ];
 
-function Code({ l }: { l: string[] }) {
+function Code({ l }: DrawProps) {
   return (
     <div style={{ display: "flex", position: "relative" }}>
       <div style={card("#1b1f1c", { width: 420, padding: 24, gap: 13 })}>
@@ -127,7 +136,7 @@ function Code({ l }: { l: string[] }) {
   );
 }
 
-function Browser({ l }: { l: string[] }) {
+function Browser({ l }: DrawProps) {
   return (
     <div style={card("#ffffff", { width: 430, padding: 20, gap: 14 })}>
       <div style={row({ gap: 8 })}>
@@ -156,7 +165,7 @@ function Browser({ l }: { l: string[] }) {
   );
 }
 
-function Search({ l }: { l: string[] }) {
+function Search({ l }: DrawProps) {
   return (
     <div style={card("#ffffff", { width: 430, padding: 22, gap: 14 })}>
       <div style={row({ gap: 12, padding: "12px 16px", borderRadius: 999, border: `2px solid ${C.forest}` })}>
@@ -187,7 +196,7 @@ function Search({ l }: { l: string[] }) {
   );
 }
 
-function Migration({ l }: { l: string[] }) {
+function Migration({ l }: DrawProps) {
   const side = (title: string, dark: boolean) => (
     <div style={card(dark ? C.forest : "#ffffff", { width: 178, padding: 18, gap: 12 })}>
       <Text size={15} weight={800} color={dark ? C.lime : C.ink}>
@@ -214,7 +223,7 @@ function Migration({ l }: { l: string[] }) {
   );
 }
 
-function Cms({ l }: { l: string[] }) {
+function Cms({ l }: DrawProps) {
   return (
     <div style={card("#ffffff", { width: 430, padding: 22, gap: 14 })}>
       <div style={row({ gap: 10 })}>
@@ -247,7 +256,7 @@ function Cms({ l }: { l: string[] }) {
   );
 }
 
-function Checklist({ l }: { l: string[] }) {
+function Checklist({ l }: DrawProps) {
   return (
     <div style={card("#ffffff", { width: 420, padding: 24, gap: 12 })}>
       <Bar w={120} h={9} bg={C.lime} />
@@ -261,7 +270,7 @@ function Checklist({ l }: { l: string[] }) {
   );
 }
 
-function Steps({ l }: { l: string[] }) {
+function Steps({ l }: DrawProps) {
   return (
     <div style={card(`linear-gradient(135deg, ${C.forest}, ${C.forest2})`, { width: 400, padding: 26, gap: 0 })}>
       {l.map((label, i) => (
@@ -283,7 +292,7 @@ function Steps({ l }: { l: string[] }) {
   );
 }
 
-function Compare({ l }: { l: string[] }) {
+function Compare({ l }: DrawProps) {
   const side = (title: string, dark: boolean) => (
     <div style={card(dark ? C.forest : "#ffffff", { width: 196, padding: 20, gap: 13 })}>
       <Text size={17} weight={800} color={dark ? C.lime : C.ink}>
@@ -310,7 +319,7 @@ function Compare({ l }: { l: string[] }) {
   );
 }
 
-function Shield({ l }: { l: string[] }) {
+function Shield({ l }: DrawProps) {
   return (
     <div style={card("#ffffff", { width: 420, padding: 26, gap: 14 })}>
       <div style={row({ gap: 16 })}>
@@ -333,7 +342,7 @@ function Shield({ l }: { l: string[] }) {
   );
 }
 
-function Quote({ l }: { l: string[] }) {
+function Quote({ l, avatar }: DrawProps) {
   return (
     <div style={card("linear-gradient(150deg, #eef6d6, #b9d96c)", { width: 400, padding: 34, gap: 18 })}>
       <svg width="80" height="80" viewBox="0 0 100 100" fill={C.forest}>
@@ -343,11 +352,7 @@ function Quote({ l }: { l: string[] }) {
         {l[0]}
       </Text>
       <div style={row({ gap: 12, marginTop: 6 })}>
-        <div style={row({ width: 40, height: 40, borderRadius: 999, background: C.forest, justifyContent: "center" })}>
-          <Text size={15} weight={800} color={C.lime}>
-            {site.initials}
-          </Text>
-        </div>
+        <img src={avatar} width={42} height={42} style={{ borderRadius: 999, border: `2px solid ${C.forest}` }} alt="" />
         <Text size={16} weight={800} color={C.forest}>
           {site.name}
         </Text>
@@ -369,12 +374,12 @@ const mintCube = cube(["#5d9a83", "#3f7a66"], "#2f6a59", "#24574a");
 const forestCube = cube(["#2f6a59", "#1d5145"], "#153d35", "#0e2d27");
 
 /** The scene, tilted, with two cubes — `size` is the square-ish box it sits in */
-function SceneBlock({ scene, width, height, scale = 1, onDark }: { scene: Scene; width: number; height: number; scale?: number; onDark: boolean }) {
+function SceneBlock({ scene, width, height, scale = 1, onDark, avatar }: { scene: Scene; width: number; height: number; scale?: number; onDark: boolean; avatar: string }) {
   const Drawing = draw[scene.kind];
   return (
     <div style={row({ position: "relative", width, height, justifyContent: "center" })}>
       <div style={{ display: "flex", transform: `scale(${scale}) rotate(-4deg)` }}>
-        <Drawing l={labelsOf(scene)} />
+        <Drawing l={labelsOf(scene)} avatar={avatar} />
       </div>
       <img src={limeCube} width={118 * scale} height={131 * scale} style={{ position: "absolute", right: 30 * scale, bottom: 30 * scale }} alt="" />
       <img src={onDark ? mintCube : forestCube} width={62 * scale} height={69 * scale} style={{ position: "absolute", right: 56 * scale, top: 40 * scale }} alt="" />
@@ -389,6 +394,7 @@ export async function coverImage({ title, pillar, scene }: { title: string; pill
   const t = keepDash(title);
   const titleSize = t.length > 64 ? 46 : t.length > 44 ? 52 : 60;
   const host = site.url.replace(/^https?:\/\//, "");
+  const photo = await loadAvatar();
   return new ImageResponse(
     (
       <div style={{ width: "100%", height: "100%", display: "flex", position: "relative", background: `linear-gradient(135deg, ${C.forest} 0%, ${C.forest2} 100%)`, fontFamily: "Manrope" }}>
@@ -404,7 +410,7 @@ export async function coverImage({ title, pillar, scene }: { title: string; pill
           </div>
           <div style={{ display: "flex", fontSize: titleSize, fontWeight: 800, lineHeight: 1.13, letterSpacing: -1.4, color: "#ffffff" }}>{t}</div>
           <div style={row({ gap: 16 })}>
-            <div style={row({ width: 58, height: 58, borderRadius: 999, background: C.lime, justifyContent: "center", color: C.forest, fontSize: 23, fontWeight: 800 })}>{site.initials}</div>
+            <img src={photo} width={60} height={60} style={{ borderRadius: 999, border: `3px solid ${C.lime}` }} alt="" />
             <div style={col({ gap: 2 })}>
               <Text size={23} weight={800} color="#ffffff">
                 {site.name}
@@ -417,7 +423,7 @@ export async function coverImage({ title, pillar, scene }: { title: string; pill
         </div>
 
         <div style={{ display: "flex", position: "absolute", left: 690, top: 0 }}>
-          <SceneBlock scene={scene} width={510} height={630} onDark />
+          <SceneBlock scene={scene} width={510} height={630} onDark avatar={photo} />
         </div>
       </div>
     ),
@@ -427,10 +433,11 @@ export async function coverImage({ title, pillar, scene }: { title: string; pill
 
 /** The scene alone on a transparent background (960×860), for the post hero */
 export async function sceneImage(scene: Scene) {
+  const photo = await loadAvatar();
   return new ImageResponse(
     (
       <div style={{ width: "100%", height: "100%", display: "flex", fontFamily: "Manrope" }}>
-        <SceneBlock scene={scene} width={960} height={860} scale={1.6} onDark={false} />
+        <SceneBlock scene={scene} width={960} height={860} scale={1.6} onDark={false} avatar={photo} />
       </div>
     ),
     { width: 960, height: 860, fonts: await loadFonts() },

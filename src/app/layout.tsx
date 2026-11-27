@@ -35,9 +35,9 @@ export const metadata: Metadata = {
     url: "/",
     title: "Vinod Keshariya | AI + Next.js Developer",
     description: site.description,
-    images: [{ url: "/og.png", width: 1200, height: 630, alt: `${site.name} — ${site.role}` }],
+    images: [{ url: "/og-image.png", width: 1200, height: 630, alt: `${site.name} — ${site.role}` }],
   },
-  twitter: { card: "summary_large_image", images: ["/og.png"] },
+  twitter: { card: "summary_large_image", images: ["/og-image.png"] },
   ...(google.searchConsole && { verification: { google: google.searchConsole } }),
 };
 

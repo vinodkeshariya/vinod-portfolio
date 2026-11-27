@@ -16,8 +16,8 @@ export function pageMeta({ title, description, path }: { title: string; descript
       url: path,
       title,
       description,
-      images: [{ url: "/og.png", width: 1200, height: 630, alt: `${site.name} — ${site.role}` }],
+      images: [{ url: "/og-image.png", width: 1200, height: 630, alt: `${site.name} — ${site.role}` }],
     },
-    twitter: { card: "summary_large_image", title, description, images: ["/og.png"] },
+    twitter: { card: "summary_large_image", title, description, images: ["/og-image.png"] },
   };
 }

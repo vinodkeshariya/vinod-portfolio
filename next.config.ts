@@ -8,7 +8,7 @@ const nextConfig: NextConfig = {
   outputFileTracingIncludes: {
     "/*": ["./content/blog/**/*.md"],
     // fonts for the generated blog cover / scene images (also drawn at request time on the review page)
-    "/blog/**": ["./node_modules/@fontsource/manrope/files/manrope-latin-{600,800}-normal.woff"],
+    "/blog/**": ["./node_modules/@fontsource/manrope/files/manrope-latin-{600,800}-normal.woff", "./public/images/vinod-photo-round.png"],
   },
 };
 

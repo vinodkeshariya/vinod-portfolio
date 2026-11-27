@@ -18,6 +18,7 @@ export function personLd() {
     name: site.name,
     url: site.url,
     jobTitle: site.role,
+    image: abs("/images/vinod-photo.webp"),
     description: site.description,
     email: `mailto:${site.email}`,
     telephone: site.phone.replace(/\s/g, ""),

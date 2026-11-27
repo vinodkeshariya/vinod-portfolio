@@ -3,6 +3,7 @@ import { formatDate, keepDash, pillars, type Post } from "@/lib/blog-meta";
 import { site } from "@/lib/data";
 import { CaseNav } from "./CaseNav";
 import { Icon } from "./Icon";
+import { LogoMark } from "./Logo";
 import { CoverFrameArt, SceneArt } from "./PageArt";
 import { PageHero } from "./ui";
 
@@ -83,9 +84,7 @@ export function PostView({ post, badge, sceneSrc }: { post: Post; badge?: React.
             <div className="grid gap-5 md:grid-cols-2">
               <div className="tile flex flex-col gap-3 p-6">
                 <div className="flex items-center gap-3">
-                  <span className="grid size-12 place-items-center rounded-full bg-accent font-display text-[16px] font-bold text-lime">
-                    {site.initials}
-                  </span>
+                  <LogoMark className="size-12 shrink-0" />
                   <span className="leading-tight">
                     <strong className="block text-[16px] text-ink">{site.name}</strong>
                     <small className="text-[13px] text-muted">{site.role}</small>
