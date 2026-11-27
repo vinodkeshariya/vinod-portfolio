@@ -1,5 +1,4 @@
 import Link from "next/link";
-import { getPosts } from "@/lib/blog";
 import { ext, hasUpwork, nav, site } from "@/lib/data";
 import { Icon } from "./Icon";
 import { Logo } from "./Logo";
@@ -12,8 +11,7 @@ const socials = [
 ] as const;
 
 export function Footer() {
-  // "Blog" appears automatically once the first post is published
-  const links = [...nav.filter((n) => n.href !== "/"), ...(getPosts().some((p) => !p.draft) ? [{ href: "/blog", label: "Blog" }] : [])];
+  const links = nav.filter((n) => n.href !== "/");
 
   return (
     <footer className="bg-paper">
