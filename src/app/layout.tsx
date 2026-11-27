@@ -1,5 +1,6 @@
 import type { Metadata, Viewport } from "next";
 import { Inter, JetBrains_Mono, Manrope } from "next/font/google";
+import { Assistant } from "@/components/Assistant";
 import { Footer } from "@/components/Footer";
 import { Header } from "@/components/Header";
 import { MobileCta } from "@/components/MobileCta";
@@ -68,6 +69,7 @@ export default function RootLayout({ children }: { children: React.ReactNode }) 
         <main id="main">{children}</main>
         <Footer />
         <MobileCta />
+        <Assistant />
         <RevealRoot />
         {gaId && <Analytics gaId={gaId} />}
       </body>
