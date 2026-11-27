@@ -1,7 +1,7 @@
 "use client";
 
 import { useState, useTransition } from "react";
-import { sendInquiry } from "@/app/contact/actions";
+import { sendInquiry } from "@/app/(frontend)/contact/actions";
 import { track } from "@/lib/analytics";
 import { budgets, projectTypes, site } from "@/lib/data";
 import { Icon } from "./Icon";

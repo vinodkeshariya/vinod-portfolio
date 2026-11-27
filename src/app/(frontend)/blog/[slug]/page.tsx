@@ -38,9 +38,10 @@ export async function generateMetadata({ params }: Props): Promise<Metadata> {
       modifiedTime: post.updated ?? post.date,
       authors: [site.url],
       tags: post.tags,
-      // image: the generated ./opengraph-image (branded cover with the post title)
+      // the generated branded cover (title + scene) — see ./cover.png/route.ts
+      images: [{ url: `/blog/${post.slug}/cover.png`, width: 1200, height: 630, alt: post.title }],
     },
-    twitter: { card: "summary_large_image", title, description: post.description },
+    twitter: { card: "summary_large_image", title, description: post.description, images: [`/blog/${post.slug}/cover.png`] },
     ...(post.draft && { robots: { index: false } }),
   };
 }

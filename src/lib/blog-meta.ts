@@ -82,7 +82,7 @@ export type Post = PostMeta & { html: string; headings: { id: string; label: str
 
 /** The post's cover: its own image, or the generated branded one */
 export function coverOf(p: PostMeta): CoverImage {
-  return p.cover ?? { src: `/blog/${p.slug}/opengraph-image`, alt: `Cover image: ${p.title}`, width: 1200, height: 630 };
+  return p.cover ?? { src: `/blog/${p.slug}/cover.png`, alt: `Cover image: ${p.title}`, width: 1200, height: 630 };
 }
 
 /** Keeps a dash on the same line as the word before it, so a title line never starts with "—" */

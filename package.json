@@ -6,13 +6,27 @@
     "dev": "next dev",
     "build": "next build",
     "start": "next start",
-    "typecheck": "tsc --noEmit"
+    "typecheck": "tsc --noEmit",
+    "payload": "payload --disable-transpile",
+    "generate:types": "payload generate:types --disable-transpile",
+    "generate:importmap": "payload generate:importmap --disable-transpile",
+    "migrate": "payload migrate --disable-transpile",
+    "migrate:create": "node scripts/migrate-create.mjs",
+    "migrate:status": "payload migrate:status --disable-transpile",
+    "vercel-build": "payload migrate --disable-transpile && next build"
   },
   "dependencies": {
     "@fontsource/manrope": "^5.3.0",
+    "@payloadcms/db-postgres": "3.94.2",
+    "@payloadcms/next": "3.94.2",
+    "@payloadcms/richtext-lexical": "3.94.2",
+    "@payloadcms/storage-vercel-blob": "3.94.2",
+    "@payloadcms/ui": "3.94.2",
+    "graphql": "^16.15.0",
     "gray-matter": "^4.0.3",
     "image-size": "^2.1.0",
     "next": "^16.4.6",
+    "payload": "3.94.2",
     "react": "^19.3.1",
     "react-dom": "^19.3.1",
     "rehype-sanitize": "^6.0.0",
@@ -21,6 +35,7 @@
     "remark-gfm": "^4.0.1",
     "remark-parse": "^11.0.0",
     "remark-rehype": "^11.1.2",
+    "sharp": "^0.35.5",
     "unified": "^11.0.5"
   },
   "devDependencies": {
@@ -31,5 +46,8 @@
     "postcss": "^8.5.33",
     "tailwindcss": "^4.3.5",
     "typescript": "^5.9.3"
+  },
+  "engines": {
+    "node": "24.x"
   }
 }

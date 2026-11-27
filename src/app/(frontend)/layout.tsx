@@ -1,5 +1,4 @@
 import type { Metadata, Viewport } from "next";
-import { Inter, JetBrains_Mono, Manrope } from "next/font/google";
 import { Assistant } from "@/components/Assistant";
 import { Footer } from "@/components/Footer";
 import { Header } from "@/components/Header";
@@ -7,14 +6,11 @@ import { MobileCta } from "@/components/MobileCta";
 import { RevealRoot } from "@/components/RevealRoot";
 import { Analytics } from "@/components/Analytics";
 import { google, site } from "@/lib/data";
+import { fontVariables } from "@/lib/fonts";
 import "./globals.css";
 
 /** Analytics runs only on the live Vercel site — not on localhost, preview deploys or the old Netlify copy */
 const gaId = /^G-[A-Z0-9]+$/.test(google.gaId) && process.env.VERCEL_ENV === "production" ? google.gaId : null;
-
-const manrope = Manrope({ subsets: ["latin"], weight: ["600", "700", "800"], variable: "--font-manrope", display: "swap" });
-const inter = Inter({ subsets: ["latin"], weight: ["400", "500", "600", "700"], variable: "--font-inter", display: "swap" });
-const jetbrains = JetBrains_Mono({ subsets: ["latin"], weight: ["400", "500"], variable: "--font-jetbrains", display: "swap" });
 
 export const metadata: Metadata = {
   metadataBase: new URL(site.url),
@@ -48,7 +44,7 @@ export const viewport: Viewport = {
 
 export default function RootLayout({ children }: { children: React.ReactNode }) {
   return (
-    <html lang="en" className={`${manrope.variable} ${inter.variable} ${jetbrains.variable}`} suppressHydrationWarning>
+    <html lang="en" className={fontVariables} suppressHydrationWarning>
       <head>
         {/* Enable reveal animations before first paint to avoid a flash of content */}
         <script

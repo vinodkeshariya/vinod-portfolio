@@ -6,5 +6,8 @@ next-env.d.ts
 .env*.local
 .DS_Store
 
+# Payload: local uploads during development (production uploads go to Vercel Blob)
+/media
+
 # Original static HTML mockups (kept locally only)
 design/
