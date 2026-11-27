@@ -107,6 +107,9 @@
   h1, h2 { font-weight: 800; }
   h3, h4 { font-weight: 700; }
   ::selection { @apply bg-lime text-ink; }
+  /* Tailwind v4 gives buttons the default arrow — show the hand on everything clickable */
+  button:not(:disabled), [role="button"], summary, select { cursor: pointer; }
+  button:disabled { cursor: not-allowed; }
   :focus-visible { outline: 2px solid var(--color-accent); outline-offset: 3px; border-radius: 6px; }
   /* Lime focus ring on forest backgrounds, where a green ring would disappear */
   :is(.bg-forest, .bg-night, .bg-accent) :focus-visible, .btn-primary:focus-visible { outline-color: var(--color-lime); }
