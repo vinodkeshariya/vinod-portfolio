@@ -2,49 +2,36 @@ import { HeroShowcase } from "@/components/HeroShowcase";
 import Link from "next/link";
 import { Icon } from "@/components/Icon";
 import { CtaBand, PageHero, SectionHead } from "@/components/ui";
+import { rich } from "@/components/Rich";
 import { getContent } from "@/lib/content";
-import { ext, hasUpwork, type IconName } from "@/lib/data";
+import { ext, hasUpwork } from "@/lib/data";
 import { pageMeta } from "@/lib/seo";
 
-export const generateMetadata = () => pageMeta({
-  title: "Hire an AI + Next.js Developer | Vinod Keshariya",
-  description:
-    "Hire Vinod Keshariya, an AI-powered Full-Stack Developer for AI integrations, Next.js and React websites, Sanity CMS and WordPress migrations.",
-  path: "/hire-me",
-});
-
-const getItems: { icon: IconName; title: string; text: string }[] = [
-  { icon: "layers", title: "Modern stack", text: "Next.js, React, TypeScript, Tailwind CSS and Sanity CMS — with WordPress and Elementor when that suits your team better." },
-  { icon: "spark", title: "AI-powered workflow", text: "Claude, Claude Code and ChatGPT help me plan, build, debug and test faster — every implementation is reviewed and tested by me." },
-  { icon: "chat", title: "AI integration", text: "AI assistants, chat interfaces and intelligent search added to Next.js websites with suitable AI APIs." },
-];
-
-const expect: { icon: IconName; title: string; text: string }[] = [
-  { icon: "chat", title: "Transparent communication", text: "Regular updates and a clear timeline from day one." },
-  { icon: "clock", title: "On-time delivery", text: "Realistic estimates and disciplined execution so deadlines are respected." },
-  { icon: "shield", title: "Reviewed quality", text: "AI speeds up the work; I review, debug and test every implementation before delivery." },
-  { icon: "users", title: "Long-term thinking", text: "Solutions built to be extended and maintained, not just launched once." },
-];
+export async function generateMetadata() {
+  const { seo } = (await getContent()).texts.hireMe;
+  return pageMeta({ title: seo.title, description: seo.description, path: "/hire-me" });
+}
 
 export default async function HireMePage() {
-  const { process, services, site } = await getContent();
+  const { process, services, showcase, site, texts } = await getContent();
+  const t = texts.hireMe;
   const upwork = hasUpwork(site);
   const areas = services.map((sv) => sv.title);
 
   return (
     <>
       <PageHero
-        aside={<HeroShowcase />}
-        eyebrow="Hire Me · Open for work"
-        title={<>Looking for an <span className="text-leaf">AI + Next.js developer?</span></>}
-        lead="AI integrations, modern Next.js and React websites, Sanity CMS and WordPress migrations — built with an AI-powered workflow, reviewed by hand, with clear communication throughout."
+        aside={<HeroShowcase shots={showcase} />}
+        eyebrow={t.hero.eyebrow}
+        title={rich(t.hero.title, { hl: "text-leaf" })}
+        lead={t.hero.lead}
       >
         <div className="grid w-full gap-3 sm:flex sm:w-auto sm:flex-wrap">
-          <Link href="/contact" className="btn btn-primary min-h-13 px-7">Let&apos;s Build Your Project <Icon name="arrow" /></Link>
+          <Link href="/contact" className="btn btn-primary min-h-13 px-7">{t.hero.primary} <Icon name="arrow" /></Link>
           {upwork ? (
-            <Link href={site.socials.upwork} {...ext(site.socials.upwork)} className="btn btn-line min-h-13 px-7">Hire Me on Upwork <Icon name="arrowUpRight" /></Link>
+            <Link href={site.socials.upwork} {...ext(site.socials.upwork)} className="btn btn-line min-h-13 px-7">{t.hero.upwork} <Icon name="arrowUpRight" /></Link>
           ) : (
-            <Link href="/projects" className="btn btn-line min-h-13 px-7">Explore My Work</Link>
+            <Link href="/projects" className="btn btn-line min-h-13 px-7">{t.hero.work}</Link>
           )}
         </div>
       </PageHero>
@@ -52,9 +39,9 @@ export default async function HireMePage() {
       {/* ============ WHAT YOU GET ============ */}
       <section className="bg-paper py-14 md:py-16">
         <div className="wrap">
-          <SectionHead eyebrow="What you get" title={<>Modern development <span className="text-leaf">expertise.</span></>} />
+          <SectionHead eyebrow={t.get.eyebrow} title={rich(t.get.title, { hl: "text-leaf" })} />
           <div className="grid gap-5 md:grid-cols-3">
-            {getItems.map((g, i) => (
+            {t.get.items.map((g, i) => (
               <div key={g.title} data-reveal data-delay={i * 100} className="tile tile-hover group flex flex-col gap-3.5 p-6 lg:p-7">
                 <span className="grid size-12 place-items-center rounded-[14px] bg-accent text-lime transition-transform duration-300 group-hover:-rotate-6">
                   <Icon name={g.icon} className="size-5.5" />
@@ -70,7 +57,7 @@ export default async function HireMePage() {
       {/* ============ PROCESS (same cards as the home page) ============ */}
       <section className="bg-paper pb-14 md:pb-16">
         <div className="wrap">
-          <SectionHead eyebrow="Process" title={<>How we work <span className="text-leaf">together.</span></>} />
+          <SectionHead eyebrow={t.process.eyebrow} title={rich(t.process.title, { hl: "text-leaf" })} />
           <ol className="grid gap-5 sm:grid-cols-2 lg:grid-cols-4">
             {process.map((p, i) => (
               <li key={p.title} data-reveal data-delay={i * 90} className="tile tile-hover group flex flex-col gap-3 p-6">
@@ -89,12 +76,12 @@ export default async function HireMePage() {
       <section className="bg-paper pb-14 md:pb-16">
         <div className="wrap grid items-start gap-10 lg:grid-cols-[1fr_1.3fr] lg:gap-16">
           <div data-reveal className="flex flex-col gap-3.5 lg:sticky lg:top-28">
-            <span className="eyebrow">Why hire me</span>
-            <h2 className="h-section">What clients can <span className="text-leaf">expect.</span></h2>
-            <p className="text-[15.5px] text-muted">Clear scope, honest timelines and code I stand behind.</p>
+            <span className="eyebrow">{t.why.eyebrow}</span>
+            <h2 className="h-section">{rich(t.why.title, { hl: "text-leaf" })}</h2>
+            <p className="text-[15.5px] text-muted">{t.why.text}</p>
           </div>
           <div className="grid gap-5 sm:grid-cols-2">
-            {expect.map((e, i) => (
+            {t.why.items.map((e, i) => (
               <div key={e.title} data-reveal data-delay={i * 80} className="tile tile-hover group flex flex-col gap-3 p-6">
                 <span className="icon-tile transition-colors duration-300 group-hover:border-accent group-hover:bg-accent group-hover:text-lime">
                   <Icon name={e.icon} className="size-4.5" />
@@ -110,7 +97,7 @@ export default async function HireMePage() {
       {/* ============ AREAS OF FOCUS ============ */}
       <section className="bg-paper pb-14 md:pb-16">
         <div className="wrap">
-          <SectionHead eyebrow="Services summary" title={<>Areas of <span className="text-leaf">focus.</span></>} />
+          <SectionHead eyebrow={t.areas.eyebrow} title={rich(t.areas.title, { hl: "text-leaf" })} />
           <div className="grid gap-5 sm:grid-cols-2 lg:grid-cols-4">
             {areas.map((a, i) => (
               <Link
@@ -139,7 +126,7 @@ export default async function HireMePage() {
                 <Icon name="arrow" className="size-4 transition-transform duration-300 group-hover:translate-x-0.5" />
               </span>
               <span className="font-display text-[18px] font-bold leading-snug">
-                Service details <span className="block text-[14px] font-medium text-night-muted">Scope, features and tools for each service</span>
+                {t.areas.detailsTitle} <span className="block text-[14px] font-medium text-night-muted">{t.areas.detailsText}</span>
               </span>
             </Link>
           </div>
@@ -147,10 +134,10 @@ export default async function HireMePage() {
       </section>
 
       <CtaBand
-        title="Ready to start?"
-        text="Tell me about your project — I'll reply with a clear plan, timeline, and estimate, usually within 0–4 hours."
-        primary={{ href: "/contact", label: "Share Your Project" }}
-        secondary={upwork ? { href: site.socials.upwork, label: "Hire Me on Upwork" } : { href: "/projects", label: "Explore My Work" }}
+        title={rich(t.cta.title)}
+        text={rich(t.cta.text)}
+        primary={{ href: "/contact", label: t.cta.primary }}
+        secondary={upwork ? { href: site.socials.upwork, label: t.hero.upwork } : { href: "/projects", label: t.hero.work }}
       />
     </>
   );

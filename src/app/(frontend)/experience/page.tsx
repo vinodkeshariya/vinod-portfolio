@@ -1,15 +1,14 @@
 import { Icon } from "@/components/Icon";
 import { MonitorArt } from "@/components/PageArt";
 import { CtaBand, MiniHead, PageHero } from "@/components/ui";
+import { rich } from "@/components/Rich";
 import { getContent } from "@/lib/content";
 import { pageMeta } from "@/lib/seo";
 
-export const generateMetadata = () => pageMeta({
-  title: "Developer Experience & Skills | Vinod Keshariya",
-  description:
-    "Explore Vinod Keshariya's professional experience, technical skills, certifications, and AI-assisted development workflow.",
-  path: "/experience",
-});
+export async function generateMetadata() {
+  const { seo } = (await getContent()).texts.experience;
+  return pageMeta({ title: seo.title, description: seo.description, path: "/experience" });
+}
 
 /** Lime dot with a forest ring, used on the timeline */
 function Node({ live = false }: { live?: boolean }) {
@@ -21,25 +20,18 @@ function Node({ live = false }: { live?: boolean }) {
 }
 
 export default async function ExperiencePage() {
-  const { aiWorkflow, certifications, experience, site, skillCards } = await getContent();
+  const { aiWorkflow, certifications, experience, site, skillCards, texts } = await getContent();
+  const t = texts.experience;
   return (
     <>
       <PageHero
-        eyebrow="Experience"
-        title={
-          <>
-            My Experience &amp; <span className="text-leaf">Technical Expertise.</span>
-          </>
-        }
-        lead="A combination of full-stack development, modern CMS solutions, and AI-assisted development workflows."
+        eyebrow={t.hero.eyebrow}
+        title={rich(t.hero.title, { hl: "text-leaf" })}
+        lead={t.hero.lead}
         aside={<MonitorArt />}
       >
         <dl className="grid w-full max-w-[520px] grid-cols-3 gap-px overflow-hidden rounded-[16px] border border-line bg-line">
-          {[
-            ["3+", "Years"],
-            ["30+", "Hrs / week"],
-            ["0–4h", "Response"],
-          ].map(([v, k]) => (
+          {t.hero.stats.map(({ value: v, label: k }) => (
             <div key={k} className="flex flex-col-reverse bg-surface px-4 py-3.5">
               <dt className="text-[12.5px] text-muted">{k}</dt>
               <dd className="font-display text-[24px] font-extrabold tracking-[-0.03em] text-accent">{v}</dd>
@@ -53,7 +45,7 @@ export default async function ExperiencePage() {
           {/* ============ ROW 1: TIMELINE | CERTIFICATIONS + LANGUAGES ============ */}
           <div className="grid items-start gap-12 lg:grid-cols-[minmax(0,1.15fr)_minmax(0,1fr)] lg:gap-14">
             <div data-reveal>
-              <MiniHead>Career Timeline</MiniHead>
+              <MiniHead>{t.headings.timeline}</MiniHead>
               <ol className="relative ml-2 flex flex-col gap-8 border-l-2 border-accent-line pl-7">
                 <li className="relative">
                   <Node live />
@@ -92,7 +84,7 @@ export default async function ExperiencePage() {
 
             <div className="flex flex-col gap-12">
               <div data-reveal>
-                <MiniHead>Certifications</MiniHead>
+                <MiniHead>{t.headings.certifications}</MiniHead>
                 <ul className="tile flex flex-col divide-y divide-line">
                   {certifications.map((c) => (
                     <li key={c.title} className="group flex gap-4 p-5">
@@ -111,7 +103,7 @@ export default async function ExperiencePage() {
               </div>
 
               <div data-reveal>
-                <MiniHead>Languages</MiniHead>
+                <MiniHead>{t.headings.languages}</MiniHead>
                 <ul className="tile flex flex-col divide-y divide-line">
                   {site.languages.map((l) => {
                     const [lang, level] = l.split(" — ");
@@ -131,9 +123,7 @@ export default async function ExperiencePage() {
 
           {/* ============ ROW 2: AI WORKFLOW (full width) ============ */}
           <div data-reveal>
-            <MiniHead text="I use AI tools to support everyday development tasks, including code generation, component building, debugging, and testing.">
-              AI Workflow
-            </MiniHead>
+            <MiniHead text={t.headings.aiWorkflowText}>{t.headings.aiWorkflow}</MiniHead>
             <ol className="grid gap-4 sm:grid-cols-2 lg:grid-cols-4">
               {aiWorkflow.points.map((pt, i) => (
                 <li key={pt.title} className="tile tile-hover group relative flex flex-col gap-2.5 p-5">
@@ -172,7 +162,7 @@ export default async function ExperiencePage() {
           {/* ============ ROW 3: SKILLS (full width) ============ */}
           <div>
             <div data-reveal>
-              <MiniHead>Skills</MiniHead>
+              <MiniHead>{t.headings.skills}</MiniHead>
             </div>
             <div className="grid gap-5 sm:grid-cols-2 lg:grid-cols-4">
               {skillCards.map((g, i) => (
@@ -201,10 +191,10 @@ export default async function ExperiencePage() {
       </section>
 
       <CtaBand
-        title="Let's Work Together."
-        text="Need an AI-powered feature, a modern Next.js website, or a WordPress migration? Tell me about your project."
-        primary={{ href: "/contact", label: "Contact Me" }}
-        secondary={{ href: site.resume, label: "Download résumé" }}
+        title={rich(t.cta.title)}
+        text={rich(t.cta.text)}
+        primary={{ href: "/contact", label: t.cta.primary }}
+        secondary={{ href: site.resume, label: t.cta.secondary }}
       />
     </>
   );

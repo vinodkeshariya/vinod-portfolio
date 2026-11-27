@@ -5,32 +5,26 @@ import { Icon } from "@/components/Icon";
 import { JsonLd, abs } from "@/components/JsonLd";
 import { Cube } from "@/components/PageArt";
 import { CtaBand, MiniHead, PageHero } from "@/components/ui";
+import { plain, rich } from "@/components/Rich";
 import { getContent } from "@/lib/content";
 import { ext, hasUpwork, type IconName } from "@/lib/data";
 import { pageMeta } from "@/lib/seo";
 
-export const generateMetadata = () => pageMeta({
-  title: "Hire Vinod Keshariya | AI + Next.js Developer",
-  description:
-    "Contact Vinod Keshariya for AI-powered development, Next.js websites, AI integration, and modern web development projects.",
-  path: "/contact",
-});
-
-const steps = [
-  ["Send Details", "Figma file, website link or a short brief."],
-  ["Reply with Plan", "A practical approach, timeline and estimate."],
-  ["Start Building", "Live preview link and regular updates."],
-];
+export async function generateMetadata() {
+  const { seo } = (await getContent()).texts.contact;
+  return pageMeta({ title: seo.title, description: seo.description, path: "/contact" });
+}
 
 export default async function ContactPage() {
-  const { budgets, helpWith, projectTypes, site } = await getContent();
+  const { budgets, helpWith, projectTypes, site, texts, vars } = await getContent();
+  const t = texts.contact;
   const upwork = hasUpwork(site);
   const details: { icon: IconName; label: string; value: string; href?: string }[] = [
-    { icon: "mail", label: "Email", value: site.email, href: `mailto:${site.email}` },
-    { icon: "chat", label: "Phone · WhatsApp", value: site.phone, href: site.socials.whatsapp },
-    { icon: "pin", label: "Location", value: site.location },
-    { icon: "users", label: "Availability", value: "Open for Freelance Projects" },
-    { icon: "clock", label: "Response time", value: "Usually within 0–4 hours" },
+    { icon: "mail", label: t.details.email, value: site.email, href: `mailto:${site.email}` },
+    { icon: "chat", label: t.details.phone, value: site.phone, href: site.socials.whatsapp },
+    { icon: "pin", label: t.details.location, value: site.location },
+    { icon: "users", label: t.details.availability, value: t.details.availabilityValue },
+    { icon: "clock", label: t.details.response, value: t.details.responseValue },
   ];
   const socials = [
     ["linkedin", "LinkedIn", site.socials.linkedin],
@@ -56,27 +50,22 @@ export default async function ContactPage() {
         }}
       />
       <PageHero
-        eyebrow="Contact"
-        title={
-          <>
-            Let&apos;s Talk About <span className="text-leaf">Your Next Project.</span>
-          </>
-        }
-        lead="Looking for a developer to build an AI-powered application, integrate intelligent features, or create a modern website? I'm available to collaborate with startups, agencies, businesses, and individuals worldwide."
+        eyebrow={t.hero.eyebrow}
+        title={rich(t.hero.title, { hl: "text-leaf" })}
+        lead={plain(t.hero.lead, vars)}
         aside={
           <div style={{ animationDelay: "200ms" }} className="animate-fade-in relative mx-auto w-full max-w-[560px] lg:mr-0">
             <Cube tone="forest" className="absolute -right-10 -top-10 hidden w-40 animate-float-slow sm:block" />
             <Cube tone="lime" className="absolute -bottom-8 -left-12 hidden w-28 animate-float sm:block" />
             <div className="relative">
-              <ContactForm email={site.email} budgets={budgets} projectTypes={projectTypes} />
+              <ContactForm email={site.email} budgets={budgets} projectTypes={projectTypes} labels={t.form} />
             </div>
-            <p className="relative mt-5 text-center text-[14.5px] text-muted">I look forward to hearing about your project.</p>
+            <p className="relative mt-5 text-center text-[14.5px] text-muted">{t.hero.formNote}</p>
           </div>
         }
       >
         <p className="max-w-[560px] text-[15.5px] leading-relaxed text-muted">
-          Tell me about your idea, requirements, and goals. I&apos;ll review your project and respond with a practical approach and
-          estimated timeline.
+          {plain(t.hero.intro, vars)}
         </p>
 
         {/* Contact details */}
@@ -121,7 +110,7 @@ export default async function ContactPage() {
           ))}
           {upwork && (
             <Link href={site.socials.upwork} {...ext(site.socials.upwork)} className="btn btn-line btn-sm">
-              Hire Me on Upwork <Icon name="arrowUpRight" />
+              {t.details.upwork} <Icon name="arrowUpRight" />
             </Link>
           )}
         </div>
@@ -129,18 +118,18 @@ export default async function ContactPage() {
         {/* Next steps */}
         <div className="w-full max-w-[560px] pt-2">
           <h2 className="mb-5 flex items-center gap-3 font-display text-[20px] font-bold text-accent">
-            <span aria-hidden="true" className="h-[3px] w-6 rounded-full bg-lime" /> Next Steps
+            <span aria-hidden="true" className="h-[3px] w-6 rounded-full bg-lime" /> {t.steps.title}
           </h2>
           <ol className="grid grid-cols-3 gap-3">
-            {steps.map(([t, d], i) => (
-              <li key={t} className="relative flex flex-col gap-2">
-                {i < steps.length - 1 && (
+            {t.steps.items.map(({ title: st, text: d }, i) => (
+              <li key={st} className="relative flex flex-col gap-2">
+                {i < t.steps.items.length - 1 && (
                   <span aria-hidden="true" className="absolute left-9 right-[-12px] top-4 border-t border-dashed border-line-2" />
                 )}
                 <span className="relative grid size-8 place-items-center rounded-full bg-lime font-display text-[13px] font-bold text-accent ring-4 ring-paper">
                   {i + 1}
                 </span>
-                <span className="text-[14px] font-semibold text-ink">{t}</span>
+                <span className="text-[14px] font-semibold text-ink">{st}</span>
                 <span className="text-[13px] leading-snug text-muted">{d}</span>
               </li>
             ))}
@@ -152,7 +141,7 @@ export default async function ContactPage() {
       <section className="bg-paper pb-14 pt-6 md:pb-16">
         <div className="wrap">
           <div data-reveal>
-            <MiniHead>What Can I Help You Build?</MiniHead>
+            <MiniHead>{t.helpWith.title}</MiniHead>
           </div>
           <ul className="grid gap-4 sm:grid-cols-2 lg:grid-cols-4">
             {helpWith.map((h, i) => (
@@ -168,7 +157,7 @@ export default async function ContactPage() {
                 href="/services"
                 className="group flex h-full items-center justify-between gap-3 rounded-[16px] bg-accent p-5 text-[15px] font-semibold text-white transition duration-300 hover:-translate-y-1 hover:bg-accent-hover"
               >
-                See all services
+                {t.helpWith.link}
                 <Icon name="arrow" className="size-4 text-lime transition-transform duration-300 group-hover:translate-x-1" />
               </Link>
             </li>
@@ -180,29 +169,21 @@ export default async function ContactPage() {
       <section aria-labelledby="faq-title" className="bg-paper pb-14 md:pb-16">
         <div className="wrap grid gap-8 lg:grid-cols-[1fr_1.6fr] lg:gap-16">
           <div data-reveal className="flex flex-col items-start gap-3 lg:sticky lg:top-28 lg:self-start">
-            <span className="eyebrow">FAQ</span>
+            <span className="eyebrow">{t.faq.eyebrow}</span>
             <h2 id="faq-title" className="h-section">
-              Before you <span className="text-leaf">get in touch.</span>
+              {rich(t.faq.title, { hl: "text-leaf" })}
             </h2>
-            <p className="text-[15.5px] text-muted">Quick answers to the questions clients ask most often.</p>
+            <p className="text-[15.5px] text-muted">{t.faq.text}</p>
           </div>
           <Faq />
         </div>
       </section>
 
       <CtaBand
-        title="Prefer Email or WhatsApp?"
-        text={
-          <>
-            Write to me directly at{" "}
-            <a href={`mailto:${site.email}`} className="font-semibold text-accent underline underline-offset-4">
-              {site.email}
-            </a>{" "}
-            — I usually reply within 0–4 hours.
-          </>
-        }
-        primary={{ href: `mailto:${site.email}`, label: "Email Me" }}
-        secondary={{ href: site.socials.whatsapp, label: "WhatsApp" }}
+        title={rich(t.cta.title, { vars })}
+        text={rich(t.cta.text, { vars, link: "font-semibold text-accent underline underline-offset-4" })}
+        primary={{ href: `mailto:${site.email}`, label: t.cta.primary }}
+        secondary={{ href: site.socials.whatsapp, label: t.cta.secondary }}
       />
     </>
   );

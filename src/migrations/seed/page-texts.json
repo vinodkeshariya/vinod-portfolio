@@ -1,0 +1,366 @@
+{
+  "home-page": {
+    "texts": {
+      "seo": {
+        "title": "Vinod Keshariya | AI + Next.js Developer",
+        "description": "Vinod Keshariya is an AI-powered Full-Stack Developer specializing in Claude Code, AI integrations, Next.js, React, Sanity CMS, and WordPress. Available for freelance projects worldwide."
+      },
+      "hero": {
+        "eyebrow": "{role} · Ahmedabad, India",
+        "title": "Build Smarter with AI. *Launch Faster with Next.js.*",
+        "lead": "I'm {name}, an AI-powered Full-Stack Developer specializing in Next.js, React, Claude Code, AI integrations, and modern CMS solutions.",
+        "primary": "Explore My Work",
+        "secondary": "Let's Build Your Project",
+        "showcase": [
+          { "image": "@file:fashion-catalog-cover.webp", "alt": "Fashion e-commerce store homepage" },
+          { "image": "@file:creative-agency-cover.webp", "alt": "Creative agency website homepage" },
+          { "image": "@file:ai-saas-landing-cover.webp", "alt": "AI SaaS landing page with analytics dashboard" }
+        ]
+      },
+      "services": { "eyebrow": "Services", "title": "Modern Development. *Smarter Solutions.*", "link": "Learn more" },
+      "work": { "eyebrow": "Featured Projects", "title": "Projects Built with *Modern Technologies.*", "button": "View all projects" },
+      "experienceBar": { "caption": "building for the web" },
+      "problems": { "eyebrow": "Common Challenges", "title": "Is Your Website *Holding You Back?*" },
+      "aiWorkflow": { "eyebrow": "AI-Powered Workflow", "title": "The Speed of AI. *The Quality Check of a Real Developer.*" },
+      "process": { "eyebrow": "My Process", "title": "From Your Idea to a *Finished Product.*", "button": "Start Your Project" },
+      "faq": { "eyebrow": "FAQ", "title": "Common *Questions.*", "text": "Something else? [Send me a message](/contact)." },
+      "cta": {
+        "title": "Have a Project in Mind?\nLet's Build Something Smarter.",
+        "text": "Tell me about your project. I'll review your requirements and get back to you with a clear plan, timeline, and estimate.",
+        "primary": "Contact Me"
+      }
+    }
+  },
+  "about-page": {
+    "aboutTexts": {
+      "seo": {
+        "title": "About Vinod Keshariya | Full-Stack Developer",
+        "description": "Learn about Vinod Keshariya, an AI-powered Full-Stack Developer specializing in Next.js, React, Claude Code, and modern web development."
+      },
+      "hero": {
+        "eyebrow": "About",
+        "title": "I'm Vinod Keshariya — an AI-Powered *Full‑Stack Developer.*",
+        "lead": "I build modern websites and digital experiences using Next.js, React, Sanity CMS, and AI-powered development workflows.",
+        "intro": "Based in Ahmedabad, India, I work with businesses and clients worldwide to turn ideas into fast, responsive, and maintainable digital products.",
+        "facts": [
+          { "icon": "pin", "label": "Ahmedabad, India" },
+          { "icon": "globe", "label": "English, Gujarati, Hindi" },
+          { "icon": "briefcase", "label": "3+ years experience" },
+          { "icon": "clock", "label": "Replies within 0–4 hours" }
+        ],
+        "primary": "Contact Me",
+        "resume": "Download résumé"
+      },
+      "story": {
+        "title": "My Story",
+        "lead": "From frontend development to *AI-powered engineering.*",
+        "left": "My development journey started with frontend and full-stack web development. Over time, I gained experience working with WordPress, React, Next.js, and modern content management systems.\n\nSince joining {company} in June 2023, I've worked on building, migrating, and maintaining client websites — from converting Figma designs into responsive interfaces to setting up Sanity CMS and migrating WordPress websites.",
+        "right": "As AI development tools evolved, I integrated Claude, Claude Code, and ChatGPT into my everyday workflow. Today, I combine hands-on engineering with AI-assisted development to work more efficiently, solve technical challenges, and deliver better digital experiences.",
+        "quote": "My approach combines AI-powered productivity, clean code, practical problem-solving, and careful testing.",
+        "link": "Explore my work"
+      },
+      "whatIDo": { "title": "What I Do", "text": "AI-powered development and modern web solutions.", "button": "View services" },
+      "philosophy": { "eyebrow": "My Development Philosophy", "title": "AI should make developers more productive — *not replace engineering judgment.*" },
+      "stack": {
+        "title": "Technology Stack",
+        "button": "Full experience",
+        "groups": [
+          { "title": "AI Tools", "icon": "spark", "items": "Claude\nClaude Code\nChatGPT\nMCP\nCursor" },
+          { "title": "Frontend", "icon": "code", "items": "Next.js\nReact\nTypeScript\nJavaScript\nTailwind CSS" },
+          { "title": "CMS", "icon": "layers", "items": "Sanity CMS\nWordPress\nElementor" },
+          { "title": "Tools", "icon": "pen", "items": "Figma\nVercel\nGit" }
+        ],
+        "experienceTitle": "Experience",
+        "certificationsTitle": "Certifications"
+      },
+      "cta": {
+        "title": "Let's Work Together.",
+        "text": "Have an idea for an AI-powered application, modern website, or CMS project? Let's discuss how we can build it.",
+        "primary": "Contact Me",
+        "secondary": "Explore my work"
+      }
+    },
+    "experienceTexts": {
+      "seo": {
+        "title": "Developer Experience & Skills | Vinod Keshariya",
+        "description": "Explore Vinod Keshariya's professional experience, technical skills, certifications, and AI-assisted development workflow."
+      },
+      "hero": {
+        "eyebrow": "Experience",
+        "title": "My Experience & *Technical Expertise.*",
+        "lead": "A combination of full-stack development, modern CMS solutions, and AI-assisted development workflows.",
+        "stats": [
+          { "value": "3+", "label": "Years" },
+          { "value": "30+", "label": "Hrs / week" },
+          { "value": "0–4h", "label": "Response" }
+        ]
+      },
+      "headings": {
+        "timeline": "Career Timeline",
+        "certifications": "Certifications",
+        "languages": "Languages",
+        "aiWorkflow": "AI Workflow",
+        "skills": "Skills",
+        "aiWorkflowText": "I use AI tools to support everyday development tasks, including code generation, component building, debugging, and testing."
+      },
+      "cta": {
+        "title": "Let's Work Together.",
+        "text": "Need an AI-powered feature, a modern Next.js website, or a WordPress migration? Tell me about your project.",
+        "primary": "Contact Me",
+        "secondary": "Download résumé"
+      }
+    }
+  },
+  "services-page": {
+    "texts": {
+      "seo": {
+        "title": "AI Development & Next.js Services | Vinod Keshariya",
+        "description": "Explore AI integration, Claude Code development, Next.js, React, Sanity CMS, and WordPress migration services."
+      },
+      "hero": {
+        "eyebrow": "Services",
+        "title": "AI Development & *Modern Web Solutions.*",
+        "lead": "I help businesses build intelligent digital experiences and high-performance websites using AI-assisted workflows and modern web technologies.",
+        "primary": "Get a Project Quote",
+        "secondary": "Explore services"
+      },
+      "cards": { "link": "Discuss this service", "tagsLabel": "Tech" },
+      "packages": { "title": "Engagement Models", "text": "Every project gets a clear scope and estimate before work starts.", "button": "Enquire" },
+      "process": {
+        "title": "My Development Process",
+        "text": "AI speed with a human code review — clear steps, regular updates and a preview link at every stage."
+      },
+      "cta": {
+        "title": "Let's Discuss Your Project.",
+        "text": "Share your project idea, design, or current website. I'll suggest the right solution and provide a clear estimate.",
+        "primary": "Get a Project Quote"
+      }
+    }
+  },
+  "work-page": {
+    "texts": {
+      "seo": {
+        "title": "Portfolio | Next.js, AI & Web Development",
+        "description": "Explore web development projects built with Next.js, React, Sanity CMS, WordPress, and modern technologies."
+      },
+      "hero": {
+        "eyebrow": "Work",
+        "title": "A Collection of Websites & *Digital Experiences.*",
+        "lead": "I work on modern web development projects, CMS solutions, website migrations, and AI-related product interfaces. Explore some of my work built with Next.js, React, Sanity CMS, and WordPress."
+      },
+      "filters": {
+        "all": "All",
+        "nextjs": "Next.js + Sanity",
+        "migration": "Migration",
+        "landing": "Landing pages",
+        "wordpress": "WordPress",
+        "ecommerce": "E-commerce"
+      },
+      "cta": {
+        "title": "Interested in Working Together?",
+        "text": "Have a similar project? Let's discuss your requirements.",
+        "primary": "Start a Project"
+      },
+      "caseStudy": {
+        "eyebrow": "Case study ·",
+        "cta": "Share your project",
+        "client": "Client",
+        "role": "Role",
+        "stack": "Stack",
+        "year": "Year",
+        "overview": { "eyebrow": "Overview", "title": "Project overview", "nav": "Overview" },
+        "challenge": { "eyebrow": "Challenge", "title": "The challenge", "nav": "The challenge" },
+        "approach": { "eyebrow": "Approach", "title": "Approach & solution", "nav": "Approach" },
+        "features": { "eyebrow": "Features", "title": "Key features", "nav": "Key features" },
+        "gallery": { "eyebrow": "Gallery", "title": "Screens", "nav": "Gallery" },
+        "tech": { "eyebrow": "Stack", "title": "Technologies used", "nav": "Technologies" },
+        "previous": "← Previous project",
+        "next": "Next project →",
+        "back": "← Back",
+        "backTo": "Back to →",
+        "all": "All projects"
+      }
+    }
+  },
+  "hire-me-page": {
+    "texts": {
+      "seo": {
+        "title": "Hire an AI + Next.js Developer | Vinod Keshariya",
+        "description": "Hire Vinod Keshariya, an AI-powered Full-Stack Developer for AI integrations, Next.js and React websites, Sanity CMS and WordPress migrations."
+      },
+      "hero": {
+        "eyebrow": "Hire Me · Open for work",
+        "title": "Looking for an *AI + Next.js developer?*",
+        "lead": "AI integrations, modern Next.js and React websites, Sanity CMS and WordPress migrations — built with an AI-powered workflow, reviewed by hand, with clear communication throughout.",
+        "primary": "Let's Build Your Project",
+        "upwork": "Hire Me on Upwork",
+        "work": "Explore My Work"
+      },
+      "get": {
+        "eyebrow": "What you get",
+        "title": "Modern development *expertise.*",
+        "items": [
+          { "title": "Modern stack", "icon": "layers", "text": "Next.js, React, TypeScript, Tailwind CSS and Sanity CMS — with WordPress and Elementor when that suits your team better." },
+          { "title": "AI-powered workflow", "icon": "spark", "text": "Claude, Claude Code and ChatGPT help me plan, build, debug and test faster — every implementation is reviewed and tested by me." },
+          { "title": "AI integration", "icon": "chat", "text": "AI assistants, chat interfaces and intelligent search added to Next.js websites with suitable AI APIs." }
+        ]
+      },
+      "process": { "eyebrow": "Process", "title": "How we work *together.*" },
+      "why": {
+        "eyebrow": "Why hire me",
+        "title": "What clients can *expect.*",
+        "text": "Clear scope, honest timelines and code I stand behind.",
+        "items": [
+          { "title": "Transparent communication", "icon": "chat", "text": "Regular updates and a clear timeline from day one." },
+          { "title": "On-time delivery", "icon": "clock", "text": "Realistic estimates and disciplined execution so deadlines are respected." },
+          { "title": "Reviewed quality", "icon": "shield", "text": "AI speeds up the work; I review, debug and test every implementation before delivery." },
+          { "title": "Long-term thinking", "icon": "users", "text": "Solutions built to be extended and maintained, not just launched once." }
+        ]
+      },
+      "areas": {
+        "eyebrow": "Services summary",
+        "title": "Areas of *focus.*",
+        "detailsTitle": "Service details",
+        "detailsText": "Scope, features and tools for each service"
+      },
+      "cta": {
+        "title": "Ready to start?",
+        "text": "Tell me about your project — I'll reply with a clear plan, timeline, and estimate, usually within 0–4 hours.",
+        "primary": "Share Your Project"
+      }
+    }
+  },
+  "contact-page": {
+    "texts": {
+      "seo": {
+        "title": "Hire Vinod Keshariya | AI + Next.js Developer",
+        "description": "Contact Vinod Keshariya for AI-powered development, Next.js websites, AI integration, and modern web development projects."
+      },
+      "hero": {
+        "eyebrow": "Contact",
+        "title": "Let's Talk About *Your Next Project.*",
+        "lead": "Looking for a developer to build an AI-powered application, integrate intelligent features, or create a modern website? I'm available to collaborate with startups, agencies, businesses, and individuals worldwide.",
+        "intro": "Tell me about your idea, requirements, and goals. I'll review your project and respond with a practical approach and estimated timeline.",
+        "formNote": "I look forward to hearing about your project."
+      },
+      "details": {
+        "email": "Email",
+        "phone": "Phone · WhatsApp",
+        "location": "Location",
+        "availability": "Availability",
+        "availabilityValue": "Open for Freelance Projects",
+        "response": "Response time",
+        "responseValue": "Usually within 0–4 hours",
+        "upwork": "Hire Me on Upwork"
+      },
+      "steps": {
+        "title": "Next Steps",
+        "items": [
+          { "title": "Send Details", "text": "Figma file, website link or a short brief." },
+          { "title": "Reply with Plan", "text": "A practical approach, timeline and estimate." },
+          { "title": "Start Building", "text": "Live preview link and regular updates." }
+        ]
+      },
+      "helpWith": { "title": "What Can I Help You Build?", "link": "See all services" },
+      "faq": { "eyebrow": "FAQ", "title": "Before you *get in touch.*", "text": "Quick answers to the questions clients ask most often." },
+      "form": {
+        "title": "Project Inquiry",
+        "note": "Fields marked * are required.",
+        "name": "Your name *",
+        "namePlaceholder": "Your name",
+        "email": "Email address *",
+        "emailPlaceholder": "you@company.com",
+        "company": "Company / Website",
+        "companyPlaceholder": "Company name or https://yourwebsite.com",
+        "optional": "(optional)",
+        "type": "Project type",
+        "budget": "Budget",
+        "budgetPlaceholder": "Select a range (optional)",
+        "message": "Project description *",
+        "messagePlaceholder": "Goals, timeline, links to designs or current site…",
+        "submit": "Send Project Inquiry",
+        "sending": "Sending…",
+        "reply": "I usually reply within 0–4 hours.",
+        "sentTitle": "Thanks — your message has been sent!",
+        "sentAgain": "Send another inquiry",
+        "sentText": "I've received your inquiry and usually reply within 0–4 hours, straight to the email address you shared.",
+        "failed": "Sorry — your message couldn't be sent right now. You can send it from your email app instead; everything you typed is already filled in.",
+        "limited": "You've sent several messages in a short time. Please wait a few minutes, or email me directly.",
+        "fallback": "Send via email app"
+      },
+      "cta": {
+        "title": "Prefer Email or WhatsApp?",
+        "text": "Write to me directly at [{email}](mailto:{email}) — I usually reply within 0–4 hours.",
+        "primary": "Email Me",
+        "secondary": "WhatsApp"
+      }
+    }
+  },
+  "blog-page": {
+    "texts": {
+      "seo": {
+        "title": "Blog | AI-Powered Web Development — Vinod Keshariya",
+        "description": "Practical articles on adding AI to websites, AI-assisted development with Claude Code, Next.js, Sanity CMS and WordPress migration."
+      },
+      "hero": {
+        "eyebrow": "Blog",
+        "title": "Notes on *AI‑powered web development.*",
+        "lead": "Practical, no-hype articles on adding AI to websites, building faster with AI-assisted development, and modern Next.js, Sanity and WordPress work — based on hands-on project experience.",
+        "primary": "Read the articles",
+        "secondary": "Discuss your project"
+      },
+      "empty": {
+        "eyebrow": "Coming soon",
+        "text": "The first articles are being written. Meanwhile, have a look at my work or tell me about your project.",
+        "work": "See my work",
+        "contact": "Let's talk"
+      },
+      "filterAll": "All articles",
+      "cta": {
+        "title": "Want AI in Your Website?",
+        "text": "Tell me what you'd like your website to do. I'll suggest a practical approach, timeline and estimate.",
+        "primary": "Discuss your project",
+        "secondary": "View services"
+      },
+      "post": {
+        "by": "By",
+        "updated": "Updated",
+        "minRead": "min read",
+        "aiReviewed": "**Drafted with AI, reviewed and edited by Vinod.** I use AI the same way in client work: it speeds up the first draft, and I check every fact and recommendation before it goes live.",
+        "aiUnreviewed": "**Written with AI assistance, based on my workflow and services.** Every project is different — if you're unsure how something applies to yours, [ask me directly](/contact).",
+        "authorBio": "I build AI-powered websites and applications with Next.js, React and Sanity CMS — using AI tools to move faster, and my own review to keep the quality high.",
+        "aboutLink": "More about me",
+        "relatedService": "Related service",
+        "helpFallback": "See how I can help",
+        "viewService": "View service",
+        "more": "Keep reading",
+        "allArticles": "All articles",
+        "cta": {
+          "title": "Have a Project in Mind?",
+          "text": "Share your idea, design or current website. I'll reply with a practical approach, timeline and estimate — usually within 0–4 hours.",
+          "primary": "Let's talk",
+          "secondary": "More articles"
+        }
+      }
+    }
+  },
+  "site-settings": {
+    "layout": {
+      "menu": { "home": "Home", "about": "About", "services": "Services", "work": "Work", "experience": "Experience", "blog": "Blog", "contact": "Contact" },
+      "seo": {
+        "title": "Vinod Keshariya | AI + Next.js Developer",
+        "keywords": "AI-Powered Full-Stack Developer\nAI Developer\nClaude Code Developer\nNext.js Developer\nAI Integration Developer\nReact Developer\nAI Web Application Development\nMCP Developer\nSanity CMS Developer\nWordPress to Next.js Migration"
+      },
+      "footer": { "subtitle": "{role} · Ahmedabad, India", "rights": "All rights reserved.", "builtWith": "Built with", "using": "using Next.js" },
+      "mobileBar": { "title": "Open for work", "text": "Replies in 0–4 hours", "button": "Share project" },
+      "notFound": {
+        "eyebrow": "Error 404",
+        "title": "This page took a *wrong turn.*",
+        "lead": "The page you're looking for doesn't exist or has moved.",
+        "home": "Back to home",
+        "projects": "See projects",
+        "try": "Or try:"
+      }
+    }
+  }
+}

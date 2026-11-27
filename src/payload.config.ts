@@ -15,6 +15,7 @@ import { ContactPage } from "./globals/ContactPage.ts";
 import { HomePage } from "./globals/HomePage.ts";
 import { ServicesPage } from "./globals/ServicesPage.ts";
 import { SiteSettings } from "./globals/SiteSettings.ts";
+import { BlogPage, HireMePage, WorkPage } from "./globals/TextPages.ts";
 
 /**
  * Payload CMS — admin at /admin, REST at /api/<collection>, GraphQL at /api/graphql.
@@ -40,7 +41,7 @@ export default buildConfig({
     },
   },
   collections: [Posts, Projects, Faqs, Media, Users],
-  globals: [SiteSettings, HomePage, AboutPage, ServicesPage, ContactPage],
+  globals: [SiteSettings, HomePage, AboutPage, ServicesPage, WorkPage, HireMePage, ContactPage, BlogPage],
   editor: lexicalEditor(),
   secret: process.env.PAYLOAD_SECRET || "",
   typescript: {

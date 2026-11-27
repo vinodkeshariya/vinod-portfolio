@@ -6,32 +6,30 @@ import { MobileCta } from "@/components/MobileCta";
 import { RevealRoot } from "@/components/RevealRoot";
 import { Analytics } from "@/components/Analytics";
 import { whatsappLink } from "@/lib/assistant";
+import { toList } from "@/lib/blog-check";
 import { getContent } from "@/lib/content";
 import { siteUrl } from "@/lib/data";
 import { fontVariables } from "@/lib/fonts";
 import "./globals.css";
 
 export async function generateMetadata(): Promise<Metadata> {
-  const { site, google } = await getContent();
+  const { site, google, texts } = await getContent();
+  const { seo } = texts.layout;
   return {
     metadataBase: new URL(siteUrl),
     title: {
-      default: "Vinod Keshariya | AI + Next.js Developer",
+      default: seo.title,
       template: `%s | ${site.name}`,
     },
     description: site.description,
-    keywords: [
-      "AI-Powered Full-Stack Developer", "AI Developer", "Claude Code Developer", "Next.js Developer",
-      "AI Integration Developer", "React Developer", "AI Web Application Development", "MCP Developer",
-      "Sanity CMS Developer", "WordPress to Next.js Migration",
-    ],
+    keywords: toList(seo.keywords),
     authors: [{ name: site.name, url: site.url }],
     creator: site.name,
     openGraph: {
       type: "website",
       siteName: site.name,
       url: "/",
-      title: "Vinod Keshariya | AI + Next.js Developer",
+      title: seo.title,
       description: site.description,
       images: [{ url: "/og-image.png", width: 1200, height: 630, alt: `${site.name} — ${site.role}` }],
     },
@@ -45,7 +43,7 @@ export const viewport: Viewport = {
 };
 
 export default async function RootLayout({ children }: { children: React.ReactNode }) {
-  const { site, google } = await getContent();
+  const { site, google, menu, texts } = await getContent();
   /** Analytics runs only on the live Vercel site — not on localhost, preview deploys or the old Netlify copy */
   const gaId = /^G-[A-Z0-9]+$/.test(google.gaId) && process.env.VERCEL_ENV === "production" ? google.gaId : null;
 
@@ -67,10 +65,10 @@ export default async function RootLayout({ children }: { children: React.ReactNo
         >
           Skip to content
         </a>
-        <Header name={site.name} />
+        <Header name={site.name} menu={menu} />
         <main id="main">{children}</main>
         <Footer />
-        <MobileCta />
+        <MobileCta labels={texts.layout.mobileBar} />
         <Assistant whatsapp={whatsappLink(site)} />
         <RevealRoot />
         {gaId && <Analytics gaId={gaId} />}

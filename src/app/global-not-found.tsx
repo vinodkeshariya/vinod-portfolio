@@ -22,11 +22,11 @@ export async function generateMetadata(): Promise<Metadata> {
 }
 
 export default async function GlobalNotFound() {
-  const { site } = await getContent();
+  const { site, menu } = await getContent();
   return (
     <html lang="en" className={fontVariables}>
       <body>
-        <Header name={site.name} />
+        <Header name={site.name} menu={menu} />
         <main id="main">
           <NotFound />
         </main>

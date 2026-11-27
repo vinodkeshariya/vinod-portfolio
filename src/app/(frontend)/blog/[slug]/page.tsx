@@ -7,6 +7,7 @@ import { PostCard } from "@/components/PostCard";
 import { PostView } from "@/components/PostView";
 import { CtaBand, MiniHead } from "@/components/ui";
 import { coverOf, getPost, getPosts, pillars } from "@/lib/blog";
+import { rich } from "@/components/Rich";
 import { getContent } from "@/lib/content";
 
 type Props = { params: Promise<{ slug: string }> };
@@ -46,7 +47,8 @@ export async function generateMetadata({ params }: Props): Promise<Metadata> {
 
 export default async function BlogPostPage({ params }: Props) {
   const { slug } = await params;
-  const [post, posts, { site }] = await Promise.all([getPost(slug), getPosts(), getContent()]);
+  const [post, posts, { site, texts }] = await Promise.all([getPost(slug), getPosts(), getContent()]);
+  const t = texts.blog.post;
   if (!post) notFound();
 
   const pillar = pillars[post.pillar];
@@ -94,10 +96,10 @@ export default async function BlogPostPage({ params }: Props) {
           <div className="wrap">
             <div data-reveal className="flex flex-wrap items-end justify-between gap-4">
               <MiniHead>
-                <span id="more-title">Keep reading</span>
+                <span id="more-title">{t.more}</span>
               </MiniHead>
               <Link href="/blog" className="btn btn-line mb-7 px-6">
-                All articles <Icon name="arrow" />
+                {t.allArticles} <Icon name="arrow" />
               </Link>
             </div>
             <ul className="grid gap-5 md:grid-cols-2 lg:grid-cols-3 lg:gap-6">
@@ -112,10 +114,10 @@ export default async function BlogPostPage({ params }: Props) {
       )}
 
       <CtaBand
-        title="Have a Project in Mind?"
-        text="Share your idea, design or current website. I'll reply with a practical approach, timeline and estimate — usually within 0–4 hours."
-        primary={{ href: "/contact", label: "Let's talk" }}
-        secondary={{ href: "/blog", label: "More articles" }}
+        title={rich(t.cta.title)}
+        text={rich(t.cta.text)}
+        primary={{ href: "/contact", label: t.cta.primary }}
+        secondary={{ href: "/blog", label: t.cta.secondary }}
       />
     </>
   );

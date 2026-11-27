@@ -1,6 +1,7 @@
 import type { GlobalConfig } from "payload";
 import { revalidateSite } from "../cms/revalidate.ts";
 import { icon, lines, para, text } from "../cms/fields.ts";
+import { homeTexts } from "../cms/texts.ts";
 
 /** Home page sections (the AI workflow also appears on the Experience page) */
 export const HomePage: GlobalConfig = {
@@ -12,6 +13,7 @@ export const HomePage: GlobalConfig = {
     {
       type: "tabs",
       tabs: [
+        { label: "Page texts", fields: [homeTexts] },
         {
           label: "Stats",
           fields: [

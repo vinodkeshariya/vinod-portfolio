@@ -3,15 +3,15 @@ import { Icon } from "@/components/Icon";
 import { JsonLd, personRef } from "@/components/JsonLd";
 import { LayersArt } from "@/components/PageArt";
 import { CtaBand, MiniHead, PageHero } from "@/components/ui";
+import { rich } from "@/components/Rich";
 import { getContent } from "@/lib/content";
 import type { IconName } from "@/lib/data";
 import { pageMeta } from "@/lib/seo";
 
-export const generateMetadata = () => pageMeta({
-  title: "AI Development & Next.js Services | Vinod Keshariya",
-  description: "Explore AI integration, Claude Code development, Next.js, React, Sanity CMS, and WordPress migration services.",
-  path: "/services",
-});
+export async function generateMetadata() {
+  const { seo } = (await getContent()).texts.services;
+  return pageMeta({ title: seo.title, description: seo.description, path: "/services" });
+}
 
 const approachIcons: IconName[] = ["users", "pen", "spark", "shield", "check", "send"];
 const packageIcons: IconName[] = ["bolt", "layers", "clock"];
@@ -43,11 +43,11 @@ function Tags({ label, items }: { label: string; items: string[] }) {
   );
 }
 
-function Discuss({ service }: { service: string }) {
+function Discuss({ service, label }: { service: string; label: string }) {
   return (
     <Link href="/contact" className="group/link inline-flex items-center gap-1.5 text-[14px] font-semibold text-accent">
       <span className="border-b-2 border-lime pb-0.5">
-        Discuss this service<span className="sr-only">: {service}</span>
+        {label}<span className="sr-only">: {service}</span>
       </span>
       <Icon name="arrow" className="size-4 transition-transform duration-300 group-hover/link:translate-x-1" />
     </Link>
@@ -55,7 +55,8 @@ function Discuss({ service }: { service: string }) {
 }
 
 export default async function ServicesPage() {
-  const { approach, packages, process, services, site } = await getContent();
+  const { approach, packages, process, services, site, texts } = await getContent();
+  const t = texts.services;
   const grid = services.slice(0, 6);
   const last = services[6];
 
@@ -75,21 +76,17 @@ export default async function ServicesPage() {
         }}
       />
       <PageHero
-        eyebrow="Services"
-        title={
-          <>
-            AI Development &amp; <span className="text-leaf">Modern Web Solutions.</span>
-          </>
-        }
-        lead="I help businesses build intelligent digital experiences and high-performance websites using AI-assisted workflows and modern web technologies."
+        eyebrow={t.hero.eyebrow}
+        title={rich(t.hero.title, { hl: "text-leaf" })}
+        lead={t.hero.lead}
         aside={<LayersArt />}
       >
         <div className="grid w-full gap-3 sm:flex sm:w-auto sm:flex-wrap">
           <Link href="/contact" className="btn btn-primary min-h-13 px-7">
-            Get a Project Quote <Icon name="arrow" />
+            {t.hero.primary} <Icon name="arrow" />
           </Link>
           <a href="#service-1" className="btn btn-line min-h-13 px-7">
-            Explore services
+            {t.hero.secondary}
           </a>
         </div>
       </PageHero>
@@ -118,8 +115,8 @@ export default async function ServicesPage() {
                 </div>
                 <Points items={s.points} />
                 <div className="mt-auto flex flex-col gap-4 border-t border-line pt-4">
-                  <Tags label={s.tagsLabel ?? "Tech"} items={s.tags} />
-                  <Discuss service={s.title} />
+                  <Tags label={s.tagsLabel ?? t.cards.tagsLabel} items={s.tags} />
+                  <Discuss service={s.title} label={t.cards.link} />
                 </div>
               </article>
             ))}
@@ -143,9 +140,9 @@ export default async function ServicesPage() {
             </div>
             <div className="flex flex-col gap-4">
               <Points items={last.points} cols="sm:grid-cols-2" />
-              <Tags label={last.tagsLabel ?? "Tech"} items={last.tags} />
+              <Tags label={last.tagsLabel ?? t.cards.tagsLabel} items={last.tags} />
             </div>
-            <Discuss service={last.title} />
+            <Discuss service={last.title} label={t.cards.link} />
           </article>
         </div>
       </section>
@@ -154,7 +151,7 @@ export default async function ServicesPage() {
       <section className="bg-paper pb-14 md:pb-16">
         <div className="wrap">
           <div data-reveal>
-            <MiniHead text="Every project gets a clear scope and estimate before work starts.">Engagement Models</MiniHead>
+            <MiniHead text={t.packages.text}>{t.packages.title}</MiniHead>
           </div>
           <div className="grid gap-5 lg:grid-cols-3">
             {packages.map((p, i) => (
@@ -184,7 +181,7 @@ export default async function ServicesPage() {
                 <div className="mt-auto flex items-center justify-between gap-3 border-t border-line pt-4 text-[14px]">
                   <strong className="text-ink">{p.price}</strong>
                   <Link href="/contact" className={`btn btn-sm ${p.featured ? "btn-primary" : "btn-line"}`}>
-                    Enquire<span className="sr-only"> about {p.title}</span> <Icon name="arrow" />
+                    {t.packages.button}<span className="sr-only"> about {p.title}</span> <Icon name="arrow" />
                   </Link>
                 </div>
               </div>
@@ -197,9 +194,7 @@ export default async function ServicesPage() {
       <section className="bg-paper pb-14 md:pb-16">
         <div className="wrap">
           <div data-reveal>
-            <MiniHead text="AI speed with a human code review — clear steps, regular updates and a preview link at every stage.">
-              My Development Process
-            </MiniHead>
+            <MiniHead text={t.process.text}>{t.process.title}</MiniHead>
           </div>
           <ol data-reveal aria-label="Development approach" className="tile grid grid-cols-2 gap-y-6 p-6 sm:grid-cols-3 lg:grid-cols-6 lg:p-8">
             {approach.map((a, i) => (
@@ -233,9 +228,9 @@ export default async function ServicesPage() {
       </section>
 
       <CtaBand
-        title="Let's Discuss Your Project."
-        text="Share your project idea, design, or current website. I'll suggest the right solution and provide a clear estimate."
-        primary={{ href: "/contact", label: "Get a Project Quote" }}
+        title={rich(t.cta.title)}
+        text={rich(t.cta.text)}
+        primary={{ href: "/contact", label: t.cta.primary }}
       />
     </>
   );

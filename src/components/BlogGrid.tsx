@@ -10,7 +10,7 @@ const PAGE = 9;
  * Blog index: newest post as a wide card, the rest in a 3-column grid.
  * Category filters appear once posts span two or more categories; "Show more" after 9 posts.
  */
-export function BlogGrid({ posts }: { posts: PostMeta[] }) {
+export function BlogGrid({ posts, allLabel }: { posts: PostMeta[]; allLabel: string }) {
   const [filter, setFilter] = useState<Pillar | "all">("all");
   const [shown, setShown] = useState(PAGE);
 
@@ -49,7 +49,7 @@ export function BlogGrid({ posts }: { posts: PostMeta[] }) {
                     : "border-line-2 bg-surface text-ink-2 hover:-translate-y-0.5 hover:border-accent hover:text-accent"
                 }`}
               >
-                {f === "all" ? "All articles" : pillars[f].label}
+                {f === "all" ? allLabel : pillars[f].label}
                 <span className={`text-[12px] font-medium ${active ? "text-lime" : "text-faint"}`}>{count}</span>
               </button>
             );

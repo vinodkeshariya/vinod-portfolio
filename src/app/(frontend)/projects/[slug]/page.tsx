@@ -36,17 +36,10 @@ export async function generateMetadata({ params }: Props): Promise<Metadata> {
   };
 }
 
-const sections = [
-  { id: "overview", label: "Overview" },
-  { id: "challenge", label: "The challenge" },
-  { id: "approach", label: "Approach" },
-  { id: "features", label: "Key features" },
-  { id: "gallery", label: "Gallery" },
-  { id: "tech", label: "Technologies" },
-];
-
 export default async function CaseStudyPage({ params }: Props) {
-  const [{ slug }, { projects, site }] = await Promise.all([params, getContent()]);
+  const [{ slug }, { projects, site, texts }] = await Promise.all([params, getContent()]);
+  const c = texts.work.caseStudy;
+  const sections = (["overview", "challenge", "approach", "features", "gallery", "tech"] as const).map((id) => ({ id, label: c[id].nav }));
   const index = projects.findIndex((p) => p.slug === slug);
   if (index === -1) notFound();
 
@@ -87,16 +80,16 @@ export default async function CaseStudyPage({ params }: Props) {
       />
       <PageHero
         crumbs={[{ href: "/", label: "Home" }, { href: "/projects", label: "Work" }, { label: project.title }]}
-        eyebrow={`Case study · ${project.category}`}
+        eyebrow={`${c.eyebrow} ${project.category}`}
         title={<>{first} <span className="text-leaf">{titleRest.join(" ")}</span></>}
         lead={project.tagline}
       >
         <dl className="mt-4 grid grid-cols-2 gap-px overflow-hidden rounded-[18px] border border-line bg-line md:grid-cols-4">
           {[
-            ["Client", project.client],
-            ["Role", project.role],
-            ["Stack", project.stack],
-            ["Year", project.year],
+            [c.client, project.client],
+            [c.role, project.role],
+            [c.stack, project.stack],
+            [c.year, project.year],
           ].map(([k, v]) => (
             <div key={k} className="flex flex-col gap-1.5 bg-surface px-5 py-4">
               <dt className="label-mono">{k}</dt>
@@ -121,9 +114,9 @@ export default async function CaseStudyPage({ params }: Props) {
 
           <div className="flex min-w-0 flex-col gap-[72px]">
             {[
-              ["overview", "Overview", "Project overview", project.overview],
-              ["challenge", "Challenge", "The challenge", project.challenge],
-              ["approach", "Approach", "Approach & solution", project.approach],
+              ["overview", c.overview.eyebrow, c.overview.title, project.overview],
+              ["challenge", c.challenge.eyebrow, c.challenge.title, project.challenge],
+              ["approach", c.approach.eyebrow, c.approach.title, project.approach],
             ].map(([id, eyebrow, title, text]) => (
               <div key={id} id={id} data-reveal className="flex scroll-mt-28 flex-col gap-4">
                 <span className="eyebrow">{eyebrow}</span>
@@ -133,14 +126,14 @@ export default async function CaseStudyPage({ params }: Props) {
             ))}
 
             <div id="features" data-reveal className="flex scroll-mt-28 flex-col gap-5">
-              <span className="eyebrow">Features</span>
-              <h2 className="text-[clamp(26px,3vw,32px)] font-bold text-accent">Key features</h2>
+              <span className="eyebrow">{c.features.eyebrow}</span>
+              <h2 className="text-[clamp(26px,3vw,32px)] font-bold text-accent">{c.features.title}</h2>
               <TickList items={project.features} twoCol />
             </div>
 
             <div id="gallery" className="flex scroll-mt-28 flex-col gap-5">
-              <span className="eyebrow">Gallery</span>
-              <h2 className="text-[clamp(26px,3vw,32px)] font-bold text-accent">Screens</h2>
+              <span className="eyebrow">{c.gallery.eyebrow}</span>
+              <h2 className="text-[clamp(26px,3vw,32px)] font-bold text-accent">{c.gallery.title}</h2>
               {desktopShots.map((g) => (
                 <figure key={g.src} data-reveal className="m-0">
                   <div className="relative aspect-16/10 overflow-hidden rounded-[18px] border border-line bg-surface">
@@ -162,26 +155,26 @@ export default async function CaseStudyPage({ params }: Props) {
             </div>
 
             <div id="tech" data-reveal className="flex scroll-mt-28 flex-col gap-5">
-              <span className="eyebrow">Stack</span>
-              <h2 className="text-[clamp(26px,3vw,32px)] font-bold text-accent">Technologies used</h2>
+              <span className="eyebrow">{c.tech.eyebrow}</span>
+              <h2 className="text-[clamp(26px,3vw,32px)] font-bold text-accent">{c.tech.title}</h2>
               <Chips items={project.tech} fill />
             </div>
 
             <nav aria-label="More projects" className="grid gap-4 sm:grid-cols-2">
               <Link href={prev ? `/projects/${prev.slug}` : "/projects"} className="tile tile-hover flex flex-col gap-1.5 p-7">
-                <small className="label-mono">{prev ? "← Previous project" : "← Back"}</small>
-                <strong className="font-display text-xl">{prev ? prev.title : "All projects"}</strong>
+                <small className="label-mono">{prev ? c.previous : c.back}</small>
+                <strong className="font-display text-xl">{prev ? prev.title : c.all}</strong>
               </Link>
               <Link href={next ? `/projects/${next.slug}` : "/projects"} className="tile tile-hover flex flex-col gap-1.5 p-7 sm:text-right">
-                <small className="label-mono">{next ? "Next project →" : "Back to →"}</small>
-                <strong className="font-display text-xl">{next ? next.title : "All projects"}</strong>
+                <small className="label-mono">{next ? c.next : c.backTo}</small>
+                <strong className="font-display text-xl">{next ? next.title : c.all}</strong>
               </Link>
             </nav>
           </div>
         </div>
       </section>
 
-      <CtaBand title={project.ctaTitle} text={project.ctaText} primary={{ href: "/contact", label: "Share your project" }} />
+      <CtaBand title={project.ctaTitle} text={project.ctaText} primary={{ href: "/contact", label: c.cta }} />
     </>
   );
 }

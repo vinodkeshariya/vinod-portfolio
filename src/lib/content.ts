@@ -3,7 +3,8 @@ import { unstable_cache } from "next/cache";
 import { CMS_TAG } from "@/cms/revalidate";
 import type { Media } from "@/payload-types";
 import { toList } from "./blog-check";
-import { siteUrl, type Content, type IconName, type Project, type ProjectFilter } from "./data";
+import { nav, siteUrl, type Content, type IconName, type PageTexts, type Project, type ProjectFilter } from "./data";
+import { cmsCacheKey } from "./cache-key";
 import { getPayloadClient } from "./payload";
 
 /**
@@ -33,17 +34,38 @@ const icon = (v: unknown) => (typeof v === "string" ? v : "check") as IconName;
 
 async function load(): Promise<Content> {
   const payload = await getPayloadClient();
-  const [s, home, about, svc, contact, projects, faqs] = await Promise.all([
+  const [s, home, about, svc, contact, projects, faqs, work, hireMe, blog] = await Promise.all([
     payload.findGlobal({ slug: "site-settings", depth: 1 }),
-    payload.findGlobal({ slug: "home-page", depth: 0 }),
+    payload.findGlobal({ slug: "home-page", depth: 1 }),
     payload.findGlobal({ slug: "about-page", depth: 0 }),
     payload.findGlobal({ slug: "services-page", depth: 1 }),
     payload.findGlobal({ slug: "contact-page", depth: 0 }),
     payload.find({ collection: "projects", sort: "_order", depth: 1, pagination: false }),
     payload.find({ collection: "faqs", sort: "_order", depth: 0, pagination: false }),
+    payload.findGlobal({ slug: "work-page", depth: 0 }),
+    payload.findGlobal({ slug: "hire-me-page", depth: 0 }),
+    payload.findGlobal({ slug: "blog-page", depth: 0 }),
   ]);
 
+  const texts = {
+    home: home.texts,
+    about: about.aboutTexts,
+    experience: about.experienceTexts,
+    services: svc.texts,
+    work: work.texts,
+    hireMe: hireMe.texts,
+    contact: contact.texts,
+    blog: blog.texts,
+    layout: s.layout,
+  } as PageTexts;
+  const menuLabels = (texts.layout?.menu ?? {}) as Record<string, string | null>;
+  const menuKey: Record<string, string> = { "/": "home", "/about": "about", "/services": "services", "/projects": "work", "/experience": "experience", "/blog": "blog", "/contact": "contact" };
+
   return {
+    texts,
+    vars: { name: str(s.name), role: str(s.role), email: str(s.email), company: str(about.experience?.company) },
+    menu: nav.map((n) => ({ href: n.href, label: menuLabels[menuKey[n.href]] || n.label })),
+    showcase: (home.texts?.hero?.showcase ?? []).map((x) => ({ src: mediaUrl(x.image), alt: x.alt || mediaAlt(x.image) })),
     site: {
       name: str(s.name),
       role: str(s.role),
@@ -149,6 +171,6 @@ async function load(): Promise<Content> {
   };
 }
 
-export const getContent = unstable_cache(load, ["cms-content", process.env.VERCEL_DEPLOYMENT_ID ?? process.env.VERCEL_GIT_COMMIT_SHA ?? "local"], {
+export const getContent = unstable_cache(load, ["cms-content", ...cmsCacheKey], {
   tags: [CMS_TAG],
 });

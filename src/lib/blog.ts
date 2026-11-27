@@ -13,6 +13,7 @@ import { imageLinks, mediaFilename, toList } from "./blog-check";
 import { checkScene, defaultScenes, pillars, type Pillar, type Post, type PostMeta, type Scene } from "./blog-meta";
 import { parseVisual, visualToHast } from "./blog-visuals";
 import { siteUrl } from "./data";
+import { cmsCacheKey } from "./cache-key";
 import { getPayloadClient } from "./payload";
 
 export * from "./blog-meta";
@@ -89,7 +90,7 @@ async function loadPublished(): Promise<PostEntry[]> {
   return toEntries(docs);
 }
 
-const published = unstable_cache(loadPublished, ["cms-posts", process.env.VERCEL_DEPLOYMENT_ID ?? process.env.VERCEL_GIT_COMMIT_SHA ?? "local"], {
+const published = unstable_cache(loadPublished, ["cms-posts", ...cmsCacheKey], {
   tags: [CMS_TAG],
 });
 

@@ -3,6 +3,7 @@
 import { useState, useTransition } from "react";
 import { sendInquiry } from "@/app/(frontend)/contact/actions";
 import { track } from "@/lib/analytics";
+import type { PageTexts } from "@/lib/data";
 import { Icon } from "./Icon";
 
 type Status = "idle" | "sent" | "failed" | "limited";
@@ -24,9 +25,19 @@ function mailtoHref(email: string, data: FormData) {
  * Contact form. Validates in the browser, then sends the inquiry to the inbox
  * through the `sendInquiry` Server Action (Resend). If sending fails, the
  * visitor can still open their email app with the message pre-filled.
- * The email address and the select options come from the CMS (via the contact page).
+ * The email address, the options and every label come from the CMS (via the contact page).
  */
-export function ContactForm({ email, budgets, projectTypes }: { email: string; budgets: string[]; projectTypes: string[] }) {
+export function ContactForm({
+  email,
+  budgets,
+  projectTypes,
+  labels: l,
+}: {
+  email: string;
+  budgets: string[];
+  projectTypes: string[];
+  labels: PageTexts["contact"]["form"];
+}) {
   const [status, setStatus] = useState<Status>("idle");
   const [errors, setErrors] = useState<Record<string, string>>({});
   const [fallback, setFallback] = useState(`mailto:${email}`);
@@ -67,9 +78,9 @@ export function ContactForm({ email, budgets, projectTypes }: { email: string; b
         <span className="grid size-14 place-items-center rounded-full bg-accent text-lime">
           <Icon name="check" strokeWidth={2.4} className="size-7" />
         </span>
-        <h2 className="text-[26px] font-bold text-accent">Thanks — your message has been sent!</h2>
-        <p className="text-muted">I&apos;ve received your inquiry and usually reply within 0–4 hours, straight to the email address you shared.</p>
-        <button type="button" className="btn btn-ghost btn-sm" onClick={() => setStatus("idle")}>Send another inquiry</button>
+        <h2 className="text-[26px] font-bold text-accent">{l.sentTitle}</h2>
+        <p className="text-muted">{l.sentText}</p>
+        <button type="button" className="btn btn-ghost btn-sm" onClick={() => setStatus("idle")}>{l.sentAgain}</button>
       </div>
     );
   }
@@ -84,8 +95,8 @@ export function ContactForm({ email, budgets, projectTypes }: { email: string; b
 
       <div className="flex items-start justify-between gap-4">
         <div>
-          <h2 className="font-display text-[24px] font-bold tracking-[-0.02em] text-accent">Project Inquiry</h2>
-          <p className="mt-1 text-[14px] text-muted">Fields marked * are required.</p>
+          <h2 className="font-display text-[24px] font-bold tracking-[-0.02em] text-accent">{l.title}</h2>
+          <p className="mt-1 text-[14px] text-muted">{l.note}</p>
         </div>
         <span aria-hidden="true" className="mt-2 flex gap-1.5">
           <i className="size-2 rounded-full bg-lime" />
@@ -96,14 +107,14 @@ export function ContactForm({ email, budgets, projectTypes }: { email: string; b
 
       <div className="grid gap-5 sm:grid-cols-2">
         <div className="flex flex-col gap-2">
-          <label htmlFor="name" className="text-sm font-medium text-ink-2">Your name *</label>
-          <input id="name" name="name" autoComplete="name" placeholder="Your name" className={field}
+          <label htmlFor="name" className="text-sm font-medium text-ink-2">{l.name}</label>
+          <input id="name" name="name" autoComplete="name" placeholder={l.namePlaceholder} className={field}
             aria-invalid={!!errors.name} aria-describedby={errors.name ? "name-err" : undefined} />
           {errors.name && <span id="name-err" className="text-[13px] text-red-700">{errors.name}</span>}
         </div>
         <div className="flex flex-col gap-2">
-          <label htmlFor="email" className="text-sm font-medium text-ink-2">Email address *</label>
-          <input id="email" name="email" type="email" autoComplete="email" placeholder="you@company.com" className={field}
+          <label htmlFor="email" className="text-sm font-medium text-ink-2">{l.email}</label>
+          <input id="email" name="email" type="email" autoComplete="email" placeholder={l.emailPlaceholder} className={field}
             aria-invalid={!!errors.email} aria-describedby={errors.email ? "email-err" : undefined} />
           {errors.email && <span id="email-err" className="text-[13px] text-red-700">{errors.email}</span>}
         </div>
@@ -111,13 +122,13 @@ export function ContactForm({ email, budgets, projectTypes }: { email: string; b
 
       <div className="flex flex-col gap-2">
         <label htmlFor="company" className="text-sm font-medium text-ink-2">
-          Company / Website <span className="font-normal text-faint">(optional)</span>
+          {l.company} <span className="font-normal text-faint">{l.optional}</span>
         </label>
-        <input id="company" name="company" autoComplete="organization" placeholder="Company name or https://yourwebsite.com" className={field} />
+        <input id="company" name="company" autoComplete="organization" placeholder={l.companyPlaceholder} className={field} />
       </div>
 
       <fieldset className="flex flex-col gap-2.5">
-        <legend className="mb-2.5 text-sm font-medium text-ink-2">Project type</legend>
+        <legend className="mb-2.5 text-sm font-medium text-ink-2">{l.type}</legend>
         <div className="flex flex-wrap gap-2.5">
           {projectTypes.map((t, i) => (
             <label key={t} className="relative">
@@ -131,16 +142,16 @@ export function ContactForm({ email, budgets, projectTypes }: { email: string; b
       </fieldset>
 
       <div className="flex flex-col gap-2">
-        <label htmlFor="budget" className="text-sm font-medium text-ink-2">Budget <span className="font-normal text-faint">(optional)</span></label>
+        <label htmlFor="budget" className="text-sm font-medium text-ink-2">{l.budget} <span className="font-normal text-faint">{l.optional}</span></label>
         <select id="budget" name="budget" defaultValue="" className={field}>
-          <option value="">Select a range (optional)</option>
+          <option value="">{l.budgetPlaceholder}</option>
           {budgets.map((b) => <option key={b}>{b}</option>)}
         </select>
       </div>
 
       <div className="flex flex-col gap-2">
-        <label htmlFor="message" className="text-sm font-medium text-ink-2">Project description *</label>
-        <textarea id="message" name="message" rows={5} placeholder="Goals, timeline, links to designs or current site…"
+        <label htmlFor="message" className="text-sm font-medium text-ink-2">{l.message}</label>
+        <textarea id="message" name="message" rows={5} placeholder={l.messagePlaceholder}
           className={`${field} min-h-[130px] resize-y`}
           aria-invalid={!!errors.message} aria-describedby={errors.message ? "message-err" : undefined} />
         {errors.message && <span id="message-err" className="text-[13px] text-red-700">{errors.message}</span>}
@@ -149,21 +160,19 @@ export function ContactForm({ email, budgets, projectTypes }: { email: string; b
       {(status === "failed" || status === "limited") && (
         <div role="alert" className="flex flex-col items-start gap-3 rounded-[12px] border border-red-200 bg-red-50 p-4 text-[14px] text-red-800">
           <p>
-            {status === "limited"
-              ? "You've sent several messages in a short time. Please wait a few minutes, or email me directly."
-              : "Sorry — your message couldn't be sent right now. You can send it from your email app instead; everything you typed is already filled in."}
+            {status === "limited" ? l.limited : l.failed}
           </p>
           <a href={fallback} className="btn btn-line btn-sm">
-            Send via email app <Icon name="mail" />
+            {l.fallback} <Icon name="mail" />
           </a>
         </div>
       )}
 
       <div className="flex flex-col gap-3">
         <button type="submit" className="btn btn-primary min-h-14 w-full text-[16px]" disabled={sending} aria-busy={sending}>
-          {sending ? "Sending…" : "Send Project Inquiry"} <Icon name="send" />
+          {sending ? l.sending : l.submit} <Icon name="send" />
         </button>
-        <span className="text-center text-[13px] text-muted">I usually reply within 0–4 hours.</span>
+        <span className="text-center text-[13px] text-muted">{l.reply}</span>
       </div>
     </form>
   );

@@ -1,6 +1,7 @@
 import type { GlobalConfig } from "payload";
 import { revalidateSite } from "../cms/revalidate.ts";
 import { image, lines, para, text } from "../cms/fields.ts";
+import { layoutTexts } from "../cms/texts.ts";
 
 /** Name, role, contact details and links used across the whole site */
 export const SiteSettings: GlobalConfig = {
@@ -46,6 +47,7 @@ export const SiteSettings: GlobalConfig = {
             },
           ],
         },
+        { label: "Menu, footer & 404", fields: [layoutTexts] },
         {
           label: "Google",
           fields: [

@@ -5,6 +5,7 @@
  *
  * No runtime imports, so the Payload config can use this file too.
  */
+import type { AboutPage, BlogPage, ContactPage, HireMePage, HomePage, ServicesPage, SiteSetting, WorkPage } from "../payload-types.ts";
 import type { IconName } from "./icons.ts";
 
 export type { IconName } from "./icons.ts";
@@ -102,7 +103,30 @@ export type Service = {
 
 type TitleText = { title: string; text: string };
 
+/** A CMS group with every field present (the content migration fills them all) */
+export type Filled<T> = T extends (infer U)[] ? Filled<U>[] : T extends object ? { [K in keyof T]-?: Filled<NonNullable<T[K]>> } : NonNullable<T>;
+
+/** The "Page texts" of every page — headings, intros, cards, buttons, Google titles */
+export type PageTexts = {
+  home: Filled<HomePage["texts"]>;
+  about: Filled<AboutPage["aboutTexts"]>;
+  experience: Filled<AboutPage["experienceTexts"]>;
+  services: Filled<ServicesPage["texts"]>;
+  work: Filled<WorkPage["texts"]>;
+  hireMe: Filled<HireMePage["texts"]>;
+  contact: Filled<ContactPage["texts"]>;
+  blog: Filled<BlogPage["texts"]>;
+  layout: Filled<SiteSetting["layout"]>;
+};
+
 export type Content = {
+  texts: PageTexts;
+  /** Values for the {tokens} in page texts */
+  vars: { name: string; role: string; email: string; company: string };
+  /** The menu with its labels from the CMS */
+  menu: { href: string; label: string }[];
+  /** The three tilted screenshots (home + hire me) */
+  showcase: { src: string; alt: string }[];
   site: Site;
   google: { gaId: string; searchConsole: string };
   stats: { label: string; value: string }[];

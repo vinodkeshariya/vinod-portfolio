@@ -3,7 +3,6 @@
 import Link from "next/link";
 import { usePathname } from "next/navigation";
 import { useEffect, useState } from "react";
-import { nav } from "@/lib/data";
 import { Icon } from "./Icon";
 import { Logo } from "./Logo";
 
@@ -11,7 +10,8 @@ function isActive(pathname: string, href: string) {
   return href === "/" ? pathname === "/" : pathname.startsWith(href);
 }
 
-export function Header({ name }: { name: string }) {
+/** `menu`: the menu with its labels from the CMS (Site settings → Menu, footer & 404) */
+export function Header({ name, menu }: { name: string; menu: { href: string; label: string }[] }) {
   const pathname = usePathname();
   const [open, setOpen] = useState(false);
   const [scrolled, setScrolled] = useState(false);
@@ -42,7 +42,7 @@ export function Header({ name }: { name: string }) {
     };
   }, [open]);
 
-  const links = nav.filter((n) => n.href !== "/");
+  const links = menu.filter((n) => n.href !== "/");
 
   return (
     <header
@@ -97,7 +97,7 @@ export function Header({ name }: { name: string }) {
       {/* Mobile menu */}
       <div id="mobile-menu" hidden={!open} className="border-t border-line bg-paper lg:hidden">
         <ul className="wrap flex flex-col gap-1 py-4">
-          {nav.map((item) => {
+          {menu.map((item) => {
             const active = isActive(pathname, item.href);
             return (
               <li key={item.href}>

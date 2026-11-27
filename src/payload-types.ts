@@ -98,14 +98,20 @@ export interface Config {
     'home-page': HomePage;
     'about-page': AboutPage;
     'services-page': ServicesPage;
+    'work-page': WorkPage;
+    'hire-me-page': HireMePage;
     'contact-page': ContactPage;
+    'blog-page': BlogPage;
   };
   globalsSelect: {
     'site-settings': SiteSettingsSelect<false> | SiteSettingsSelect<true>;
     'home-page': HomePageSelect<false> | HomePageSelect<true>;
     'about-page': AboutPageSelect<false> | AboutPageSelect<true>;
     'services-page': ServicesPageSelect<false> | ServicesPageSelect<true>;
+    'work-page': WorkPageSelect<false> | WorkPageSelect<true>;
+    'hire-me-page': HireMePageSelect<false> | HireMePageSelect<true>;
     'contact-page': ContactPageSelect<false> | ContactPageSelect<true>;
+    'blog-page': BlogPageSelect<false> | BlogPageSelect<true>;
   };
   locale: null;
   widgets: {
@@ -695,6 +701,52 @@ export interface SiteSetting {
    */
   upwork?: string | null;
   /**
+   * Put *stars* around the words shown in colour. {name} and {role} are filled in from Site settings.
+   */
+  layout?: {
+    menu?: {
+      home?: string | null;
+      about?: string | null;
+      services?: string | null;
+      work?: string | null;
+      experience?: string | null;
+      blog?: string | null;
+      contact?: string | null;
+    };
+    seo?: {
+      title?: string | null;
+      /**
+       * One per line.
+       */
+      keywords?: string | null;
+    };
+    footer?: {
+      /**
+       * {name} and {role} are filled in from Site settings.
+       */
+      subtitle?: string | null;
+      rights?: string | null;
+      builtWith?: string | null;
+      using?: string | null;
+    };
+    mobileBar?: {
+      title?: string | null;
+      text?: string | null;
+      button?: string | null;
+    };
+    notFound?: {
+      eyebrow?: string | null;
+      /**
+       * Put *stars* around the words shown in colour.
+       */
+      title?: string | null;
+      lead?: string | null;
+      home?: string | null;
+      projects?: string | null;
+      try?: string | null;
+    };
+  };
+  /**
    * G-XXXXXXXXXX — loads only on the live site. Empty = off.
    */
   gaId?: string | null;
@@ -711,6 +763,104 @@ export interface SiteSetting {
  */
 export interface HomePage {
   id: number;
+  /**
+   * Headings, intros, cards and buttons on this page. Put *stars* around the words shown in colour. [Link text](/page) makes a link, **double stars** make bold text.
+   */
+  texts?: {
+    seo?: {
+      title?: string | null;
+      /**
+       * About 150 characters.
+       */
+      description?: string | null;
+    };
+    hero?: {
+      /**
+       * {name} and {role} are filled in from Site settings.
+       */
+      eyebrow?: string | null;
+      /**
+       * Put *stars* around the words shown in colour.
+       */
+      title?: string | null;
+      /**
+       * {name} and {role} are filled in from Site settings.
+       */
+      lead?: string | null;
+      primary?: string | null;
+      secondary?: string | null;
+      showcase?:
+        | {
+            image: number | Media;
+            /**
+             * Empty = the image's own description.
+             */
+            alt?: string | null;
+            id?: string | null;
+          }[]
+        | null;
+    };
+    services?: {
+      eyebrow?: string | null;
+      /**
+       * Put *stars* around the words shown in colour.
+       */
+      title?: string | null;
+      link?: string | null;
+    };
+    work?: {
+      eyebrow?: string | null;
+      /**
+       * Put *stars* around the words shown in colour.
+       */
+      title?: string | null;
+      button?: string | null;
+    };
+    experienceBar?: {
+      caption?: string | null;
+    };
+    problems?: {
+      eyebrow?: string | null;
+      /**
+       * Put *stars* around the words shown in colour.
+       */
+      title?: string | null;
+    };
+    aiWorkflow?: {
+      eyebrow?: string | null;
+      /**
+       * Put *stars* around the words shown in colour.
+       */
+      title?: string | null;
+    };
+    process?: {
+      eyebrow?: string | null;
+      /**
+       * Put *stars* around the words shown in colour.
+       */
+      title?: string | null;
+      button?: string | null;
+    };
+    faq?: {
+      eyebrow?: string | null;
+      /**
+       * Put *stars* around the words shown in colour.
+       */
+      title?: string | null;
+      /**
+       * [Link text](/page) makes a link, **double stars** make bold text.
+       */
+      text?: string | null;
+    };
+    cta?: {
+      /**
+       * A new line starts a second line.
+       */
+      title?: string | null;
+      text?: string | null;
+      primary?: string | null;
+    };
+  };
   /**
    * The first one (experience) is shown on the home page's experience card.
    */
@@ -810,6 +960,207 @@ export interface HomePage {
  */
 export interface AboutPage {
   id: number;
+  /**
+   * Headings, intros, cards and buttons on this page. Put *stars* around the words shown in colour. [Link text](/page) makes a link, **double stars** make bold text.
+   */
+  aboutTexts?: {
+    seo?: {
+      title?: string | null;
+      /**
+       * About 150 characters.
+       */
+      description?: string | null;
+    };
+    hero?: {
+      eyebrow?: string | null;
+      /**
+       * Put *stars* around the words shown in colour.
+       */
+      title?: string | null;
+      lead?: string | null;
+      intro?: string | null;
+      facts?:
+        | {
+            label?: string | null;
+            icon:
+              | 'browser'
+              | 'react'
+              | 'cart'
+              | 'store'
+              | 'pen'
+              | 'spark'
+              | 'bolt'
+              | 'code'
+              | 'layers'
+              | 'shield'
+              | 'clock'
+              | 'check'
+              | 'award'
+              | 'mail'
+              | 'chat'
+              | 'pin'
+              | 'arrow'
+              | 'arrowUpRight'
+              | 'download'
+              | 'send'
+              | 'linkedin'
+              | 'github'
+              | 'upwork'
+              | 'menu'
+              | 'close'
+              | 'star'
+              | 'camera'
+              | 'users'
+              | 'briefcase'
+              | 'monitor'
+              | 'cpu'
+              | 'cap'
+              | 'globe';
+            id?: string | null;
+          }[]
+        | null;
+      primary?: string | null;
+      resume?: string | null;
+    };
+    story?: {
+      title?: string | null;
+      /**
+       * Put *stars* around the words shown in colour.
+       */
+      lead?: string | null;
+      /**
+       * Leave an empty line between paragraphs. {company} = the company from Experience.
+       */
+      left?: string | null;
+      /**
+       * Leave an empty line between paragraphs.
+       */
+      right?: string | null;
+      quote?: string | null;
+      link?: string | null;
+    };
+    whatIDo?: {
+      title?: string | null;
+      text?: string | null;
+      button?: string | null;
+    };
+    philosophy?: {
+      eyebrow?: string | null;
+      /**
+       * Put *stars* around the words shown in colour.
+       */
+      title?: string | null;
+    };
+    stack?: {
+      title?: string | null;
+      button?: string | null;
+      groups?:
+        | {
+            title?: string | null;
+            icon:
+              | 'browser'
+              | 'react'
+              | 'cart'
+              | 'store'
+              | 'pen'
+              | 'spark'
+              | 'bolt'
+              | 'code'
+              | 'layers'
+              | 'shield'
+              | 'clock'
+              | 'check'
+              | 'award'
+              | 'mail'
+              | 'chat'
+              | 'pin'
+              | 'arrow'
+              | 'arrowUpRight'
+              | 'download'
+              | 'send'
+              | 'linkedin'
+              | 'github'
+              | 'upwork'
+              | 'menu'
+              | 'close'
+              | 'star'
+              | 'camera'
+              | 'users'
+              | 'briefcase'
+              | 'monitor'
+              | 'cpu'
+              | 'cap'
+              | 'globe';
+            /**
+             * One per line.
+             */
+            items?: string | null;
+            id?: string | null;
+          }[]
+        | null;
+      experienceTitle?: string | null;
+      certificationsTitle?: string | null;
+    };
+    cta?: {
+      /**
+       * Put *stars* around the words shown in colour.
+       */
+      title?: string | null;
+      /**
+       * [Link text](/page) makes a link, **double stars** make bold text.
+       */
+      text?: string | null;
+      primary?: string | null;
+      secondary?: string | null;
+    };
+  };
+  /**
+   * Headings, intros, cards and buttons on this page. Put *stars* around the words shown in colour. [Link text](/page) makes a link, **double stars** make bold text.
+   */
+  experienceTexts?: {
+    seo?: {
+      title?: string | null;
+      /**
+       * About 150 characters.
+       */
+      description?: string | null;
+    };
+    hero?: {
+      eyebrow?: string | null;
+      /**
+       * Put *stars* around the words shown in colour.
+       */
+      title?: string | null;
+      lead?: string | null;
+      stats?:
+        | {
+            value?: string | null;
+            label?: string | null;
+            id?: string | null;
+          }[]
+        | null;
+    };
+    headings?: {
+      timeline?: string | null;
+      certifications?: string | null;
+      languages?: string | null;
+      aiWorkflow?: string | null;
+      skills?: string | null;
+      aiWorkflowText?: string | null;
+    };
+    cta?: {
+      /**
+       * Put *stars* around the words shown in colour.
+       */
+      title?: string | null;
+      /**
+       * [Link text](/page) makes a link, **double stars** make bold text.
+       */
+      text?: string | null;
+      primary?: string | null;
+      secondary?: string | null;
+    };
+  };
   /**
    * Shown on the home, about and experience pages.
    */
@@ -991,6 +1342,52 @@ export interface AboutPage {
 export interface ServicesPage {
   id: number;
   /**
+   * Headings, intros, cards and buttons on this page. Put *stars* around the words shown in colour. [Link text](/page) makes a link, **double stars** make bold text.
+   */
+  texts?: {
+    seo?: {
+      title?: string | null;
+      /**
+       * About 150 characters.
+       */
+      description?: string | null;
+    };
+    hero?: {
+      eyebrow?: string | null;
+      /**
+       * Put *stars* around the words shown in colour.
+       */
+      title?: string | null;
+      lead?: string | null;
+      primary?: string | null;
+      secondary?: string | null;
+    };
+    cards?: {
+      link?: string | null;
+      tagsLabel?: string | null;
+    };
+    packages?: {
+      title?: string | null;
+      text?: string | null;
+      button?: string | null;
+    };
+    process?: {
+      title?: string | null;
+      text?: string | null;
+    };
+    cta?: {
+      /**
+       * Put *stars* around the words shown in colour.
+       */
+      title?: string | null;
+      /**
+       * [Link text](/page) makes a link, **double stars** make bold text.
+       */
+      text?: string | null;
+      primary?: string | null;
+    };
+  };
+  /**
    * Keep the order: links like /services#service-1 point to the 1st service, #service-2 to the 2nd… The 7th is shown as a wide card.
    */
   services?:
@@ -1093,11 +1490,356 @@ export interface ServicesPage {
   createdAt?: string | null;
 }
 /**
+ * Texts of the Work page and of every project page. The projects themselves are under Content → Projects.
+ *
+ * This interface was referenced by `Config`'s JSON-Schema
+ * via the `definition` "work-page".
+ */
+export interface WorkPage {
+  id: number;
+  /**
+   * Headings, intros, cards and buttons on this page. Put *stars* around the words shown in colour. [Link text](/page) makes a link, **double stars** make bold text.
+   */
+  texts?: {
+    seo?: {
+      title?: string | null;
+      /**
+       * About 150 characters.
+       */
+      description?: string | null;
+    };
+    hero?: {
+      eyebrow?: string | null;
+      /**
+       * Put *stars* around the words shown in colour.
+       */
+      title?: string | null;
+      lead?: string | null;
+    };
+    filters?: {
+      all?: string | null;
+      nextjs?: string | null;
+      migration?: string | null;
+      landing?: string | null;
+      wordpress?: string | null;
+      ecommerce?: string | null;
+    };
+    cta?: {
+      /**
+       * Put *stars* around the words shown in colour.
+       */
+      title?: string | null;
+      /**
+       * [Link text](/page) makes a link, **double stars** make bold text.
+       */
+      text?: string | null;
+      primary?: string | null;
+    };
+    caseStudy?: {
+      eyebrow?: string | null;
+      cta?: string | null;
+      client?: string | null;
+      role?: string | null;
+      stack?: string | null;
+      year?: string | null;
+      overview?: {
+        eyebrow?: string | null;
+        title?: string | null;
+        nav?: string | null;
+      };
+      challenge?: {
+        eyebrow?: string | null;
+        title?: string | null;
+        nav?: string | null;
+      };
+      approach?: {
+        eyebrow?: string | null;
+        title?: string | null;
+        nav?: string | null;
+      };
+      features?: {
+        eyebrow?: string | null;
+        title?: string | null;
+        nav?: string | null;
+      };
+      gallery?: {
+        eyebrow?: string | null;
+        title?: string | null;
+        nav?: string | null;
+      };
+      tech?: {
+        eyebrow?: string | null;
+        title?: string | null;
+        nav?: string | null;
+      };
+      previous?: string | null;
+      next?: string | null;
+      back?: string | null;
+      backTo?: string | null;
+      all?: string | null;
+    };
+  };
+  updatedAt?: string | null;
+  createdAt?: string | null;
+}
+/**
+ * Texts of the Hire me page. Its process and service list come from Services.
+ *
+ * This interface was referenced by `Config`'s JSON-Schema
+ * via the `definition` "hire-me-page".
+ */
+export interface HireMePage {
+  id: number;
+  /**
+   * Headings, intros, cards and buttons on this page. Put *stars* around the words shown in colour. [Link text](/page) makes a link, **double stars** make bold text.
+   */
+  texts?: {
+    seo?: {
+      title?: string | null;
+      /**
+       * About 150 characters.
+       */
+      description?: string | null;
+    };
+    hero?: {
+      eyebrow?: string | null;
+      /**
+       * Put *stars* around the words shown in colour.
+       */
+      title?: string | null;
+      lead?: string | null;
+      primary?: string | null;
+      upwork?: string | null;
+      work?: string | null;
+    };
+    get?: {
+      eyebrow?: string | null;
+      /**
+       * Put *stars* around the words shown in colour.
+       */
+      title?: string | null;
+      items?:
+        | {
+            title?: string | null;
+            icon:
+              | 'browser'
+              | 'react'
+              | 'cart'
+              | 'store'
+              | 'pen'
+              | 'spark'
+              | 'bolt'
+              | 'code'
+              | 'layers'
+              | 'shield'
+              | 'clock'
+              | 'check'
+              | 'award'
+              | 'mail'
+              | 'chat'
+              | 'pin'
+              | 'arrow'
+              | 'arrowUpRight'
+              | 'download'
+              | 'send'
+              | 'linkedin'
+              | 'github'
+              | 'upwork'
+              | 'menu'
+              | 'close'
+              | 'star'
+              | 'camera'
+              | 'users'
+              | 'briefcase'
+              | 'monitor'
+              | 'cpu'
+              | 'cap'
+              | 'globe';
+            text?: string | null;
+            id?: string | null;
+          }[]
+        | null;
+    };
+    process?: {
+      eyebrow?: string | null;
+      /**
+       * Put *stars* around the words shown in colour.
+       */
+      title?: string | null;
+    };
+    why?: {
+      eyebrow?: string | null;
+      /**
+       * Put *stars* around the words shown in colour.
+       */
+      title?: string | null;
+      text?: string | null;
+      items?:
+        | {
+            title?: string | null;
+            icon:
+              | 'browser'
+              | 'react'
+              | 'cart'
+              | 'store'
+              | 'pen'
+              | 'spark'
+              | 'bolt'
+              | 'code'
+              | 'layers'
+              | 'shield'
+              | 'clock'
+              | 'check'
+              | 'award'
+              | 'mail'
+              | 'chat'
+              | 'pin'
+              | 'arrow'
+              | 'arrowUpRight'
+              | 'download'
+              | 'send'
+              | 'linkedin'
+              | 'github'
+              | 'upwork'
+              | 'menu'
+              | 'close'
+              | 'star'
+              | 'camera'
+              | 'users'
+              | 'briefcase'
+              | 'monitor'
+              | 'cpu'
+              | 'cap'
+              | 'globe';
+            text?: string | null;
+            id?: string | null;
+          }[]
+        | null;
+    };
+    areas?: {
+      eyebrow?: string | null;
+      /**
+       * Put *stars* around the words shown in colour.
+       */
+      title?: string | null;
+      detailsTitle?: string | null;
+      detailsText?: string | null;
+    };
+    /**
+     * The second button reuses the hero's Upwork / Work label.
+     */
+    cta?: {
+      /**
+       * Put *stars* around the words shown in colour.
+       */
+      title?: string | null;
+      text?: string | null;
+      primary?: string | null;
+    };
+  };
+  updatedAt?: string | null;
+  createdAt?: string | null;
+}
+/**
  * This interface was referenced by `Config`'s JSON-Schema
  * via the `definition` "contact-page".
  */
 export interface ContactPage {
   id: number;
+  /**
+   * Headings, intros, cards and buttons on this page. Put *stars* around the words shown in colour. [Link text](/page) makes a link, **double stars** make bold text.
+   */
+  texts?: {
+    seo?: {
+      title?: string | null;
+      /**
+       * About 150 characters.
+       */
+      description?: string | null;
+    };
+    hero?: {
+      eyebrow?: string | null;
+      /**
+       * Put *stars* around the words shown in colour.
+       */
+      title?: string | null;
+      lead?: string | null;
+      intro?: string | null;
+      formNote?: string | null;
+    };
+    details?: {
+      email?: string | null;
+      phone?: string | null;
+      location?: string | null;
+      availability?: string | null;
+      availabilityValue?: string | null;
+      response?: string | null;
+      responseValue?: string | null;
+      upwork?: string | null;
+    };
+    steps?: {
+      title?: string | null;
+      items?:
+        | {
+            title?: string | null;
+            text?: string | null;
+            id?: string | null;
+          }[]
+        | null;
+    };
+    helpWith?: {
+      title?: string | null;
+      link?: string | null;
+    };
+    faq?: {
+      eyebrow?: string | null;
+      /**
+       * Put *stars* around the words shown in colour.
+       */
+      title?: string | null;
+      text?: string | null;
+    };
+    form?: {
+      title?: string | null;
+      note?: string | null;
+      name?: string | null;
+      namePlaceholder?: string | null;
+      email?: string | null;
+      emailPlaceholder?: string | null;
+      company?: string | null;
+      companyPlaceholder?: string | null;
+      optional?: string | null;
+      type?: string | null;
+      budget?: string | null;
+      budgetPlaceholder?: string | null;
+      message?: string | null;
+      messagePlaceholder?: string | null;
+      submit?: string | null;
+      sending?: string | null;
+      reply?: string | null;
+      sentTitle?: string | null;
+      sentAgain?: string | null;
+      sentText?: string | null;
+      failed?: string | null;
+      limited?: string | null;
+      fallback?: string | null;
+    };
+    /**
+     * {email} = your email from Site settings. [Link text](/page) makes a link, **double stars** make bold text.
+     */
+    cta?: {
+      /**
+       * Put *stars* around the words shown in colour.
+       */
+      title?: string | null;
+      /**
+       * [Link text](/page) makes a link, **double stars** make bold text.
+       */
+      text?: string | null;
+      primary?: string | null;
+      secondary?: string | null;
+    };
+  };
   /**
    * One per line.
    */
@@ -1110,6 +1852,87 @@ export interface ContactPage {
    * One per line.
    */
   budgets?: string | null;
+  updatedAt?: string | null;
+  createdAt?: string | null;
+}
+/**
+ * Texts of the blog page and of every post page. The posts themselves are under Content → Blog posts.
+ *
+ * This interface was referenced by `Config`'s JSON-Schema
+ * via the `definition` "blog-page".
+ */
+export interface BlogPage {
+  id: number;
+  /**
+   * Headings, intros, cards and buttons on this page. Put *stars* around the words shown in colour. [Link text](/page) makes a link, **double stars** make bold text.
+   */
+  texts?: {
+    seo?: {
+      title?: string | null;
+      /**
+       * About 150 characters.
+       */
+      description?: string | null;
+    };
+    hero?: {
+      eyebrow?: string | null;
+      /**
+       * Put *stars* around the words shown in colour.
+       */
+      title?: string | null;
+      lead?: string | null;
+      primary?: string | null;
+      secondary?: string | null;
+    };
+    empty?: {
+      eyebrow?: string | null;
+      text?: string | null;
+      work?: string | null;
+      contact?: string | null;
+    };
+    filterAll?: string | null;
+    cta?: {
+      /**
+       * Put *stars* around the words shown in colour.
+       */
+      title?: string | null;
+      /**
+       * [Link text](/page) makes a link, **double stars** make bold text.
+       */
+      text?: string | null;
+      primary?: string | null;
+      secondary?: string | null;
+    };
+    post?: {
+      by?: string | null;
+      updated?: string | null;
+      minRead?: string | null;
+      /**
+       * [Link text](/page) makes a link, **double stars** make bold text.
+       */
+      aiReviewed?: string | null;
+      /**
+       * [Link text](/page) makes a link, **double stars** make bold text.
+       */
+      aiUnreviewed?: string | null;
+      authorBio?: string | null;
+      aboutLink?: string | null;
+      relatedService?: string | null;
+      helpFallback?: string | null;
+      viewService?: string | null;
+      more?: string | null;
+      allArticles?: string | null;
+      cta?: {
+        /**
+         * Put *stars* around the words shown in colour.
+         */
+        title?: string | null;
+        text?: string | null;
+        primary?: string | null;
+        secondary?: string | null;
+      };
+    };
+  };
   updatedAt?: string | null;
   createdAt?: string | null;
 }
@@ -1132,6 +1955,52 @@ export interface SiteSettingsSelect<T extends boolean = true> {
   linkedin?: T;
   github?: T;
   upwork?: T;
+  layout?:
+    | T
+    | {
+        menu?:
+          | T
+          | {
+              home?: T;
+              about?: T;
+              services?: T;
+              work?: T;
+              experience?: T;
+              blog?: T;
+              contact?: T;
+            };
+        seo?:
+          | T
+          | {
+              title?: T;
+              keywords?: T;
+            };
+        footer?:
+          | T
+          | {
+              subtitle?: T;
+              rights?: T;
+              builtWith?: T;
+              using?: T;
+            };
+        mobileBar?:
+          | T
+          | {
+              title?: T;
+              text?: T;
+              button?: T;
+            };
+        notFound?:
+          | T
+          | {
+              eyebrow?: T;
+              title?: T;
+              lead?: T;
+              home?: T;
+              projects?: T;
+              try?: T;
+            };
+      };
   gaId?: T;
   searchConsole?: T;
   updatedAt?: T;
@@ -1143,6 +2012,84 @@ export interface SiteSettingsSelect<T extends boolean = true> {
  * via the `definition` "home-page_select".
  */
 export interface HomePageSelect<T extends boolean = true> {
+  texts?:
+    | T
+    | {
+        seo?:
+          | T
+          | {
+              title?: T;
+              description?: T;
+            };
+        hero?:
+          | T
+          | {
+              eyebrow?: T;
+              title?: T;
+              lead?: T;
+              primary?: T;
+              secondary?: T;
+              showcase?:
+                | T
+                | {
+                    image?: T;
+                    alt?: T;
+                    id?: T;
+                  };
+            };
+        services?:
+          | T
+          | {
+              eyebrow?: T;
+              title?: T;
+              link?: T;
+            };
+        work?:
+          | T
+          | {
+              eyebrow?: T;
+              title?: T;
+              button?: T;
+            };
+        experienceBar?:
+          | T
+          | {
+              caption?: T;
+            };
+        problems?:
+          | T
+          | {
+              eyebrow?: T;
+              title?: T;
+            };
+        aiWorkflow?:
+          | T
+          | {
+              eyebrow?: T;
+              title?: T;
+            };
+        process?:
+          | T
+          | {
+              eyebrow?: T;
+              title?: T;
+              button?: T;
+            };
+        faq?:
+          | T
+          | {
+              eyebrow?: T;
+              title?: T;
+              text?: T;
+            };
+        cta?:
+          | T
+          | {
+              title?: T;
+              text?: T;
+              primary?: T;
+            };
+      };
   stats?:
     | T
     | {
@@ -1190,6 +2137,122 @@ export interface HomePageSelect<T extends boolean = true> {
  * via the `definition` "about-page_select".
  */
 export interface AboutPageSelect<T extends boolean = true> {
+  aboutTexts?:
+    | T
+    | {
+        seo?:
+          | T
+          | {
+              title?: T;
+              description?: T;
+            };
+        hero?:
+          | T
+          | {
+              eyebrow?: T;
+              title?: T;
+              lead?: T;
+              intro?: T;
+              facts?:
+                | T
+                | {
+                    label?: T;
+                    icon?: T;
+                    id?: T;
+                  };
+              primary?: T;
+              resume?: T;
+            };
+        story?:
+          | T
+          | {
+              title?: T;
+              lead?: T;
+              left?: T;
+              right?: T;
+              quote?: T;
+              link?: T;
+            };
+        whatIDo?:
+          | T
+          | {
+              title?: T;
+              text?: T;
+              button?: T;
+            };
+        philosophy?:
+          | T
+          | {
+              eyebrow?: T;
+              title?: T;
+            };
+        stack?:
+          | T
+          | {
+              title?: T;
+              button?: T;
+              groups?:
+                | T
+                | {
+                    title?: T;
+                    icon?: T;
+                    items?: T;
+                    id?: T;
+                  };
+              experienceTitle?: T;
+              certificationsTitle?: T;
+            };
+        cta?:
+          | T
+          | {
+              title?: T;
+              text?: T;
+              primary?: T;
+              secondary?: T;
+            };
+      };
+  experienceTexts?:
+    | T
+    | {
+        seo?:
+          | T
+          | {
+              title?: T;
+              description?: T;
+            };
+        hero?:
+          | T
+          | {
+              eyebrow?: T;
+              title?: T;
+              lead?: T;
+              stats?:
+                | T
+                | {
+                    value?: T;
+                    label?: T;
+                    id?: T;
+                  };
+            };
+        headings?:
+          | T
+          | {
+              timeline?: T;
+              certifications?: T;
+              languages?: T;
+              aiWorkflow?: T;
+              skills?: T;
+              aiWorkflowText?: T;
+            };
+        cta?:
+          | T
+          | {
+              title?: T;
+              text?: T;
+              primary?: T;
+              secondary?: T;
+            };
+      };
   experience?:
     | T
     | {
@@ -1243,6 +2306,51 @@ export interface AboutPageSelect<T extends boolean = true> {
  * via the `definition` "services-page_select".
  */
 export interface ServicesPageSelect<T extends boolean = true> {
+  texts?:
+    | T
+    | {
+        seo?:
+          | T
+          | {
+              title?: T;
+              description?: T;
+            };
+        hero?:
+          | T
+          | {
+              eyebrow?: T;
+              title?: T;
+              lead?: T;
+              primary?: T;
+              secondary?: T;
+            };
+        cards?:
+          | T
+          | {
+              link?: T;
+              tagsLabel?: T;
+            };
+        packages?:
+          | T
+          | {
+              title?: T;
+              text?: T;
+              button?: T;
+            };
+        process?:
+          | T
+          | {
+              title?: T;
+              text?: T;
+            };
+        cta?:
+          | T
+          | {
+              title?: T;
+              text?: T;
+              primary?: T;
+            };
+      };
   services?:
     | T
     | {
@@ -1282,12 +2390,351 @@ export interface ServicesPageSelect<T extends boolean = true> {
 }
 /**
  * This interface was referenced by `Config`'s JSON-Schema
+ * via the `definition` "work-page_select".
+ */
+export interface WorkPageSelect<T extends boolean = true> {
+  texts?:
+    | T
+    | {
+        seo?:
+          | T
+          | {
+              title?: T;
+              description?: T;
+            };
+        hero?:
+          | T
+          | {
+              eyebrow?: T;
+              title?: T;
+              lead?: T;
+            };
+        filters?:
+          | T
+          | {
+              all?: T;
+              nextjs?: T;
+              migration?: T;
+              landing?: T;
+              wordpress?: T;
+              ecommerce?: T;
+            };
+        cta?:
+          | T
+          | {
+              title?: T;
+              text?: T;
+              primary?: T;
+            };
+        caseStudy?:
+          | T
+          | {
+              eyebrow?: T;
+              cta?: T;
+              client?: T;
+              role?: T;
+              stack?: T;
+              year?: T;
+              overview?:
+                | T
+                | {
+                    eyebrow?: T;
+                    title?: T;
+                    nav?: T;
+                  };
+              challenge?:
+                | T
+                | {
+                    eyebrow?: T;
+                    title?: T;
+                    nav?: T;
+                  };
+              approach?:
+                | T
+                | {
+                    eyebrow?: T;
+                    title?: T;
+                    nav?: T;
+                  };
+              features?:
+                | T
+                | {
+                    eyebrow?: T;
+                    title?: T;
+                    nav?: T;
+                  };
+              gallery?:
+                | T
+                | {
+                    eyebrow?: T;
+                    title?: T;
+                    nav?: T;
+                  };
+              tech?:
+                | T
+                | {
+                    eyebrow?: T;
+                    title?: T;
+                    nav?: T;
+                  };
+              previous?: T;
+              next?: T;
+              back?: T;
+              backTo?: T;
+              all?: T;
+            };
+      };
+  updatedAt?: T;
+  createdAt?: T;
+  globalType?: T;
+}
+/**
+ * This interface was referenced by `Config`'s JSON-Schema
+ * via the `definition` "hire-me-page_select".
+ */
+export interface HireMePageSelect<T extends boolean = true> {
+  texts?:
+    | T
+    | {
+        seo?:
+          | T
+          | {
+              title?: T;
+              description?: T;
+            };
+        hero?:
+          | T
+          | {
+              eyebrow?: T;
+              title?: T;
+              lead?: T;
+              primary?: T;
+              upwork?: T;
+              work?: T;
+            };
+        get?:
+          | T
+          | {
+              eyebrow?: T;
+              title?: T;
+              items?:
+                | T
+                | {
+                    title?: T;
+                    icon?: T;
+                    text?: T;
+                    id?: T;
+                  };
+            };
+        process?:
+          | T
+          | {
+              eyebrow?: T;
+              title?: T;
+            };
+        why?:
+          | T
+          | {
+              eyebrow?: T;
+              title?: T;
+              text?: T;
+              items?:
+                | T
+                | {
+                    title?: T;
+                    icon?: T;
+                    text?: T;
+                    id?: T;
+                  };
+            };
+        areas?:
+          | T
+          | {
+              eyebrow?: T;
+              title?: T;
+              detailsTitle?: T;
+              detailsText?: T;
+            };
+        cta?:
+          | T
+          | {
+              title?: T;
+              text?: T;
+              primary?: T;
+            };
+      };
+  updatedAt?: T;
+  createdAt?: T;
+  globalType?: T;
+}
+/**
+ * This interface was referenced by `Config`'s JSON-Schema
  * via the `definition` "contact-page_select".
  */
 export interface ContactPageSelect<T extends boolean = true> {
+  texts?:
+    | T
+    | {
+        seo?:
+          | T
+          | {
+              title?: T;
+              description?: T;
+            };
+        hero?:
+          | T
+          | {
+              eyebrow?: T;
+              title?: T;
+              lead?: T;
+              intro?: T;
+              formNote?: T;
+            };
+        details?:
+          | T
+          | {
+              email?: T;
+              phone?: T;
+              location?: T;
+              availability?: T;
+              availabilityValue?: T;
+              response?: T;
+              responseValue?: T;
+              upwork?: T;
+            };
+        steps?:
+          | T
+          | {
+              title?: T;
+              items?:
+                | T
+                | {
+                    title?: T;
+                    text?: T;
+                    id?: T;
+                  };
+            };
+        helpWith?:
+          | T
+          | {
+              title?: T;
+              link?: T;
+            };
+        faq?:
+          | T
+          | {
+              eyebrow?: T;
+              title?: T;
+              text?: T;
+            };
+        form?:
+          | T
+          | {
+              title?: T;
+              note?: T;
+              name?: T;
+              namePlaceholder?: T;
+              email?: T;
+              emailPlaceholder?: T;
+              company?: T;
+              companyPlaceholder?: T;
+              optional?: T;
+              type?: T;
+              budget?: T;
+              budgetPlaceholder?: T;
+              message?: T;
+              messagePlaceholder?: T;
+              submit?: T;
+              sending?: T;
+              reply?: T;
+              sentTitle?: T;
+              sentAgain?: T;
+              sentText?: T;
+              failed?: T;
+              limited?: T;
+              fallback?: T;
+            };
+        cta?:
+          | T
+          | {
+              title?: T;
+              text?: T;
+              primary?: T;
+              secondary?: T;
+            };
+      };
   helpWith?: T;
   projectTypes?: T;
   budgets?: T;
+  updatedAt?: T;
+  createdAt?: T;
+  globalType?: T;
+}
+/**
+ * This interface was referenced by `Config`'s JSON-Schema
+ * via the `definition` "blog-page_select".
+ */
+export interface BlogPageSelect<T extends boolean = true> {
+  texts?:
+    | T
+    | {
+        seo?:
+          | T
+          | {
+              title?: T;
+              description?: T;
+            };
+        hero?:
+          | T
+          | {
+              eyebrow?: T;
+              title?: T;
+              lead?: T;
+              primary?: T;
+              secondary?: T;
+            };
+        empty?:
+          | T
+          | {
+              eyebrow?: T;
+              text?: T;
+              work?: T;
+              contact?: T;
+            };
+        filterAll?: T;
+        cta?:
+          | T
+          | {
+              title?: T;
+              text?: T;
+              primary?: T;
+              secondary?: T;
+            };
+        post?:
+          | T
+          | {
+              by?: T;
+              updated?: T;
+              minRead?: T;
+              aiReviewed?: T;
+              aiUnreviewed?: T;
+              authorBio?: T;
+              aboutLink?: T;
+              relatedService?: T;
+              helpFallback?: T;
+              viewService?: T;
+              more?: T;
+              allArticles?: T;
+              cta?:
+                | T
+                | {
+                    title?: T;
+                    text?: T;
+                    primary?: T;
+                    secondary?: T;
+                  };
+            };
+      };
   updatedAt?: T;
   createdAt?: T;
   globalType?: T;

@@ -1,6 +1,7 @@
 import type { GlobalConfig } from "payload";
 import { revalidateSite } from "../cms/revalidate.ts";
 import { icon, lines, para, text } from "../cms/fields.ts";
+import { aboutTexts, experienceTexts } from "../cms/texts.ts";
 
 /** About and Experience pages: work history, certifications, skills and principles */
 export const AboutPage: GlobalConfig = {
@@ -12,6 +13,8 @@ export const AboutPage: GlobalConfig = {
     {
       type: "tabs",
       tabs: [
+        { label: "About page texts", fields: [aboutTexts] },
+        { label: "Experience page texts", fields: [experienceTexts] },
         {
           label: "Experience",
           fields: [

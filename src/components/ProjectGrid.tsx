@@ -6,10 +6,12 @@ import { ProjectCard } from "./ProjectCard";
 
 type FilterId = (typeof projectFilters)[number]["id"];
 
-export function ProjectGrid({ projects }: { projects: Project[] }) {
+/** `labels`: the filter button names from the CMS (Work & project pages) */
+export function ProjectGrid({ projects, labels }: { projects: Project[]; labels: Record<FilterId, string> }) {
+  const filters = projectFilters.map((f) => ({ ...f, label: labels[f.id] || f.label }));
   const [filter, setFilter] = useState<FilterId>("all");
   const visible = projects.filter((p) => filter === "all" || p.filters.includes(filter));
-  const label = projectFilters.find((f) => f.id === filter)?.label;
+  const label = filters.find((f) => f.id === filter)?.label;
 
   return (
     <>
@@ -18,7 +20,7 @@ export function ProjectGrid({ projects }: { projects: Project[] }) {
         aria-label="Filter projects"
         className="mb-8 flex gap-2.5 max-lg:-mx-5 max-lg:overflow-x-auto max-lg:px-5 max-lg:pb-1 max-lg:[scrollbar-width:none] sm:max-lg:-mx-8 sm:max-lg:px-8 lg:flex-wrap"
       >
-        {projectFilters.map((f) => {
+        {filters.map((f) => {
           const active = filter === f.id;
           return (
             <button

@@ -3,13 +3,14 @@ import Link from "next/link";
 import { Faq } from "@/components/Faq";
 import { HeroShowcase } from "@/components/HeroShowcase";
 import { Icon } from "@/components/Icon";
+import { plain, rich } from "@/components/Rich";
 import { getContent } from "@/lib/content";
 import type { IconName } from "@/lib/data";
 import { pageMeta } from "@/lib/seo";
 
 export async function generateMetadata() {
-  const { site } = await getContent();
-  return pageMeta({ title: "Vinod Keshariya | AI + Next.js Developer", description: site.description, path: "/" });
+  const { seo } = (await getContent()).texts.home;
+  return pageMeta({ title: seo.title, description: seo.description, path: "/" });
 }
 
 /* ---------- small brand marks for the technology strip ---------- */
@@ -51,7 +52,8 @@ function Eyebrow({ children }: { children: React.ReactNode }) {
 const serviceIcons: IconName[] = ["cpu", "monitor", "pen", "layers"];
 
 export default async function HomePage() {
-  const { aiWorkflow, experience, featuredServices, problems, process, projects, site, stats } = await getContent();
+  const { aiWorkflow, experience, featuredServices, problems, process, projects, showcase, stats, texts, vars } = await getContent();
+  const t = texts.home;
   // projects ticked "Show on the home page" in the CMS (two fit the layout)
   const featured = projects.filter((p) => p.featured).slice(0, 2);
 
@@ -70,29 +72,28 @@ export default async function HomePage() {
                 <span className="absolute inset-0 animate-ping rounded-full bg-lime opacity-60 motion-reduce:hidden" />
                 <span className="relative size-2.5 rounded-full bg-lime" />
               </span>
-              {site.role} · Ahmedabad, India
+              {plain(t.hero.eyebrow, vars)}
             </span>
 
             <h1 style={{ animationDelay: "80ms" }} className="animate-fade-up max-w-[620px] text-[clamp(42px,5.4vw,72px)] font-extrabold leading-[1.02] tracking-[-0.04em] text-accent">
-              Build Smarter with AI. <span className="text-[#6a9a3a]">Launch Faster with Next.js.</span>
+              {rich(t.hero.title, { hl: "text-[#6a9a3a]" })}
             </h1>
 
             <p style={{ animationDelay: "160ms" }} className="animate-fade-up max-w-[540px] text-[clamp(16px,1.3vw,17.5px)] leading-[1.7] text-ink-2">
-              I&apos;m {site.name}, an AI-powered Full-Stack Developer specializing in Next.js, React, Claude Code, AI
-              integrations, and modern CMS solutions.
+              {plain(t.hero.lead, vars)}
             </p>
 
             <div style={{ animationDelay: "240ms" }} className="animate-fade-up grid w-full gap-3 sm:flex sm:w-auto sm:flex-wrap">
               <Link href="/projects" className="btn btn-primary min-h-13 px-7 text-[15.5px]">
-                Explore My Work <Icon name="arrow" />
+                {t.hero.primary} <Icon name="arrow" />
               </Link>
               <Link href="/contact" className="btn min-h-13 border-accent px-7 text-[15.5px] text-accent hover:-translate-y-0.5 hover:bg-accent hover:text-white">
-                Let&apos;s Build Your Project
+                {t.hero.secondary}
               </Link>
             </div>
           </div>
 
-          <HeroShowcase />
+          <HeroShowcase shots={showcase} />
         </div>
 
         {/* ============ TECHNOLOGY STRIP ============ */}
@@ -119,10 +120,10 @@ export default async function HomePage() {
           <div data-reveal className="bg-forest grid gap-10 rounded-none px-5 py-12 sm:rounded-[20px] sm:px-10 lg:grid-cols-[1.15fr_1fr_1fr_1fr_1fr] lg:gap-0 lg:px-10 lg:py-12">
             <div className="flex flex-col gap-4 lg:pr-8">
               <span className="flex items-center gap-3 font-mono text-[12px] font-medium uppercase tracking-[0.14em] text-white/80">
-                <span className="h-0.5 w-7 rounded-full bg-lime" /> Services
+                <span className="h-0.5 w-7 rounded-full bg-lime" /> {t.services.eyebrow}
               </span>
               <h2 id="services-title" className="text-[clamp(30px,3vw,40px)] font-extrabold leading-[1.08] tracking-[-0.03em] text-white">
-                Modern Development. <span className="text-lime">Smarter Solutions.</span>
+                {rich(t.services.title, { hl: "text-lime" })}
               </h2>
             </div>
 
@@ -137,7 +138,7 @@ export default async function HomePage() {
                   <span className="font-display text-[17px] font-bold leading-snug text-white transition-colors group-hover:text-lime">{s.title}</span>
                   <span className="text-[14px] leading-relaxed text-night-muted">{s.text}</span>
                   <span className="mt-1 inline-flex items-center gap-1.5 text-[13px] font-semibold text-lime/80 lg:mt-auto lg:pt-2 transition-colors group-hover:text-lime">
-                    Learn more <Icon name="arrow" className="size-3.5 transition-transform duration-300 group-hover:translate-x-1" />
+                    {t.services.link} <Icon name="arrow" className="size-3.5 transition-transform duration-300 group-hover:translate-x-1" />
                   </span>
                 </span>
               </Link>
@@ -152,14 +153,14 @@ export default async function HomePage() {
           <div className="mb-10 flex flex-wrap items-end justify-between gap-6">
             <div className="flex flex-col gap-3">
               <span className="flex items-center gap-3 font-mono text-[12px] font-medium uppercase tracking-[0.14em] text-ink-2">
-                <span className="h-0.5 w-7 rounded-full bg-lime" /> Featured Projects
+                <span className="h-0.5 w-7 rounded-full bg-lime" /> {t.work.eyebrow}
               </span>
               <h2 id="work-title" className="max-w-[560px] text-[clamp(30px,3.4vw,44px)] font-extrabold leading-[1.08] tracking-[-0.03em] text-accent">
-                Projects Built with <span className="text-[#6a9a3a]">Modern Technologies.</span>
+                {rich(t.work.title, { hl: "text-[#6a9a3a]" })}
               </h2>
             </div>
             <Link href="/projects" className="btn border-accent px-6 text-accent hover:-translate-y-0.5 hover:bg-accent hover:text-white">
-              View all projects <Icon name="arrow" />
+              {t.work.button} <Icon name="arrow" />
             </Link>
           </div>
 
@@ -209,7 +210,7 @@ export default async function HomePage() {
               <Icon name="briefcase" strokeWidth={1.8} className="size-9 text-accent transition-transform duration-300 group-hover:-rotate-6" />
               <span className="flex flex-col leading-tight">
                 <strong className="font-display text-[22px] font-extrabold text-ink">{stats[0].value}</strong>
-                <span className="text-[14.5px] text-muted">building for the web</span>
+                <span className="text-[14.5px] text-muted">{t.experienceBar.caption}</span>
               </span>
             </div>
             <div className="group flex items-center justify-center gap-4">
@@ -231,9 +232,9 @@ export default async function HomePage() {
       <section aria-labelledby="problems-title" className="bg-paper pb-16 md:pb-20">
         <div className="wrap">
           <div className="mb-10 flex flex-col gap-3">
-            <Eyebrow>Common Challenges</Eyebrow>
+            <Eyebrow>{t.problems.eyebrow}</Eyebrow>
             <h2 id="problems-title" className="max-w-[640px] text-[clamp(30px,3.4vw,44px)] font-extrabold leading-[1.08] tracking-[-0.03em] text-accent">
-              Is Your Website <span className="text-[#6a9a3a]">Holding You Back?</span>
+              {rich(t.problems.title, { hl: "text-[#6a9a3a]" })}
             </h2>
           </div>
           <div className="grid gap-5 sm:grid-cols-2 lg:grid-cols-4">
@@ -262,10 +263,10 @@ export default async function HomePage() {
           <div data-reveal className="bg-forest grid gap-10 px-5 py-12 sm:rounded-[20px] sm:px-10 lg:grid-cols-[1fr_1.35fr] lg:gap-16 lg:py-14">
             <div className="flex flex-col items-start gap-5">
               <span className="flex items-center gap-3 font-mono text-[12px] font-medium uppercase tracking-[0.14em] text-white/80">
-                <span className="h-0.5 w-7 rounded-full bg-lime" /> AI-Powered Workflow
+                <span className="h-0.5 w-7 rounded-full bg-lime" /> {t.aiWorkflow.eyebrow}
               </span>
               <h2 id="ai-title" className="text-[clamp(30px,3vw,40px)] font-extrabold leading-[1.08] tracking-[-0.03em] text-white">
-                The Speed of AI. <span className="text-lime">The Quality Check of a Real Developer.</span>
+                {rich(t.aiWorkflow.title, { hl: "text-lime" })}
               </h2>
               <ul className="flex flex-wrap gap-2">
                 {aiWorkflow.tools.map((t) => (
@@ -295,13 +296,13 @@ export default async function HomePage() {
         <div className="wrap">
           <div className="mb-10 flex flex-wrap items-end justify-between gap-6">
             <div className="flex flex-col gap-3">
-              <Eyebrow>My Process</Eyebrow>
+              <Eyebrow>{t.process.eyebrow}</Eyebrow>
               <h2 id="process-title" className="max-w-[560px] text-[clamp(30px,3.4vw,44px)] font-extrabold leading-[1.08] tracking-[-0.03em] text-accent">
-                From Your Idea to a <span className="text-[#6a9a3a]">Finished Product.</span>
+                {rich(t.process.title, { hl: "text-[#6a9a3a]" })}
               </h2>
             </div>
             <Link href="/contact" className="btn border-accent px-6 text-accent hover:-translate-y-0.5 hover:bg-accent hover:text-white">
-              Start Your Project <Icon name="arrow" />
+              {t.process.button} <Icon name="arrow" />
             </Link>
           </div>
           <ol className="grid gap-5 sm:grid-cols-2 lg:grid-cols-4">
@@ -325,13 +326,12 @@ export default async function HomePage() {
       <section aria-labelledby="faq-title" className="bg-paper pb-16 md:pb-20">
         <div className="wrap grid gap-10 lg:grid-cols-[1fr_1.6fr] lg:gap-16">
           <div className="flex flex-col items-start gap-4 lg:sticky lg:top-28 lg:self-start">
-            <Eyebrow>FAQ</Eyebrow>
+            <Eyebrow>{t.faq.eyebrow}</Eyebrow>
             <h2 id="faq-title" className="text-[clamp(30px,3.4vw,44px)] font-extrabold leading-[1.08] tracking-[-0.03em] text-accent">
-              Common <span className="text-[#6a9a3a]">Questions.</span>
+              {rich(t.faq.title, { hl: "text-[#6a9a3a]" })}
             </h2>
             <p className="text-[15.5px] text-muted">
-              Something else?{" "}
-              <Link href="/contact" className="font-semibold text-accent underline underline-offset-4">Send me a message</Link>.
+              {rich(t.faq.text, { link: "font-semibold text-accent underline underline-offset-4" })}
             </p>
           </div>
           <Faq />
@@ -346,16 +346,13 @@ export default async function HomePage() {
             className="grid items-center gap-6 animate-gradient-pan bg-[linear-gradient(100deg,#d6e6a6_0%,#eef4d6_35%,#d6e6a6_70%,#e8f0c8_100%)] bg-size-[220%_220%] px-6 py-10 sm:rounded-[24px] sm:px-12 lg:grid-cols-[1.25fr_1fr_auto] lg:gap-10"
           >
             <h2 className="text-[clamp(28px,3vw,38px)] font-extrabold leading-[1.1] tracking-[-0.03em] text-accent">
-              Have a Project in Mind?
-              <br />
-              Let&apos;s Build Something Smarter.
+              {rich(t.cta.title)}
             </h2>
             <p className="text-[15.5px] leading-relaxed text-ink-2 lg:border-l lg:border-accent/20 lg:pl-10">
-              Tell me about your project. I&apos;ll review your requirements and get back to you with a clear plan, timeline, and
-              estimate.
+              {plain(t.cta.text)}
             </p>
             <Link href="/contact" className="btn btn-primary min-h-14 w-full px-8 text-[16px] sm:w-auto">
-              Contact Me <Icon name="arrow" />
+              {t.cta.primary} <Icon name="arrow" />
             </Link>
           </div>
         </div>

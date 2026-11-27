@@ -6,7 +6,8 @@ import { useEffect, useState } from "react";
 import { Icon } from "./Icon";
 
 /** Sticky bottom call-to-action on small screens, shown after the first screen of scrolling */
-export function MobileCta() {
+/** `labels`: title, text and button from the CMS (Site settings → Menu, footer & 404) */
+export function MobileCta({ labels }: { labels: { title: string; text: string; button: string } }) {
   const pathname = usePathname();
   const [show, setShow] = useState(false);
 
@@ -31,11 +32,11 @@ export function MobileCta() {
       <div className="flex items-center gap-3 rounded-2xl border border-white/10 bg-night p-2 pl-4 text-white shadow-(--shadow-float) backdrop-blur">
         <span className="dot dot-live" />
         <span className="flex-1 text-[13px] leading-tight">
-          <strong className="block font-semibold">Open for work</strong>
-          <span className="text-white/60">Replies in 0–4 hours</span>
+          <strong className="block font-semibold">{labels.title}</strong>
+          <span className="text-white/60">{labels.text}</span>
         </span>
         <Link href="/contact" className="btn btn-lime btn-sm" tabIndex={show ? 0 : -1}>
-          Share project <Icon name="arrow" />
+          {labels.button} <Icon name="arrow" />
         </Link>
       </div>
     </div>

@@ -1,6 +1,7 @@
 import type { GlobalConfig } from "payload";
 import { revalidateSite } from "../cms/revalidate.ts";
 import { icon, image, lines, para, text } from "../cms/fields.ts";
+import { servicesTexts } from "../cms/texts.ts";
 
 /** Services, packages and the project process (the process also appears on the home and hire-me pages) */
 export const ServicesPage: GlobalConfig = {
@@ -12,6 +13,7 @@ export const ServicesPage: GlobalConfig = {
     {
       type: "tabs",
       tabs: [
+        { label: "Page texts", fields: [servicesTexts] },
         {
           label: "Services",
           fields: [
