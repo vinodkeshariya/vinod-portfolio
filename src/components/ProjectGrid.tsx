@@ -1,12 +1,12 @@
 "use client";
 
 import { useState } from "react";
-import { projectFilters, projects } from "@/lib/data";
+import { projectFilters, type Project } from "@/lib/data";
 import { ProjectCard } from "./ProjectCard";
 
 type FilterId = (typeof projectFilters)[number]["id"];
 
-export function ProjectGrid() {
+export function ProjectGrid({ projects }: { projects: Project[] }) {
   const [filter, setFilter] = useState<FilterId>("all");
   const visible = projects.filter((p) => filter === "all" || p.filters.includes(filter));
   const label = projectFilters.find((f) => f.id === filter)?.label;

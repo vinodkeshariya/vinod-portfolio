@@ -1,7 +1,8 @@
 # Blog topic queue
 
-Files starting with "_" are not published. The draft script takes the first unchecked topic,
-writes a draft post, and ticks it here. Add, remove or reorder topics freely.
+The weekly auto-post (.github/workflows/blog-autopost.yml) takes the first unchecked topic, writes the post,
+saves it in the CMS (/admin → Blog posts) as a draft for approval, and ticks it here.
+Add, remove or reorder topics freely. The posts themselves live in the CMS.
 
 Format: - [ ] pillar | Title | angle / what the post should cover
 

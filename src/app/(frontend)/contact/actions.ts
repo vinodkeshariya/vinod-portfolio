@@ -1,7 +1,7 @@
 "use server";
 
 import { headers } from "next/headers";
-import { budgets, projectTypes, site } from "@/lib/data";
+import { getContent } from "@/lib/content";
 import { inquiryEmail } from "@/lib/inquiry-email";
 
 export type InquiryResult = { ok: true } | { ok: false; reason: "invalid" | "limited" | "unavailable"; errors?: Record<string, string> };
@@ -56,13 +56,14 @@ export async function sendInquiry(data: FormData): Promise<InquiryResult> {
     return { ok: false, reason: "unavailable" };
   }
 
+  const { budgets, projectTypes, site } = await getContent();
   const { subject, text, html } = inquiryEmail({
     name,
     email,
     company,
     // only accept the options the form offers
-    type: (projectTypes as readonly string[]).includes(type) ? type : "",
-    budget: (budgets as readonly string[]).includes(budget) ? budget : "",
+    type: projectTypes.includes(type) ? type : "",
+    budget: budgets.includes(budget) ? budget : "",
     message,
     siteUrl: site.url,
     receivedAt: new Date(),

@@ -5,19 +5,21 @@ import { JsonLd, abs, personRef } from "@/components/JsonLd";
 import { ArticlesArt } from "@/components/PageArt";
 import { CtaBand, PageHero } from "@/components/ui";
 import { getPosts } from "@/lib/blog";
-import { site } from "@/lib/data";
+import { getContent } from "@/lib/content";
 import { pageMeta } from "@/lib/seo";
 
-const meta = pageMeta({
-  title: "Blog | AI-Powered Web Development — Vinod Keshariya",
-  description:
-    "Practical articles on adding AI to websites, AI-assisted development with Claude Code, Next.js, Sanity CMS and WordPress migration.",
-  path: "/blog",
-});
-export const metadata = { ...meta, alternates: { ...meta.alternates, types: { "application/rss+xml": "/blog/rss.xml" } } };
+export async function generateMetadata() {
+  const meta = await pageMeta({
+    title: "Blog | AI-Powered Web Development — Vinod Keshariya",
+    description:
+      "Practical articles on adding AI to websites, AI-assisted development with Claude Code, Next.js, Sanity CMS and WordPress migration.",
+    path: "/blog",
+  });
+  return { ...meta, alternates: { ...meta.alternates, types: { "application/rss+xml": "/blog/rss.xml" } } };
+}
 
-export default function BlogPage() {
-  const posts = getPosts();
+export default async function BlogPage() {
+  const [posts, { site }] = await Promise.all([getPosts(), getContent()]);
 
   return (
     <>
@@ -28,7 +30,7 @@ export default function BlogPage() {
             "@type": "Blog",
             name: `${site.name} — Blog`,
             url: abs("/blog"),
-            author: personRef,
+            author: personRef(site),
             blogPost: posts.map((p) => ({
               "@type": "BlogPosting",
               headline: p.title,

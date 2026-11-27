@@ -5,11 +5,21 @@ import { lexicalEditor } from "@payloadcms/richtext-lexical";
 import { vercelBlobStorage } from "@payloadcms/storage-vercel-blob";
 import { buildConfig } from "payload";
 import sharp from "sharp";
+import { Faqs } from "./collections/Faqs.ts";
 import { Media } from "./collections/Media.ts";
+import { Posts } from "./collections/Posts.ts";
+import { Projects } from "./collections/Projects.ts";
 import { Users } from "./collections/Users.ts";
+import { AboutPage } from "./globals/AboutPage.ts";
+import { ContactPage } from "./globals/ContactPage.ts";
+import { HomePage } from "./globals/HomePage.ts";
+import { ServicesPage } from "./globals/ServicesPage.ts";
+import { SiteSettings } from "./globals/SiteSettings.ts";
 
 /**
  * Payload CMS — admin at /admin, REST at /api/<collection>, GraphQL at /api/graphql.
+ * Every text, project, service, FAQ and blog post on the site is edited here; the pages read it
+ * through src/lib/content.ts and src/lib/blog.ts, and refresh by themselves after each change.
  *
  * Environment variables:
  *   DATABASE_URL            Neon PostgreSQL connection string (required)
@@ -29,7 +39,8 @@ export default buildConfig({
       icons: [{ rel: "icon", type: "image/png", url: "/icon.png" }],
     },
   },
-  collections: [Users, Media],
+  collections: [Posts, Projects, Faqs, Media, Users],
+  globals: [SiteSettings, HomePage, AboutPage, ServicesPage, ContactPage],
   editor: lexicalEditor(),
   secret: process.env.PAYLOAD_SECRET || "",
   typescript: {
@@ -49,7 +60,8 @@ export default buildConfig({
       // keep the plugin's fields (e.g. `prefix`) in the schema even when the token is missing locally,
       // so migrations made on a laptop match the live database
       alwaysInsertFields: true,
-      collections: { media: true },
+      // file URLs point straight at the Blob CDN (media is public anyway) instead of going through /api/media/file
+      collections: { media: { disablePayloadAccessControl: true } },
       token: process.env.BLOB_READ_WRITE_TOKEN || "",
       clientUploads: true, // large files go straight from the browser to Blob (Vercel limits request bodies to 4.5 MB)
     }),

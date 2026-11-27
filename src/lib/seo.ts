@@ -1,11 +1,13 @@
 import type { Metadata } from "next";
-import { site } from "./data";
+import { getContent } from "./content";
 
 /**
  * Page metadata with a canonical URL and matching Open Graph / Twitter cards.
  * `title` is used as-is (no template suffix).
+ *   export const generateMetadata = () => pageMeta({ title, description, path });
  */
-export function pageMeta({ title, description, path }: { title: string; description: string; path: string }): Metadata {
+export async function pageMeta({ title, description, path }: { title: string; description: string; path: string }): Promise<Metadata> {
+  const { site } = await getContent();
   return {
     title: { absolute: title },
     description,

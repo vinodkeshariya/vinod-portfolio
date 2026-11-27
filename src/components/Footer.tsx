@@ -1,23 +1,24 @@
 import Link from "next/link";
-import { ext, hasUpwork, nav, site } from "@/lib/data";
+import { getContent } from "@/lib/content";
+import { ext, hasUpwork, nav } from "@/lib/data";
 import { Icon } from "./Icon";
 import { Logo } from "./Logo";
 
-const socials = [
-  ["github", "GitHub", site.socials.github],
-  ["linkedin", "LinkedIn", site.socials.linkedin],
-  ...(hasUpwork ? [["upwork", "Upwork", site.socials.upwork] as const] : []),
-  ["mail", "Email", `mailto:${site.email}`],
-] as const;
-
-export function Footer() {
+export async function Footer() {
+  const { site } = await getContent();
+  const socials = [
+    ["github", "GitHub", site.socials.github],
+    ["linkedin", "LinkedIn", site.socials.linkedin],
+    ...(hasUpwork(site) ? [["upwork", "Upwork", site.socials.upwork] as const] : []),
+    ["mail", "Email", `mailto:${site.email}`],
+  ] as const;
   const links = nav.filter((n) => n.href !== "/");
 
   return (
     <footer className="bg-paper">
       <div className="wrap">
         <div className="flex flex-col gap-8 border-t border-line py-10 lg:flex-row lg:items-center lg:justify-between">
-          <Logo subtitle={`${site.role} · Ahmedabad, India`} />
+          <Logo name={site.name} subtitle={`${site.role} · Ahmedabad, India`} />
 
           <nav aria-label="Footer">
             <ul className="flex flex-wrap gap-x-8 gap-y-3 text-[15px] font-medium text-ink-2">

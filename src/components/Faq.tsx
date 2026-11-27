@@ -1,7 +1,8 @@
-import { faqs } from "@/lib/data";
+import { getContent } from "@/lib/content";
 
 /** Accessible accordion built on native <details> — works without JavaScript */
-export function Faq() {
+export async function Faq() {
+  const { faqs } = await getContent();
   return (
     <div data-reveal data-delay={120} className="border-t border-line">
       {faqs.map((f, i) => (

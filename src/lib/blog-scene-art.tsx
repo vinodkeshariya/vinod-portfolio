@@ -2,7 +2,10 @@ import { readFile } from "node:fs/promises";
 import { join } from "node:path";
 import { ImageResponse } from "next/og";
 import { keepDash, pillars, SCENES, type Pillar, type Scene } from "./blog-meta";
-import { site } from "./data";
+import { siteUrl } from "./data";
+
+/** Name and role shown on the covers (from the CMS site settings) */
+export type Author = { name: string; role: string };
 
 /*
  * Blog cover art, drawn with ImageResponse (Satori). Layout is flexbox only:
@@ -30,7 +33,7 @@ function loadAvatar() {
   return avatar;
 }
 
-type DrawProps = { l: string[]; avatar: string };
+type DrawProps = { l: string[]; avatar: string; name: string };
 
 /** Labels for a scene, padded / clipped to what the drawing expects */
 function labelsOf(scene: Scene) {
@@ -342,7 +345,7 @@ function Shield({ l }: DrawProps) {
   );
 }
 
-function Quote({ l, avatar }: DrawProps) {
+function Quote({ l, avatar, name }: DrawProps) {
   return (
     <div style={card("linear-gradient(150deg, #eef6d6, #b9d96c)", { width: 400, padding: 34, gap: 18 })}>
       <svg width="80" height="80" viewBox="0 0 100 100" fill={C.forest}>
@@ -354,7 +357,7 @@ function Quote({ l, avatar }: DrawProps) {
       <div style={row({ gap: 12, marginTop: 6 })}>
         <img src={avatar} width={42} height={42} style={{ borderRadius: 999, border: `2px solid ${C.forest}` }} alt="" />
         <Text size={16} weight={800} color={C.forest}>
-          {site.name}
+          {name}
         </Text>
       </div>
     </div>
@@ -374,12 +377,12 @@ const mintCube = cube(["#5d9a83", "#3f7a66"], "#2f6a59", "#24574a");
 const forestCube = cube(["#2f6a59", "#1d5145"], "#153d35", "#0e2d27");
 
 /** The scene, tilted, with two cubes — `size` is the square-ish box it sits in */
-function SceneBlock({ scene, width, height, scale = 1, onDark, avatar }: { scene: Scene; width: number; height: number; scale?: number; onDark: boolean; avatar: string }) {
+function SceneBlock({ scene, width, height, scale = 1, onDark, avatar, name }: { scene: Scene; width: number; height: number; scale?: number; onDark: boolean; avatar: string; name: string }) {
   const Drawing = draw[scene.kind];
   return (
     <div style={row({ position: "relative", width, height, justifyContent: "center" })}>
       <div style={{ display: "flex", transform: `scale(${scale}) rotate(-4deg)` }}>
-        <Drawing l={labelsOf(scene)} avatar={avatar} />
+        <Drawing l={labelsOf(scene)} avatar={avatar} name={name} />
       </div>
       <img src={limeCube} width={118 * scale} height={131 * scale} style={{ position: "absolute", right: 30 * scale, bottom: 30 * scale }} alt="" />
       <img src={onDark ? mintCube : forestCube} width={62 * scale} height={69 * scale} style={{ position: "absolute", right: 56 * scale, top: 40 * scale }} alt="" />
@@ -390,10 +393,10 @@ function SceneBlock({ scene, width, height, scale = 1, onDark, avatar }: { scene
 /* ---------- images ---------- */
 
 /** 1200×630 cover: category + title on the left, the post's scene on the right */
-export async function coverImage({ title, pillar, scene }: { title: string; pillar: Pillar; scene: Scene }) {
+export async function coverImage({ title, pillar, scene, author }: { title: string; pillar: Pillar; scene: Scene; author: Author }) {
   const t = keepDash(title);
   const titleSize = t.length > 64 ? 46 : t.length > 44 ? 52 : 60;
-  const host = site.url.replace(/^https?:\/\//, "");
+  const host = siteUrl.replace(/^https?:\/\//, "");
   const photo = await loadAvatar();
   return new ImageResponse(
     (
@@ -413,17 +416,17 @@ export async function coverImage({ title, pillar, scene }: { title: string; pill
             <img src={photo} width={60} height={60} style={{ borderRadius: 999, border: `3px solid ${C.lime}` }} alt="" />
             <div style={col({ gap: 2 })}>
               <Text size={23} weight={800} color="#ffffff">
-                {site.name}
+                {author.name}
               </Text>
               <Text size={17} color={C.onDark}>
-                {`${site.role} · ${host}`}
+                {`${author.role} · ${host}`}
               </Text>
             </div>
           </div>
         </div>
 
         <div style={{ display: "flex", position: "absolute", left: 690, top: 0 }}>
-          <SceneBlock scene={scene} width={510} height={630} onDark avatar={photo} />
+          <SceneBlock scene={scene} width={510} height={630} onDark avatar={photo} name={author.name} />
         </div>
       </div>
     ),
@@ -432,12 +435,12 @@ export async function coverImage({ title, pillar, scene }: { title: string; pill
 }
 
 /** The scene alone on a transparent background (960×860), for the post hero */
-export async function sceneImage(scene: Scene) {
+export async function sceneImage(scene: Scene, author: Author) {
   const photo = await loadAvatar();
   return new ImageResponse(
     (
       <div style={{ width: "100%", height: "100%", display: "flex", fontFamily: "Manrope" }}>
-        <SceneBlock scene={scene} width={960} height={860} scale={1.6} onDark={false} avatar={photo} />
+        <SceneBlock scene={scene} width={960} height={860} scale={1.6} onDark={false} avatar={photo} name={author.name} />
       </div>
     ),
     { width: 960, height: 860, fonts: await loadFonts() },

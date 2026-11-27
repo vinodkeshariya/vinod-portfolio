@@ -2,24 +2,23 @@ import type { Metadata } from "next";
 import Link from "next/link";
 import { Icon } from "@/components/Icon";
 import { PostView } from "@/components/PostView";
-import { parsePost, renderPost, type Post } from "@/lib/blog";
+import { getDraft, type Draft } from "@/lib/blog-drafts";
 import { sceneImage } from "@/lib/blog-scene-art";
-import { site } from "@/lib/data";
-import { getDraft, type Draft } from "@/lib/github";
+import { getContent } from "@/lib/content";
 import { verifyReview } from "@/lib/review-link";
 import { publishPost, rejectPost } from "../actions";
 
 /**
- * Private preview of an auto-written blog post, opened from the approval email.
+ * Private preview of a blog draft, opened from the approval email or the admin's Preview button.
  * Shows the post exactly as it will look, with Publish / Don't publish buttons.
- * Access needs the signed, expiring link from the email; the page is never indexed.
+ * Access needs a signed, expiring link; the page is never indexed.
  */
 
 export const metadata: Metadata = { title: "Review blog post", robots: { index: false, follow: false } };
 
 type Props = {
-  params: Promise<{ pr: string }>;
-  searchParams: Promise<{ exp?: string; sig?: string; error?: string }>;
+  params: Promise<{ id: string }>;
+  searchParams: Promise<{ exp?: string; sig?: string; error?: string; removed?: string }>;
 };
 
 function Message({ title, children }: { title: string; children: React.ReactNode }) {
@@ -38,50 +37,54 @@ function Message({ title, children }: { title: string; children: React.ReactNode
 }
 
 export default async function ReviewPage({ params, searchParams }: Props) {
-  const [{ pr: prParam }, { exp: expParam, sig, error }] = await Promise.all([params, searchParams]);
-  const pr = Number(prParam);
+  const [{ id: idParam }, { exp: expParam, sig, error, removed }] = await Promise.all([params, searchParams]);
+  const id = Number(idParam);
   const exp = Number(expParam);
-  const access = verifyReview(pr, exp, sig, process.env.BLOG_REVIEW_SECRET);
+  const access = verifyReview(id, exp, sig, process.env.BLOG_REVIEW_SECRET);
 
   if (access === "invalid") {
     return (
       <Message title="This link doesn't work.">
-        <p>Open the post from the latest review email — the link in it is the only way to preview and approve a draft.</p>
+        <p>Open the post from the latest review email or the Preview button in the admin — those links are the only way to preview and approve a draft.</p>
       </Message>
     );
   }
   if (access === "expired") {
     return (
       <Message title="This review link has expired.">
-        <p>Drafts wait 7 days for approval. This one was not published.</p>
+        <p>Open the draft in the admin (Blog posts) to preview or publish it.</p>
       </Message>
     );
   }
 
   let draft: Draft | null = null;
-  let post: Post | null = null;
   let problem = "";
   try {
-    draft = await getDraft(pr);
-    if (draft) post = await renderPost(parsePost(draft.file.split("/").pop()!, draft.raw));
+    draft = await getDraft(id);
   } catch (e) {
     problem = (e as Error).message;
   }
 
-  if (!draft || !post) {
-    return (
+  if (!draft) {
+    return removed ? (
+      <Message title="Not published.">
+        <p>The draft was removed. The next topic in the queue will be written next week.</p>
+      </Message>
+    ) : (
       <Message title="This draft can't be shown.">
         <p>{problem || "The draft was not found — it may have been removed."}</p>
       </Message>
     );
   }
 
+  const { post, issues } = draft;
+  const { site } = await getContent();
   const url = `${site.url}/blog/${post.slug}`;
   if (draft.state === "published") {
     return (
       <Message title="Published ✓">
         <p>
-          <strong>{post.title}</strong> is going live now. The site updates in about 1–2 minutes:
+          <strong>{post.title}</strong> is live now:
         </p>
         <p className="mt-3">
           <a href={url} className="font-semibold text-accent underline decoration-lime decoration-2 underline-offset-4">
@@ -91,25 +94,14 @@ export default async function ReviewPage({ params, searchParams }: Props) {
       </Message>
     );
   }
-  if (draft.state === "rejected") {
-    return (
-      <Message title="Not published.">
-        <p>
-          <strong>{post.title}</strong> was rejected and removed. The next topic in the queue will be written next week.
-        </p>
-      </Message>
-    );
-  }
 
-  const issues = draft.issues;
-  // the draft isn't built yet, so draw its hero illustration now
-  const scenePng = post.cover ? null : Buffer.from(await (await sceneImage(post.scene)).arrayBuffer()).toString("base64");
+  // a draft has no cached hero illustration yet, so draw it now
+  const scenePng = post.cover ? null : Buffer.from(await (await sceneImage(post.scene, site)).arrayBuffer()).toString("base64");
   const hidden = (
     <>
-      <input type="hidden" name="pr" value={pr} />
+      <input type="hidden" name="id" value={id} />
       <input type="hidden" name="exp" value={exp} />
       <input type="hidden" name="sig" value={sig} />
-      <input type="hidden" name="title" value={post.title} />
     </>
   );
   const expires = new Intl.DateTimeFormat("en-GB", { day: "numeric", month: "long", timeZone: "Asia/Kolkata" }).format(new Date(exp * 1000));
@@ -119,9 +111,10 @@ export default async function ReviewPage({ params, searchParams }: Props) {
       {where === "top" && (
         <div className="flex flex-col gap-2">
           <span className="eyebrow">Private preview · not published yet</span>
-          <h2 className="font-display text-[clamp(22px,2.4vw,28px)] font-bold text-accent">Publish this week&apos;s post?</h2>
+          <h2 className="font-display text-[clamp(22px,2.4vw,28px)] font-bold text-accent">Publish this post?</h2>
           <p className="text-[15px] leading-relaxed text-muted">
-            This is exactly how it will look on your blog. Read it, then publish it or leave it out. The link expires on {expires}.
+            This is exactly how it will look on your blog. Read it, then publish it or leave it out — or edit it in the admin first. The link
+            expires on {expires}.
           </p>
         </div>
       )}
@@ -129,7 +122,9 @@ export default async function ReviewPage({ params, searchParams }: Props) {
         (issues.length === 0 ? (
           <p className="flex items-start gap-2.5 rounded-[12px] bg-accent-soft p-3.5 text-[14.5px] text-ink-2">
             <Icon name="check" strokeWidth={3} className="mt-0.5 size-4 shrink-0 text-accent" />
-            All checks passed: content rules, the AI fact-check against your website, and the site build.
+            {draft.doc.source === "autopost"
+              ? "All checks passed: content rules and the AI fact-check against your website."
+              : "Ready to publish — the content checks run when you press Publish."}
           </p>
         ) : (
           <div className="rounded-[12px] border border-[#e7c66b] bg-[#fdf6dd] p-4 text-[14.5px] text-ink-2">
@@ -153,6 +148,9 @@ export default async function ReviewPage({ params, searchParams }: Props) {
             Publish now <Icon name="send" />
           </button>
         </form>
+        <Link href={`/admin/collections/posts/${id}`} className="btn btn-line min-h-13 px-6">
+          Edit in the admin <Icon name="pen" />
+        </Link>
         <details className="group">
           <summary className="btn btn-line min-h-13 cursor-pointer list-none px-6 [&::-webkit-details-marker]:hidden">Don&apos;t publish</summary>
           <form action={rejectPost} className="mt-3 flex flex-wrap items-center gap-3">

@@ -67,8 +67,11 @@ export interface Config {
   };
   blocks: {};
   collections: {
-    users: User;
+    posts: Post;
+    projects: Project;
+    faqs: Faq;
     media: Media;
+    users: User;
     'payload-kv': PayloadKv;
     'payload-locked-documents': PayloadLockedDocument;
     'payload-preferences': PayloadPreference;
@@ -76,8 +79,11 @@ export interface Config {
   };
   collectionsJoins: {};
   collectionsSelect: {
-    users: UsersSelect<false> | UsersSelect<true>;
+    posts: PostsSelect<false> | PostsSelect<true>;
+    projects: ProjectsSelect<false> | ProjectsSelect<true>;
+    faqs: FaqsSelect<false> | FaqsSelect<true>;
     media: MediaSelect<false> | MediaSelect<true>;
+    users: UsersSelect<false> | UsersSelect<true>;
     'payload-kv': PayloadKvSelect<false> | PayloadKvSelect<true>;
     'payload-locked-documents': PayloadLockedDocumentsSelect<false> | PayloadLockedDocumentsSelect<true>;
     'payload-preferences': PayloadPreferencesSelect<false> | PayloadPreferencesSelect<true>;
@@ -87,8 +93,20 @@ export interface Config {
     defaultIDType: number;
   };
   fallbackLocale: null;
-  globals: {};
-  globalsSelect: {};
+  globals: {
+    'site-settings': SiteSetting;
+    'home-page': HomePage;
+    'about-page': AboutPage;
+    'services-page': ServicesPage;
+    'contact-page': ContactPage;
+  };
+  globalsSelect: {
+    'site-settings': SiteSettingsSelect<false> | SiteSettingsSelect<true>;
+    'home-page': HomePageSelect<false> | HomePageSelect<true>;
+    'about-page': AboutPageSelect<false> | AboutPageSelect<true>;
+    'services-page': ServicesPageSelect<false> | ServicesPageSelect<true>;
+    'contact-page': ContactPageSelect<false> | ContactPageSelect<true>;
+  };
   locale: null;
   widgets: {
     collections: CollectionsWidget;
@@ -118,31 +136,81 @@ export interface UserAuthOperations {
   };
 }
 /**
+ * Only published posts appear on the site. Weekly AI drafts arrive here for your approval.
+ *
  * This interface was referenced by `Config`'s JSON-Schema
- * via the `definition` "users".
+ * via the `definition` "posts".
  */
-export interface User {
+export interface Post {
   id: number;
-  name?: string | null;
+  title: string;
+  /**
+   * 1–2 sentences for Google and social cards, max 170 characters.
+   */
+  description: string;
+  /**
+   * ## Heading, ### Sub-heading, **bold**, - bullet, [link](/contact). Images: upload to Media, then ![what it shows](image URL "optional caption"). Diagrams: a ```visual block (steps / compare / checklist).
+   */
+  content: string;
+  /**
+   * From the weekly AI writer — read these parts carefully before publishing.
+   */
+  reviewNotes?: string | null;
+  /**
+   * Leave empty for the branded cover drawn from the illustration below.
+   */
+  cover?: (number | null) | Media;
+  /**
+   * Leave the kind empty to use the category's default illustration.
+   */
+  coverScene?: {
+    kind?:
+      | (
+          | 'chat'
+          | 'code'
+          | 'browser'
+          | 'search'
+          | 'migration'
+          | 'cms'
+          | 'checklist'
+          | 'steps'
+          | 'compare'
+          | 'shield'
+          | 'quote'
+        )
+      | null;
+    /**
+     * The short texts drawn in the illustration, one per line, in the order the kind describes.
+     */
+    labels?: string | null;
+  };
+  /**
+   * /blog/<slug> — lowercase words with dashes.
+   */
+  slug: string;
+  date: string;
+  /**
+   * When the post was meaningfully changed.
+   */
+  updated?: string | null;
+  pillar: 'ai-for-business' | 'ai-development' | 'web-development' | 'honest-takes';
+  /**
+   * Short keywords, one per line.
+   */
+  tags?: string | null;
+  /**
+   * e.g. /services#service-5 — empty = the category's service.
+   */
+  service?: string | null;
+  aiAssisted?: boolean | null;
+  /**
+   * Off for AI posts published without review.
+   */
+  reviewed?: boolean | null;
+  source?: ('manual' | 'autopost') | null;
   updatedAt: string;
   createdAt: string;
-  email: string;
-  resetPasswordToken?: string | null;
-  resetPasswordExpiration?: string | null;
-  salt?: string | null;
-  hash?: string | null;
-  resetPasswordRequestedAt?: string | null;
-  loginAttempts?: number | null;
-  lockUntil?: string | null;
-  sessions?:
-    | {
-        id: string;
-        createdAt?: string | null;
-        expiresAt: string;
-      }[]
-    | null;
-  password?: string | null;
-  collection: 'users';
+  _status?: ('draft' | 'published') | null;
 }
 /**
  * This interface was referenced by `Config`'s JSON-Schema
@@ -195,6 +263,117 @@ export interface Media {
   };
 }
 /**
+ * Drag to reorder. The order here is the order on the Work page.
+ *
+ * This interface was referenced by `Config`'s JSON-Schema
+ * via the `definition` "projects".
+ */
+export interface Project {
+  id: number;
+  _order?: string | null;
+  title: string;
+  /**
+   * The page address: /projects/<slug>. Lowercase words with dashes.
+   */
+  slug: string;
+  category: string;
+  year: string;
+  /**
+   * For concept work, say so — e.g. “Aurelle — concept brand”.
+   */
+  client: string;
+  /**
+   * Short text on the project card.
+   */
+  summary: string;
+  /**
+   * Homepage screenshot shown on the card and at the top of the case study.
+   */
+  cover: number | Media;
+  /**
+   * Soft colour behind the screenshots, e.g. #edeae0.
+   */
+  tint: string;
+  /**
+   * The first two ticked projects appear under “Featured projects”.
+   */
+  featured?: boolean | null;
+  filters: ('nextjs' | 'migration' | 'landing' | 'wordpress' | 'ecommerce')[];
+  /**
+   * One sentence under the case-study title.
+   */
+  tagline: string;
+  role: string;
+  stack: string;
+  /**
+   * Shown under the title. One per line.
+   */
+  tags?: string | null;
+  overview: string;
+  challenge: string;
+  approach: string;
+  /**
+   * One per line.
+   */
+  features?: string | null;
+  /**
+   * One per line.
+   */
+  tech?: string | null;
+  gallery?:
+    | {
+        image: number | Media;
+        device: 'desktop' | 'mobile';
+        id?: string | null;
+      }[]
+    | null;
+  ctaTitle: string;
+  ctaText: string;
+  updatedAt: string;
+  createdAt: string;
+}
+/**
+ * Drag to reorder. The first question is shown open.
+ *
+ * This interface was referenced by `Config`'s JSON-Schema
+ * via the `definition` "faqs".
+ */
+export interface Faq {
+  id: number;
+  _order?: string | null;
+  question: string;
+  answer: string;
+  updatedAt: string;
+  createdAt: string;
+}
+/**
+ * This interface was referenced by `Config`'s JSON-Schema
+ * via the `definition` "users".
+ */
+export interface User {
+  id: number;
+  name?: string | null;
+  updatedAt: string;
+  createdAt: string;
+  email: string;
+  resetPasswordToken?: string | null;
+  resetPasswordExpiration?: string | null;
+  salt?: string | null;
+  hash?: string | null;
+  resetPasswordRequestedAt?: string | null;
+  loginAttempts?: number | null;
+  lockUntil?: string | null;
+  sessions?:
+    | {
+        id: string;
+        createdAt?: string | null;
+        expiresAt: string;
+      }[]
+    | null;
+  password?: string | null;
+  collection: 'users';
+}
+/**
  * This interface was referenced by `Config`'s JSON-Schema
  * via the `definition` "payload-kv".
  */
@@ -219,12 +398,24 @@ export interface PayloadLockedDocument {
   id: number;
   document?:
     | ({
-        relationTo: 'users';
-        value: number | User;
+        relationTo: 'posts';
+        value: number | Post;
+      } | null)
+    | ({
+        relationTo: 'projects';
+        value: number | Project;
+      } | null)
+    | ({
+        relationTo: 'faqs';
+        value: number | Faq;
       } | null)
     | ({
         relationTo: 'media';
         value: number | Media;
+      } | null)
+    | ({
+        relationTo: 'users';
+        value: number | User;
       } | null);
   globalSlug?: string | null;
   user: {
@@ -270,27 +461,80 @@ export interface PayloadMigration {
 }
 /**
  * This interface was referenced by `Config`'s JSON-Schema
- * via the `definition` "users_select".
+ * via the `definition` "posts_select".
  */
-export interface UsersSelect<T extends boolean = true> {
-  name?: T;
-  updatedAt?: T;
-  createdAt?: T;
-  email?: T;
-  resetPasswordToken?: T;
-  resetPasswordExpiration?: T;
-  salt?: T;
-  hash?: T;
-  resetPasswordRequestedAt?: T;
-  loginAttempts?: T;
-  lockUntil?: T;
-  sessions?:
+export interface PostsSelect<T extends boolean = true> {
+  title?: T;
+  description?: T;
+  content?: T;
+  reviewNotes?: T;
+  cover?: T;
+  coverScene?:
     | T
     | {
-        id?: T;
-        createdAt?: T;
-        expiresAt?: T;
+        kind?: T;
+        labels?: T;
       };
+  slug?: T;
+  date?: T;
+  updated?: T;
+  pillar?: T;
+  tags?: T;
+  service?: T;
+  aiAssisted?: T;
+  reviewed?: T;
+  source?: T;
+  updatedAt?: T;
+  createdAt?: T;
+  _status?: T;
+}
+/**
+ * This interface was referenced by `Config`'s JSON-Schema
+ * via the `definition` "projects_select".
+ */
+export interface ProjectsSelect<T extends boolean = true> {
+  _order?: T;
+  title?: T;
+  slug?: T;
+  category?: T;
+  year?: T;
+  client?: T;
+  summary?: T;
+  cover?: T;
+  tint?: T;
+  featured?: T;
+  filters?: T;
+  tagline?: T;
+  role?: T;
+  stack?: T;
+  tags?: T;
+  overview?: T;
+  challenge?: T;
+  approach?: T;
+  features?: T;
+  tech?: T;
+  gallery?:
+    | T
+    | {
+        image?: T;
+        device?: T;
+        id?: T;
+      };
+  ctaTitle?: T;
+  ctaText?: T;
+  updatedAt?: T;
+  createdAt?: T;
+}
+/**
+ * This interface was referenced by `Config`'s JSON-Schema
+ * via the `definition` "faqs_select".
+ */
+export interface FaqsSelect<T extends boolean = true> {
+  _order?: T;
+  question?: T;
+  answer?: T;
+  updatedAt?: T;
+  createdAt?: T;
 }
 /**
  * This interface was referenced by `Config`'s JSON-Schema
@@ -348,6 +592,30 @@ export interface MediaSelect<T extends boolean = true> {
 }
 /**
  * This interface was referenced by `Config`'s JSON-Schema
+ * via the `definition` "users_select".
+ */
+export interface UsersSelect<T extends boolean = true> {
+  name?: T;
+  updatedAt?: T;
+  createdAt?: T;
+  email?: T;
+  resetPasswordToken?: T;
+  resetPasswordExpiration?: T;
+  salt?: T;
+  hash?: T;
+  resetPasswordRequestedAt?: T;
+  loginAttempts?: T;
+  lockUntil?: T;
+  sessions?:
+    | T
+    | {
+        id?: T;
+        createdAt?: T;
+        expiresAt?: T;
+      };
+}
+/**
+ * This interface was referenced by `Config`'s JSON-Schema
  * via the `definition` "payload-kv_select".
  */
 export interface PayloadKvSelect<T extends boolean = true> {
@@ -385,6 +653,644 @@ export interface PayloadMigrationsSelect<T extends boolean = true> {
   batch?: T;
   updatedAt?: T;
   createdAt?: T;
+}
+/**
+ * Your details — shown in the header, footer, contact page, structured data and the site assistant.
+ *
+ * This interface was referenced by `Config`'s JSON-Schema
+ * via the `definition` "site-settings".
+ */
+export interface SiteSetting {
+  id: number;
+  name: string;
+  /**
+   * e.g. AI-Powered Full-Stack Developer — footer, page titles, structured data.
+   */
+  role: string;
+  location: string;
+  availability: string;
+  hours: string;
+  /**
+   * Used for Google, social cards and the about page's structured data.
+   */
+  description: string;
+  /**
+   * One per line, e.g. “English — Fluent”.
+   */
+  languages?: string | null;
+  /**
+   * The file behind every “Download résumé” button.
+   */
+  resume: number | Media;
+  email: string;
+  phone: string;
+  /**
+   * e.g. https://wa.me/919265121783
+   */
+  whatsapp: string;
+  linkedin: string;
+  github: string;
+  /**
+   * Leave empty to hide the “Hire me on Upwork” buttons.
+   */
+  upwork?: string | null;
+  /**
+   * G-XXXXXXXXXX — loads only on the live site. Empty = off.
+   */
+  gaId?: string | null;
+  /**
+   * The content value of the “HTML tag” method. Empty = off.
+   */
+  searchConsole?: string | null;
+  updatedAt?: string | null;
+  createdAt?: string | null;
+}
+/**
+ * This interface was referenced by `Config`'s JSON-Schema
+ * via the `definition` "home-page".
+ */
+export interface HomePage {
+  id: number;
+  /**
+   * The first one (experience) is shown on the home page's experience card.
+   */
+  stats?:
+    | {
+        label: string;
+        value: string;
+        id?: string | null;
+      }[]
+    | null;
+  /**
+   * The four service cards on the home page.
+   */
+  featuredServices?:
+    | {
+        title: string;
+        text: string;
+        /**
+         * One per line.
+         */
+        points?: string | null;
+        tag: string;
+        /**
+         * e.g. /services#service-1
+         */
+        href: string;
+        /**
+         * Icon shown next to this item.
+         */
+        icon:
+          | 'browser'
+          | 'react'
+          | 'cart'
+          | 'store'
+          | 'pen'
+          | 'spark'
+          | 'bolt'
+          | 'code'
+          | 'layers'
+          | 'shield'
+          | 'clock'
+          | 'check'
+          | 'award'
+          | 'mail'
+          | 'chat'
+          | 'pin'
+          | 'arrow'
+          | 'arrowUpRight'
+          | 'download'
+          | 'send'
+          | 'linkedin'
+          | 'github'
+          | 'upwork'
+          | 'menu'
+          | 'close'
+          | 'star'
+          | 'camera'
+          | 'users'
+          | 'briefcase'
+          | 'monitor'
+          | 'cpu'
+          | 'cap'
+          | 'globe';
+        id?: string | null;
+      }[]
+    | null;
+  problems?:
+    | {
+        title: string;
+        text: string;
+        id?: string | null;
+      }[]
+    | null;
+  /**
+   * Shown on the home and experience pages.
+   */
+  aiWorkflow: {
+    /**
+     * One per line.
+     */
+    tools?: string | null;
+    points?:
+      | {
+          title: string;
+          text: string;
+          id?: string | null;
+        }[]
+      | null;
+    closing: string;
+  };
+  updatedAt?: string | null;
+  createdAt?: string | null;
+}
+/**
+ * This interface was referenced by `Config`'s JSON-Schema
+ * via the `definition` "about-page".
+ */
+export interface AboutPage {
+  id: number;
+  /**
+   * Shown on the home, about and experience pages.
+   */
+  experience: {
+    role: string;
+    company: string;
+    place: string;
+    /**
+     * e.g. June 2023 – Present
+     */
+    period: string;
+    summary: string;
+    /**
+     * One per line.
+     */
+    points?: string | null;
+    /**
+     * One per line.
+     */
+    tags?: string | null;
+  };
+  certifications?:
+    | {
+        title: string;
+        issuer: string;
+        /**
+         * e.g. February 2025
+         */
+        date: string;
+        text: string;
+        id?: string | null;
+      }[]
+    | null;
+  /**
+   * Experience page skill cards; also used for structured data.
+   */
+  skillCards?:
+    | {
+        title: string;
+        /**
+         * Icon shown next to this item.
+         */
+        icon:
+          | 'browser'
+          | 'react'
+          | 'cart'
+          | 'store'
+          | 'pen'
+          | 'spark'
+          | 'bolt'
+          | 'code'
+          | 'layers'
+          | 'shield'
+          | 'clock'
+          | 'check'
+          | 'award'
+          | 'mail'
+          | 'chat'
+          | 'pin'
+          | 'arrow'
+          | 'arrowUpRight'
+          | 'download'
+          | 'send'
+          | 'linkedin'
+          | 'github'
+          | 'upwork'
+          | 'menu'
+          | 'close'
+          | 'star'
+          | 'camera'
+          | 'users'
+          | 'briefcase'
+          | 'monitor'
+          | 'cpu'
+          | 'cap'
+          | 'globe';
+        /**
+         * One per line.
+         */
+        items?: string | null;
+        id?: string | null;
+      }[]
+    | null;
+  aboutFocus?:
+    | {
+        title: string;
+        /**
+         * Icon shown next to this item.
+         */
+        icon:
+          | 'browser'
+          | 'react'
+          | 'cart'
+          | 'store'
+          | 'pen'
+          | 'spark'
+          | 'bolt'
+          | 'code'
+          | 'layers'
+          | 'shield'
+          | 'clock'
+          | 'check'
+          | 'award'
+          | 'mail'
+          | 'chat'
+          | 'pin'
+          | 'arrow'
+          | 'arrowUpRight'
+          | 'download'
+          | 'send'
+          | 'linkedin'
+          | 'github'
+          | 'upwork'
+          | 'menu'
+          | 'close'
+          | 'star'
+          | 'camera'
+          | 'users'
+          | 'briefcase'
+          | 'monitor'
+          | 'cpu'
+          | 'cap'
+          | 'globe';
+        text: string;
+        id?: string | null;
+      }[]
+    | null;
+  principles?:
+    | {
+        title: string;
+        /**
+         * Icon shown next to this item.
+         */
+        icon:
+          | 'browser'
+          | 'react'
+          | 'cart'
+          | 'store'
+          | 'pen'
+          | 'spark'
+          | 'bolt'
+          | 'code'
+          | 'layers'
+          | 'shield'
+          | 'clock'
+          | 'check'
+          | 'award'
+          | 'mail'
+          | 'chat'
+          | 'pin'
+          | 'arrow'
+          | 'arrowUpRight'
+          | 'download'
+          | 'send'
+          | 'linkedin'
+          | 'github'
+          | 'upwork'
+          | 'menu'
+          | 'close'
+          | 'star'
+          | 'camera'
+          | 'users'
+          | 'briefcase'
+          | 'monitor'
+          | 'cpu'
+          | 'cap'
+          | 'globe';
+        text: string;
+        id?: string | null;
+      }[]
+    | null;
+  updatedAt?: string | null;
+  createdAt?: string | null;
+}
+/**
+ * This interface was referenced by `Config`'s JSON-Schema
+ * via the `definition` "services-page".
+ */
+export interface ServicesPage {
+  id: number;
+  /**
+   * Keep the order: links like /services#service-1 point to the 1st service, #service-2 to the 2nd… The 7th is shown as a wide card.
+   */
+  services?:
+    | {
+        title: string;
+        /**
+         * Icon shown next to this item.
+         */
+        icon:
+          | 'browser'
+          | 'react'
+          | 'cart'
+          | 'store'
+          | 'pen'
+          | 'spark'
+          | 'bolt'
+          | 'code'
+          | 'layers'
+          | 'shield'
+          | 'clock'
+          | 'check'
+          | 'award'
+          | 'mail'
+          | 'chat'
+          | 'pin'
+          | 'arrow'
+          | 'arrowUpRight'
+          | 'download'
+          | 'send'
+          | 'linkedin'
+          | 'github'
+          | 'upwork'
+          | 'menu'
+          | 'close'
+          | 'star'
+          | 'camera'
+          | 'users'
+          | 'briefcase'
+          | 'monitor'
+          | 'cpu'
+          | 'cap'
+          | 'globe';
+        /**
+         * Used on the hire-me page.
+         */
+        short: string;
+        body: string;
+        /**
+         * One per line.
+         */
+        points?: string | null;
+        /**
+         * One per line.
+         */
+        tags?: string | null;
+        /**
+         * Default: Tech
+         */
+        tagsLabel?: string | null;
+        image: number | Media;
+        /**
+         * Empty = the image's own description.
+         */
+        imageAlt?: string | null;
+        id?: string | null;
+      }[]
+    | null;
+  packages?:
+    | {
+        /**
+         * e.g. Most popular
+         */
+        name: string;
+        title: string;
+        price: string;
+        text: string;
+        /**
+         * One per line.
+         */
+        points?: string | null;
+        featured?: boolean | null;
+        id?: string | null;
+      }[]
+    | null;
+  /**
+   * Shown on the home, services and hire-me pages.
+   */
+  process?:
+    | {
+        title: string;
+        text: string;
+        id?: string | null;
+      }[]
+    | null;
+  /**
+   * The six steps on the services page, one per line.
+   */
+  approach?: string | null;
+  updatedAt?: string | null;
+  createdAt?: string | null;
+}
+/**
+ * This interface was referenced by `Config`'s JSON-Schema
+ * via the `definition` "contact-page".
+ */
+export interface ContactPage {
+  id: number;
+  /**
+   * One per line.
+   */
+  helpWith?: string | null;
+  /**
+   * One per line.
+   */
+  projectTypes?: string | null;
+  /**
+   * One per line.
+   */
+  budgets?: string | null;
+  updatedAt?: string | null;
+  createdAt?: string | null;
+}
+/**
+ * This interface was referenced by `Config`'s JSON-Schema
+ * via the `definition` "site-settings_select".
+ */
+export interface SiteSettingsSelect<T extends boolean = true> {
+  name?: T;
+  role?: T;
+  location?: T;
+  availability?: T;
+  hours?: T;
+  description?: T;
+  languages?: T;
+  resume?: T;
+  email?: T;
+  phone?: T;
+  whatsapp?: T;
+  linkedin?: T;
+  github?: T;
+  upwork?: T;
+  gaId?: T;
+  searchConsole?: T;
+  updatedAt?: T;
+  createdAt?: T;
+  globalType?: T;
+}
+/**
+ * This interface was referenced by `Config`'s JSON-Schema
+ * via the `definition` "home-page_select".
+ */
+export interface HomePageSelect<T extends boolean = true> {
+  stats?:
+    | T
+    | {
+        label?: T;
+        value?: T;
+        id?: T;
+      };
+  featuredServices?:
+    | T
+    | {
+        title?: T;
+        text?: T;
+        points?: T;
+        tag?: T;
+        href?: T;
+        icon?: T;
+        id?: T;
+      };
+  problems?:
+    | T
+    | {
+        title?: T;
+        text?: T;
+        id?: T;
+      };
+  aiWorkflow?:
+    | T
+    | {
+        tools?: T;
+        points?:
+          | T
+          | {
+              title?: T;
+              text?: T;
+              id?: T;
+            };
+        closing?: T;
+      };
+  updatedAt?: T;
+  createdAt?: T;
+  globalType?: T;
+}
+/**
+ * This interface was referenced by `Config`'s JSON-Schema
+ * via the `definition` "about-page_select".
+ */
+export interface AboutPageSelect<T extends boolean = true> {
+  experience?:
+    | T
+    | {
+        role?: T;
+        company?: T;
+        place?: T;
+        period?: T;
+        summary?: T;
+        points?: T;
+        tags?: T;
+      };
+  certifications?:
+    | T
+    | {
+        title?: T;
+        issuer?: T;
+        date?: T;
+        text?: T;
+        id?: T;
+      };
+  skillCards?:
+    | T
+    | {
+        title?: T;
+        icon?: T;
+        items?: T;
+        id?: T;
+      };
+  aboutFocus?:
+    | T
+    | {
+        title?: T;
+        icon?: T;
+        text?: T;
+        id?: T;
+      };
+  principles?:
+    | T
+    | {
+        title?: T;
+        icon?: T;
+        text?: T;
+        id?: T;
+      };
+  updatedAt?: T;
+  createdAt?: T;
+  globalType?: T;
+}
+/**
+ * This interface was referenced by `Config`'s JSON-Schema
+ * via the `definition` "services-page_select".
+ */
+export interface ServicesPageSelect<T extends boolean = true> {
+  services?:
+    | T
+    | {
+        title?: T;
+        icon?: T;
+        short?: T;
+        body?: T;
+        points?: T;
+        tags?: T;
+        tagsLabel?: T;
+        image?: T;
+        imageAlt?: T;
+        id?: T;
+      };
+  packages?:
+    | T
+    | {
+        name?: T;
+        title?: T;
+        price?: T;
+        text?: T;
+        points?: T;
+        featured?: T;
+        id?: T;
+      };
+  process?:
+    | T
+    | {
+        title?: T;
+        text?: T;
+        id?: T;
+      };
+  approach?: T;
+  updatedAt?: T;
+  createdAt?: T;
+  globalType?: T;
+}
+/**
+ * This interface was referenced by `Config`'s JSON-Schema
+ * via the `definition` "contact-page_select".
+ */
+export interface ContactPageSelect<T extends boolean = true> {
+  helpWith?: T;
+  projectTypes?: T;
+  budgets?: T;
+  updatedAt?: T;
+  createdAt?: T;
+  globalType?: T;
 }
 /**
  * This interface was referenced by `Config`'s JSON-Schema

@@ -5,16 +5,18 @@ import { notFound } from "next/navigation";
 import { CaseNav } from "@/components/CaseNav";
 import { JsonLd, abs, personRef } from "@/components/JsonLd";
 import { Chips, CtaBand, PageHero, TickList } from "@/components/ui";
-import { projects, site } from "@/lib/data";
+import { getContent } from "@/lib/content";
 
 type Props = { params: Promise<{ slug: string }> };
 
-export function generateStaticParams() {
+/** Pages for the projects that exist at build time; projects added later in the CMS render on their first visit */
+export async function generateStaticParams() {
+  const { projects } = await getContent();
   return projects.map((p) => ({ slug: p.slug }));
 }
 
 export async function generateMetadata({ params }: Props): Promise<Metadata> {
-  const { slug } = await params;
+  const [{ slug }, { projects, site }] = await Promise.all([params, getContent()]);
   const project = projects.find((p) => p.slug === slug);
   if (!project) return {};
   const title = `${project.title} — Case Study | ${site.name}`;
@@ -44,7 +46,7 @@ const sections = [
 ];
 
 export default async function CaseStudyPage({ params }: Props) {
-  const { slug } = await params;
+  const [{ slug }, { projects, site }] = await Promise.all([params, getContent()]);
   const index = projects.findIndex((p) => p.slug === slug);
   if (index === -1) notFound();
 
@@ -70,7 +72,7 @@ export default async function CaseStudyPage({ params }: Props) {
               image: abs(project.cover),
               dateCreated: project.year,
               keywords: project.tech.join(", "),
-              creator: personRef,
+              creator: personRef(site),
             },
             {
               "@type": "BreadcrumbList",

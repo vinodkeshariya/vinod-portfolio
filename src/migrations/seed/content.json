@@ -1,0 +1,817 @@
+{
+  "media": [
+    {
+      "key": "Vinod_Keshariya_Frontend_Developer",
+      "file": "public/Vinod_Keshariya_Frontend_Developer.pdf",
+      "alt": "Vinod Keshariya — résumé (PDF)"
+    },
+    {
+      "key": "projects/fashion-catalog/cover",
+      "file": "public/images/projects/fashion-catalog/cover.webp",
+      "alt": "Fashion E-commerce Store — homepage"
+    },
+    {
+      "key": "projects/fashion-catalog/shop",
+      "file": "public/images/projects/fashion-catalog/shop.webp",
+      "alt": "Collection page with product grid and filters"
+    },
+    {
+      "key": "projects/fashion-catalog/product",
+      "file": "public/images/projects/fashion-catalog/product.webp",
+      "alt": "Product page with gallery, colour and size selection"
+    },
+    {
+      "key": "projects/fashion-catalog/mobile-1",
+      "file": "public/images/projects/fashion-catalog/mobile-1.webp",
+      "alt": "Mobile homepage hero"
+    },
+    {
+      "key": "projects/fashion-catalog/mobile-2",
+      "file": "public/images/projects/fashion-catalog/mobile-2.webp",
+      "alt": "Mobile cart drawer with free-shipping progress"
+    },
+    {
+      "key": "projects/ai-saas-landing/cover",
+      "file": "public/images/projects/ai-saas-landing/cover.webp",
+      "alt": "AI SaaS Landing Page — homepage"
+    },
+    {
+      "key": "projects/ai-saas-landing/features",
+      "file": "public/images/projects/ai-saas-landing/features.webp",
+      "alt": "Feature grid with AI insights card"
+    },
+    {
+      "key": "projects/ai-saas-landing/mobile-1",
+      "file": "public/images/projects/ai-saas-landing/mobile-1.webp",
+      "alt": "Mobile hero with dashboard preview"
+    },
+    {
+      "key": "projects/ai-saas-landing/mobile-2",
+      "file": "public/images/projects/ai-saas-landing/mobile-2.webp",
+      "alt": "Mobile pricing with plan toggle"
+    },
+    {
+      "key": "projects/blog-migration/cover",
+      "file": "public/images/projects/blog-migration/cover.webp",
+      "alt": "WordPress Blog Migration — homepage"
+    },
+    {
+      "key": "projects/blog-migration/post",
+      "file": "public/images/projects/blog-migration/post.webp",
+      "alt": "Article page with clean reading layout"
+    },
+    {
+      "key": "projects/blog-migration/mobile-1",
+      "file": "public/images/projects/blog-migration/mobile-1.webp",
+      "alt": "Mobile blog home"
+    },
+    {
+      "key": "projects/blog-migration/mobile-2",
+      "file": "public/images/projects/blog-migration/mobile-2.webp",
+      "alt": "Mobile article page"
+    },
+    {
+      "key": "projects/creative-agency/cover",
+      "file": "public/images/projects/creative-agency/cover.webp",
+      "alt": "Creative Agency Website — homepage"
+    },
+    {
+      "key": "projects/creative-agency/work",
+      "file": "public/images/projects/creative-agency/work.webp",
+      "alt": "Selected work grid with case study cards"
+    },
+    {
+      "key": "projects/creative-agency/mobile-1",
+      "file": "public/images/projects/creative-agency/mobile-1.webp",
+      "alt": "Mobile hero"
+    },
+    {
+      "key": "projects/creative-agency/mobile-2",
+      "file": "public/images/projects/creative-agency/mobile-2.webp",
+      "alt": "Mobile case study list"
+    },
+    {
+      "key": "projects/restaurant-menu/cover",
+      "file": "public/images/projects/restaurant-menu/cover.webp",
+      "alt": "Restaurant Website with Editable Menu — homepage"
+    },
+    {
+      "key": "projects/restaurant-menu/menu",
+      "file": "public/images/projects/restaurant-menu/menu.webp",
+      "alt": "Menu page with categories and dishes"
+    },
+    {
+      "key": "projects/restaurant-menu/studio",
+      "file": "public/images/projects/restaurant-menu/studio.webp",
+      "alt": "Content studio editing a menu item"
+    },
+    {
+      "key": "projects/restaurant-menu/mobile-1",
+      "file": "public/images/projects/restaurant-menu/mobile-1.webp",
+      "alt": "Mobile hero"
+    },
+    {
+      "key": "projects/restaurant-menu/mobile-2",
+      "file": "public/images/projects/restaurant-menu/mobile-2.webp",
+      "alt": "Mobile menu with category tabs"
+    },
+    {
+      "key": "projects/business-wordpress/cover",
+      "file": "public/images/projects/business-wordpress/cover.webp",
+      "alt": "Business Website on WordPress — homepage"
+    },
+    {
+      "key": "projects/business-wordpress/services",
+      "file": "public/images/projects/business-wordpress/services.webp",
+      "alt": "Services section with project highlights"
+    },
+    {
+      "key": "projects/business-wordpress/mobile-1",
+      "file": "public/images/projects/business-wordpress/mobile-1.webp",
+      "alt": "Mobile hero"
+    },
+    {
+      "key": "projects/business-wordpress/mobile-2",
+      "file": "public/images/projects/business-wordpress/mobile-2.webp",
+      "alt": "Mobile quote form"
+    },
+    {
+      "key": "services/ai-assistant",
+      "file": "public/images/services/ai-assistant.webp",
+      "alt": "Help center concept with an AI assistant answering questions"
+    },
+    {
+      "key": "services/ai-coding",
+      "file": "public/images/services/ai-coding.webp",
+      "alt": "Code editor with an AI coding assistant panel next to a React component"
+    },
+    {
+      "key": "blog/how-i-use-ai-in-web-development/sanity-studio",
+      "file": "public/images/blog/how-i-use-ai-in-web-development/sanity-studio.webp",
+      "alt": "Sanity Studio with a blog post imported from WordPress, showing its slug, old URL redirect and SEO fields"
+    }
+  ],
+  "siteSettings": {
+    "name": "Vinod Keshariya",
+    "role": "AI-Powered Full-Stack Developer",
+    "location": "Ahmedabad, Gujarat, India",
+    "availability": "Open for freelance projects worldwide",
+    "hours": "30+ hours/week",
+    "description": "Vinod Keshariya is an AI-powered Full-Stack Developer specializing in Claude Code, AI integrations, Next.js, React, Sanity CMS, and WordPress. Available for freelance projects worldwide.",
+    "languages": "English — Fluent\nGujarati — Native or Bilingual\nHindi — Conversational",
+    "resume": "@media:Vinod_Keshariya_Frontend_Developer",
+    "email": "keshariyavinod793@gmail.com",
+    "phone": "+91 92651 21783",
+    "whatsapp": "https://wa.me/919265121783",
+    "linkedin": "https://www.linkedin.com/in/ahir-vinod-keshariya-a747562b2/",
+    "github": "https://github.com/vinodkeshariya",
+    "upwork": "",
+    "gaId": "G-E8HZGHQXZ6",
+    "searchConsole": "8xLfxyLK3cUBb3JjKyts2Qt5uo_Gw3GANt0Go1fBa_c"
+  },
+  "homePage": {
+    "stats": [
+      {
+        "label": "Experience",
+        "value": "3+ Years"
+      },
+      {
+        "label": "Availability",
+        "value": "30+ hrs/wk"
+      },
+      {
+        "label": "Response time",
+        "value": "0–4 hrs"
+      },
+      {
+        "label": "Core expertise",
+        "value": "AI + Next.js + React"
+      }
+    ],
+    "featuredServices": [
+      {
+        "title": "AI Integration & Development",
+        "text": "Bring intelligent features into your website or application using AI APIs and modern development technologies.",
+        "points": "AI assistants and chat interfaces\nAI-powered content experiences\nClaude API integrations\nIntelligent search and Q&A features\nAI API integration with Next.js",
+        "tag": "AI",
+        "href": "/services#service-1",
+        "icon": "spark"
+      },
+      {
+        "title": "Next.js & React Development",
+        "text": "Build modern, responsive, high-performance websites and web applications.",
+        "points": "Custom Next.js development\nReusable React components\nResponsive interfaces\nSEO-friendly architecture\nAPI integrations",
+        "tag": "Next.js",
+        "href": "/services#service-3",
+        "icon": "code"
+      },
+      {
+        "title": "Figma to Next.js + Sanity CMS",
+        "text": "Turn your Figma designs into pixel-perfect websites with a fully editable CMS.",
+        "points": "Figma-to-code implementation\nReusable components\nSanity Studio setup\nEditable pages and content\nResponsive implementation",
+        "tag": "Figma",
+        "href": "/services#service-4",
+        "icon": "pen"
+      },
+      {
+        "title": "WordPress to Next.js Migration",
+        "text": "Modernize your WordPress website while protecting content and SEO.",
+        "points": "Content and image migration\nSanity CMS integration\nURL preservation and redirects\nModern Next.js frontend\nSEO metadata migration",
+        "tag": "Migration",
+        "href": "/services#service-5",
+        "icon": "layers"
+      }
+    ],
+    "problems": [
+      {
+        "title": "Slow and outdated websites.",
+        "text": "Heavy WordPress themes, unnecessary plugins, and unoptimized assets can affect loading speed and user experience."
+      },
+      {
+        "title": "Difficult content management.",
+        "text": "Your team shouldn't need a developer for every small content change. Manage pages, images, and blog posts through a structured CMS."
+      },
+      {
+        "title": "Repetitive development work.",
+        "text": "Manual coding and repetitive tasks can slow down projects. AI-assisted development helps accelerate component creation, debugging, and testing."
+      },
+      {
+        "title": "Missing intelligent features.",
+        "text": "Modern websites can do more than display information. AI integrations can help users search, discover, and interact with your content."
+      }
+    ],
+    "aiWorkflow": {
+      "tools": "Claude\nClaude Code\nChatGPT\nMCP\nCursor",
+      "points": [
+        {
+          "title": "AI-assisted planning & coding",
+          "text": "Use AI tools to understand requirements, plan features, generate React components, and accelerate repetitive development tasks."
+        },
+        {
+          "title": "Claude Code development",
+          "text": "Work with existing codebases, build Next.js features, create reusable components, write TypeScript code, and improve implementation workflows."
+        },
+        {
+          "title": "CMS & API workflows",
+          "text": "Accelerate Sanity schema creation, content modeling, API integrations, and website migration tasks."
+        },
+        {
+          "title": "Human review & testing",
+          "text": "Review generated code, debug issues, verify functionality, and test the final experience across browsers and devices."
+        }
+      ],
+      "closing": "AI accelerates the process. Engineering judgment ensures the quality."
+    }
+  },
+  "aboutPage": {
+    "experience": {
+      "role": "Full Stack Developer",
+      "company": "Krushna53",
+      "place": "Ahmedabad, India",
+      "period": "June 2023 – Present",
+      "summary": "Building, migrating, and maintaining client websites using Next.js, React, Sanity CMS, and WordPress.",
+      "points": "Build responsive Next.js websites from Figma and PSD designs.\nDevelop reusable React components.\nConfigure Sanity CMS schemas and Studio.\nMigrate WordPress websites to Next.js and Sanity.\nMaintain URLs, content, and SEO during migrations.\nDevelop and customize WordPress websites.\nFix bugs and improve existing client websites.\nUse Claude and Claude Code for AI-assisted development.\nReview, debug, and test implementations.",
+      "tags": "Next.js\nReact\nTypeScript\nSanity CMS\nTailwind CSS\nWordPress\nElementor\nPHP\nVercel\nGit\nFigma\nClaude Code"
+    },
+    "certifications": [
+      {
+        "title": "Next.js",
+        "issuer": "Udemy",
+        "date": "February 2025",
+        "text": "App Router, data fetching, rendering strategies and deployment."
+      },
+      {
+        "title": "Full Stack Developer",
+        "issuer": "Udemy",
+        "date": "January 2025",
+        "text": "Frontend, backend and APIs — building complete web applications."
+      },
+      {
+        "title": "Frontend (React & Next.js)",
+        "issuer": "Udemy",
+        "date": "November 2024",
+        "text": "Modern React patterns, components and Next.js fundamentals."
+      }
+    ],
+    "skillCards": [
+      {
+        "title": "AI & AI-assisted development",
+        "icon": "spark",
+        "items": "Claude\nClaude Code\nChatGPT\nMCP\nCursor\nAI API Integration\nAI-Assisted Coding"
+      },
+      {
+        "title": "Frontend",
+        "icon": "code",
+        "items": "Next.js\nReact\nTypeScript\nJavaScript\nTailwind CSS"
+      },
+      {
+        "title": "CMS",
+        "icon": "layers",
+        "items": "Sanity CMS\nWordPress\nElementor"
+      },
+      {
+        "title": "Other technologies",
+        "icon": "pen",
+        "items": "HTML\nCSS\nPHP\nVercel\nGit\nFigma"
+      }
+    ],
+    "aboutFocus": [
+      {
+        "title": "AI-Powered Development",
+        "icon": "spark",
+        "text": "I use AI tools to accelerate development, improve coding workflows, debug issues, and build modern digital solutions."
+      },
+      {
+        "title": "AI Integration",
+        "icon": "chat",
+        "text": "I help integrate AI capabilities into web applications using suitable APIs and modern development technologies."
+      },
+      {
+        "title": "Next.js & React Development",
+        "icon": "code",
+        "text": "I build responsive websites, reusable components, and modern web applications."
+      },
+      {
+        "title": "CMS & Website Solutions",
+        "icon": "layers",
+        "text": "I develop editable websites using Sanity CMS and create or migrate WordPress websites."
+      }
+    ],
+    "principles": [
+      {
+        "title": "AI-powered productivity",
+        "icon": "spark",
+        "text": "AI tools help me move faster on planning, coding, debugging and migration work."
+      },
+      {
+        "title": "Clean code",
+        "icon": "code",
+        "text": "Reusable components, typed code and a structure that stays easy to extend."
+      },
+      {
+        "title": "Practical problem-solving",
+        "icon": "bolt",
+        "text": "The right tool for the requirement — Next.js, Sanity or WordPress — not the trendiest one."
+      },
+      {
+        "title": "Careful testing",
+        "icon": "shield",
+        "text": "Every implementation is reviewed and tested across browsers and devices before delivery."
+      }
+    ]
+  },
+  "servicesPage": {
+    "services": [
+      {
+        "title": "AI Integration & Development",
+        "icon": "spark",
+        "short": "Bring intelligent functionality into your website or application.",
+        "body": "Bring intelligent functionality into your website or application with AI APIs and modern development technologies.",
+        "points": "Claude API integration\nAI chat interfaces\nAI-powered content assistants\nContext-aware Q&A features\nAI-powered search experiences\nAI API integration with Next.js",
+        "tags": "Next.js\nReact\nTypeScript\nClaude API\nAI APIs",
+        "image": "@media:services/ai-assistant"
+      },
+      {
+        "title": "Claude Code & AI-Assisted Development",
+        "icon": "code",
+        "short": "Accelerate your development workflow using modern AI coding tools.",
+        "body": "Accelerate your development workflow using modern AI coding tools — with every change reviewed and tested by me.",
+        "points": "Next.js feature development\nReact component generation\nCodebase analysis\nDebugging and refactoring\nAPI integration assistance\nCMS schema development\nDevelopment workflow improvements",
+        "tags": "Claude Code\nClaude\nChatGPT\nCursor",
+        "tagsLabel": "Tools",
+        "image": "@media:services/ai-coding"
+      },
+      {
+        "title": "Next.js & React Development",
+        "icon": "react",
+        "short": "Build fast, modern, and responsive websites and applications.",
+        "body": "Build fast, modern, and responsive websites and web applications with Next.js, React and TypeScript.",
+        "points": "Custom Next.js websites\nReact application development\nLanding pages\nResponsive UI development\nTypeScript implementation\nAPI integrations\nVercel deployment",
+        "tags": "Next.js\nReact\nTypeScript\nVercel",
+        "image": "@media:projects/ai-saas-landing/cover",
+        "imageAlt": "SaaS landing page built with Next.js"
+      },
+      {
+        "title": "Figma to Next.js + Sanity CMS",
+        "icon": "pen",
+        "short": "Convert your Figma designs into responsive websites with easy content editing.",
+        "body": "Convert your Figma designs into responsive websites with easy content editing in Sanity Studio.",
+        "points": "Pixel-perfect Figma conversion\nReusable React components\nSanity Studio configuration\nCustom content schemas\nEditable pages and blogs\nResponsive implementation",
+        "tags": "Figma\nNext.js\nSanity CMS\nTailwind CSS",
+        "image": "@media:projects/restaurant-menu/studio"
+      },
+      {
+        "title": "WordPress to Next.js Migration",
+        "icon": "layers",
+        "short": "Modernize your WordPress website with a modern frontend and structured CMS.",
+        "body": "Modernize your existing WordPress website with a modern frontend and a structured CMS.",
+        "points": "WordPress content migration\nPage and post migration\nImage migration\nSanity CMS setup\nURL preservation and redirects\nSEO metadata migration\nNext.js frontend development",
+        "tags": "WordPress\nNext.js\nSanity CMS\nSEO",
+        "image": "@media:projects/blog-migration/cover",
+        "imageAlt": "Blog migrated from WordPress to Next.js"
+      },
+      {
+        "title": "WordPress & Elementor Development",
+        "icon": "browser",
+        "short": "Build professional business websites and landing pages.",
+        "body": "Build professional business websites and landing pages your team manages in WordPress.",
+        "points": "Custom Elementor websites\nFigma and PSD to WordPress\nResponsive business websites\nLanding page development\nOn-page SEO\nSpeed and mobile optimization",
+        "tags": "WordPress\nElementor\nPHP\nCSS",
+        "image": "@media:projects/business-wordpress/cover",
+        "imageAlt": "Business website built with WordPress and Elementor"
+      },
+      {
+        "title": "Website Maintenance & Improvements",
+        "icon": "shield",
+        "short": "Keep your website updated and performing well.",
+        "body": "Keep your website updated and performing well with regular fixes, improvements and new features.",
+        "points": "Bug fixing\nNew feature development\nContent and layout updates\nPerformance improvements\nTechnical maintenance",
+        "tags": "Next.js\nWordPress\nSanity CMS",
+        "image": "@media:projects/creative-agency/cover",
+        "imageAlt": "Agency website maintained with regular updates"
+      }
+    ],
+    "packages": [
+      {
+        "name": "Quick start",
+        "title": "Landing Page",
+        "price": "Project estimate",
+        "text": "One high-converting page in Next.js, React or WordPress, from your design.",
+        "points": "Responsive, pixel-perfect build\nSEO and speed setup\nContact form & analytics",
+        "featured": false
+      },
+      {
+        "name": "Most popular",
+        "title": "Next.js + Sanity Website",
+        "price": "Project estimate",
+        "text": "A multi-page website or WordPress migration your team edits in Sanity.",
+        "points": "Custom pages & components\nSanity Studio for your content\nSEO metadata & redirects",
+        "featured": true
+      },
+      {
+        "name": "Ongoing",
+        "title": "Monthly Support",
+        "price": "Monthly retainer",
+        "text": "A dedicated developer for updates, new features and ongoing improvements.",
+        "points": "Reserved hours each month\nPriority response\nBug fixes & improvements",
+        "featured": false
+      }
+    ],
+    "process": [
+      {
+        "title": "Share your requirements",
+        "text": "Send your Figma design, current website, or application idea. I'll understand your goals and technical requirements."
+      },
+      {
+        "title": "Plan & estimate",
+        "text": "I'll suggest the right technologies, development approach, timeline, and project estimate."
+      },
+      {
+        "title": "Build & review",
+        "text": "I use modern development practices and AI-assisted workflows to build your project efficiently. You'll receive progress updates and preview links."
+      },
+      {
+        "title": "Test & launch",
+        "text": "I review the implementation, test responsive layouts, fix issues, and prepare your website for deployment."
+      }
+    ],
+    "approach": "Understand requirements\nPlan\nAI-assisted development\nHuman code review\nTesting\nDeployment"
+  },
+  "contactPage": {
+    "helpWith": "AI-powered web applications\nClaude API integrations\nAI assistants and intelligent features\nNext.js and React websites\nFigma to Next.js + Sanity CMS\nWordPress to Next.js migrations\nWordPress and Elementor websites",
+    "projectTypes": "AI Application Development\nAI Integration\nClaude Code / AI-Assisted Development\nNext.js / React Development\nFigma to Next.js\nWordPress Migration\nWordPress Development\nOther",
+    "budgets": "Under $500\n$500 – $1,500\n$1,500 – $3,000\n$3,000+\nPrefer to discuss"
+  },
+  "projects": [
+    {
+      "title": "Fashion E-commerce Store",
+      "slug": "fashion-catalog",
+      "category": "E-commerce Website",
+      "year": "2025",
+      "client": "Aurelle — concept brand",
+      "summary": "An editorial-style fashion storefront with a structured product catalog powered by Sanity CMS, making it easy for the team to manage products and content.",
+      "cover": "@media:projects/fashion-catalog/cover",
+      "tint": "#edeae0",
+      "featured": true,
+      "filters": [
+        "nextjs",
+        "ecommerce"
+      ],
+      "tagline": "A premium storefront with a product catalog the merchant edits in Sanity Studio.",
+      "role": "Design build & CMS",
+      "stack": "Next.js, Sanity, Tailwind",
+      "tags": "Next.js\nSanity CMS\nTailwind CSS\nVercel",
+      "overview": "A fashion storefront built with Next.js and Sanity CMS. Products, collections, lookbooks and homepage sections all live in Sanity, so the brand team can launch a new drop without a developer.",
+      "challenge": "Fashion sites need large, beautiful imagery without sacrificing speed. The catalog also had to be easy to manage: new products, colours, sizes and seasonal campaigns every few weeks.",
+      "approach": "I modelled products, variants and collections as Sanity schemas, and built the storefront from reusable Next.js components. Images are served through the Sanity image pipeline with responsive sizes, and pages are statically generated with on-demand revalidation when content changes.",
+      "features": "Sanity schemas for products, variants and collections\nEditable homepage sections and lookbooks\nResponsive images via the Sanity image pipeline\nStatic generation with on-demand revalidation\nMobile-first product and cart experience\nDeployed on Vercel with preview links",
+      "tech": "Next.js\nSanity CMS\nTypeScript\nTailwind CSS\nVercel",
+      "gallery": [
+        {
+          "image": "@media:projects/fashion-catalog/shop",
+          "device": "desktop"
+        },
+        {
+          "image": "@media:projects/fashion-catalog/product",
+          "device": "desktop"
+        },
+        {
+          "image": "@media:projects/fashion-catalog/mobile-1",
+          "device": "mobile"
+        },
+        {
+          "image": "@media:projects/fashion-catalog/mobile-2",
+          "device": "mobile"
+        }
+      ],
+      "ctaTitle": "Need a store your team can run?",
+      "ctaText": "I build fast Next.js storefronts with a catalog you manage in Sanity."
+    },
+    {
+      "title": "AI SaaS Landing Page",
+      "slug": "ai-saas-landing",
+      "category": "AI Product Website",
+      "year": "2025",
+      "client": "Lumen Analytics — concept brand",
+      "summary": "A modern, responsive landing page for an AI analytics product, translating a high-fidelity Figma design into a clean web experience.",
+      "cover": "@media:projects/ai-saas-landing/cover",
+      "tint": "#f0f1ea",
+      "featured": true,
+      "filters": [
+        "nextjs",
+        "landing"
+      ],
+      "tagline": "Absolute design fidelity, clean components and excellent responsive behaviour.",
+      "role": "Frontend development",
+      "stack": "Next.js, Tailwind CSS",
+      "tags": "Next.js\nTailwind CSS\nFigma\nResponsive Design",
+      "overview": "A pixel-perfect conversion of a Figma design into a production Next.js landing page — hero, product preview, features, pricing and FAQ — built for speed and conversions.",
+      "challenge": "SaaS landing pages must match the design system exactly while staying lightweight. Small spacing or typography drift quickly undermines the brand and the conversion path.",
+      "approach": "I translated the Figma variables into Tailwind tokens first, then built each section as a reusable component. Motion is subtle and purposeful, images are optimised with next/image, and every breakpoint was checked against the design.",
+      "features": "Pixel-accurate build of the Figma design\nDesign tokens mapped to Tailwind config\nReusable section components\nPricing toggle and FAQ accordion\nSEO metadata and OG images\nOptimised images and fonts",
+      "tech": "Next.js\nReact\nTailwind CSS\nFigma\nVercel",
+      "gallery": [
+        {
+          "image": "@media:projects/ai-saas-landing/features",
+          "device": "desktop"
+        },
+        {
+          "image": "@media:projects/ai-saas-landing/mobile-1",
+          "device": "mobile"
+        },
+        {
+          "image": "@media:projects/ai-saas-landing/mobile-2",
+          "device": "mobile"
+        }
+      ],
+      "ctaTitle": "Have a Figma design ready?",
+      "ctaText": "Send it over — I'll reply with a plan, timeline and quote."
+    },
+    {
+      "title": "WordPress Blog Migration",
+      "slug": "blog-migration",
+      "category": "Website Migration",
+      "year": "2025",
+      "client": "Field Notes — concept publication",
+      "summary": "A content-heavy WordPress website migrated to Next.js and Sanity CMS, with content, images, and URL structures carefully handled.",
+      "cover": "@media:projects/blog-migration/cover",
+      "tint": "#edeae0",
+      "featured": false,
+      "filters": [
+        "migration",
+        "nextjs"
+      ],
+      "tagline": "Posts, images and authors moved by script, with the URL structure and SEO metadata carefully preserved.",
+      "role": "Migration & development",
+      "stack": "Next.js, Sanity, WordPress",
+      "tags": "WordPress\nNext.js\nSanity CMS\nSEO",
+      "overview": "A long-running blog on WordPress was slow, plugin-heavy and hard to maintain. I migrated it to Next.js with Sanity CMS — posts, categories, authors and images — while keeping every URL and its rankings.",
+      "challenge": "Years of posts, mixed formatting from different editors, and dozens of plugins. Search traffic was the main source of readers, so not a single URL or ranking could be lost in the move.",
+      "approach": "I exported the WordPress content and wrote migration scripts that convert posts to Sanity Portable Text, upload images, and link authors and categories. A redirect map covers every old URL, and metadata, sitemaps and structured data are generated from Sanity.",
+      "features": "Scripted migration of posts, authors and images\nHTML converted to Sanity Portable Text\nFull 301 redirect map — no lost URLs\nCategory and author archive pages\nSitemap, metadata and structured data\nSanity Studio walkthrough for editors",
+      "tech": "Next.js\nSanity CMS\nWordPress\nTypeScript\nVercel",
+      "gallery": [
+        {
+          "image": "@media:projects/blog-migration/post",
+          "device": "desktop"
+        },
+        {
+          "image": "@media:projects/blog-migration/mobile-1",
+          "device": "mobile"
+        },
+        {
+          "image": "@media:projects/blog-migration/mobile-2",
+          "device": "mobile"
+        }
+      ],
+      "ctaTitle": "Stuck on a slow WordPress site?",
+      "ctaText": "Send me the link — I'll tell you how a move to Next.js + Sanity would work."
+    },
+    {
+      "title": "Creative Agency Website",
+      "slug": "creative-agency",
+      "category": "Business Website",
+      "year": "2025",
+      "client": "Northwind Studio — concept agency",
+      "summary": "A modern agency website with editable content, service pages, and project presentations.",
+      "cover": "@media:projects/creative-agency/cover",
+      "tint": "#f0f1ea",
+      "featured": false,
+      "filters": [
+        "nextjs"
+      ],
+      "tagline": "Big type, bold layouts, and case studies the team publishes themselves.",
+      "role": "Design build & CMS",
+      "stack": "Next.js, Sanity, Tailwind",
+      "tags": "Next.js\nSanity CMS\nTailwind CSS",
+      "overview": "A portfolio website for a creative studio, built from their Figma design. Case studies, services, team members and open roles are managed in Sanity, with a flexible page builder for new landing pages.",
+      "challenge": "Agency sites live and die by their visuals — large type, full-bleed imagery and motion — but they still need to be fast and simple to update between busy client projects.",
+      "approach": "I built a library of Sanity page-builder blocks matched one-to-one with Figma components, so the team composes new pages from the same building blocks. Motion is CSS-first and respects reduced-motion settings.",
+      "features": "Page builder blocks matched to Figma components\nCase study template with rich media\nServices, team and careers pages\nSmooth, accessible motion\nDraft previews before publishing\nSEO fields on every page",
+      "tech": "Next.js\nSanity CMS\nTypeScript\nTailwind CSS\nVercel",
+      "gallery": [
+        {
+          "image": "@media:projects/creative-agency/work",
+          "device": "desktop"
+        },
+        {
+          "image": "@media:projects/creative-agency/mobile-1",
+          "device": "mobile"
+        },
+        {
+          "image": "@media:projects/creative-agency/mobile-2",
+          "device": "mobile"
+        }
+      ],
+      "ctaTitle": "Need a site that matches your brand?",
+      "ctaText": "Send me your Figma file and I'll reply with a clear plan."
+    },
+    {
+      "title": "Restaurant Website with Editable Menu",
+      "slug": "restaurant-menu",
+      "category": "Restaurant Website",
+      "year": "2025",
+      "client": "Saffron & Salt — concept restaurant",
+      "summary": "A responsive restaurant website with CMS-managed menu items, dish descriptions, and pricing.",
+      "cover": "@media:projects/restaurant-menu/cover",
+      "tint": "#edeae0",
+      "featured": false,
+      "filters": [
+        "nextjs"
+      ],
+      "tagline": "The menu changes daily — now the website does too, without a developer.",
+      "role": "Development & CMS",
+      "stack": "Next.js, Sanity, Tailwind",
+      "tags": "Next.js\nSanity CMS\nTailwind CSS",
+      "overview": "A restaurant website with menu, specials, gallery and reservations. The menu is fully managed in Sanity — categories, dishes, prices, dietary tags and sold-out flags — and updates on the live site instantly.",
+      "challenge": "The old site had the menu as a PDF that nobody updated. Guests saw wrong prices and missing dishes, and most visits came from phones on the way to the restaurant.",
+      "approach": "I modelled the menu in Sanity with simple fields staff can understand, and built a mobile-first site around it. Pages revalidate on publish, and local SEO is covered with structured data, opening hours and a fast map embed.",
+      "features": "Menu, prices and specials editable in Sanity\nDietary tags and sold-out toggles\nMobile-first menu with sticky categories\nReservations call-to-action\nRestaurant structured data for local SEO\nInstant updates on publish",
+      "tech": "Next.js\nSanity CMS\nTypeScript\nTailwind CSS\nVercel",
+      "gallery": [
+        {
+          "image": "@media:projects/restaurant-menu/menu",
+          "device": "desktop"
+        },
+        {
+          "image": "@media:projects/restaurant-menu/studio",
+          "device": "desktop"
+        },
+        {
+          "image": "@media:projects/restaurant-menu/mobile-1",
+          "device": "mobile"
+        },
+        {
+          "image": "@media:projects/restaurant-menu/mobile-2",
+          "device": "mobile"
+        }
+      ],
+      "ctaTitle": "Want a site you can update yourself?",
+      "ctaText": "I'll set up Sanity so your team edits content in minutes."
+    },
+    {
+      "title": "Business Website on WordPress",
+      "slug": "business-wordpress",
+      "category": "WordPress Development",
+      "year": "2024",
+      "client": "Meridian Builders — concept company",
+      "summary": "A business website built from a PSD design using WordPress and Elementor.",
+      "cover": "@media:projects/business-wordpress/cover",
+      "tint": "#f0f1ea",
+      "featured": false,
+      "filters": [
+        "wordpress"
+      ],
+      "tagline": "A professional company website the team edits with Elementor.",
+      "role": "WordPress development",
+      "stack": "WordPress, Elementor, PHP",
+      "tags": "WordPress\nElementor\nHTML\nCSS",
+      "overview": "A multi-page business website for a construction company — services, projects, about and contact — built in WordPress with Elementor from a PSD design, optimised for speed and mobile.",
+      "challenge": "The company needed a credible, modern site quickly, and wanted to keep editing in the WordPress dashboard they already knew.",
+      "approach": "I built a lean Elementor setup with global colours, fonts and reusable templates matched to the PSD, kept plugins to a minimum, and tuned images, caching and fonts for fast loading.",
+      "features": "Pixel-accurate build of the PSD design\nGlobal styles and reusable templates\nProjects portfolio with filters\nQuote request form\nSpeed and mobile optimisation\nOn-page SEO setup",
+      "tech": "WordPress\nElementor\nPHP\nCSS\nResponsive Design",
+      "gallery": [
+        {
+          "image": "@media:projects/business-wordpress/services",
+          "device": "desktop"
+        },
+        {
+          "image": "@media:projects/business-wordpress/mobile-1",
+          "device": "mobile"
+        },
+        {
+          "image": "@media:projects/business-wordpress/mobile-2",
+          "device": "mobile"
+        }
+      ],
+      "ctaTitle": "Prefer to stay on WordPress?",
+      "ctaText": "I build clean, fast WordPress and Elementor sites too."
+    }
+  ],
+  "faqs": [
+    {
+      "question": "What services do you offer?",
+      "answer": "I specialize in AI-powered development, AI API integrations, Next.js and React websites, Figma-to-Next.js development, Sanity CMS, and WordPress migrations."
+    },
+    {
+      "question": "How do you use AI in development?",
+      "answer": "I use Claude, Claude Code, ChatGPT, and related AI tools for planning, coding, component development, debugging, content migration, and testing. I review and validate the final implementation myself."
+    },
+    {
+      "question": "Can you integrate AI into my existing website?",
+      "answer": "Yes. I can help integrate suitable AI APIs and intelligent features into existing Next.js applications and websites, depending on your requirements and available API capabilities."
+    },
+    {
+      "question": "Do you work with Claude Code?",
+      "answer": "Yes. Claude Code is part of my development workflow for understanding codebases, building features, generating components, debugging, and improving code."
+    },
+    {
+      "question": "What is your experience with Next.js and Sanity?",
+      "answer": "I have been working with Next.js, React, Sanity CMS, and WordPress in client website development since June 2023."
+    },
+    {
+      "question": "Can you migrate my WordPress website to Next.js?",
+      "answer": "Yes. I can migrate pages, posts, images, and structured content to Sanity CMS, build a Next.js frontend, and configure redirects and SEO metadata."
+    },
+    {
+      "question": "How long does a project take?",
+      "answer": "A landing page may take a few days, while a full website or migration may take 1–4 weeks, depending on scope, content, and requirements."
+    },
+    {
+      "question": "Do you work with international clients?",
+      "answer": "Yes. I'm based in Ahmedabad, India, and available to work with clients and businesses worldwide."
+    },
+    {
+      "question": "What do you need to start?",
+      "answer": "Share your Figma design, existing website URL, or project idea. I'll review it and provide a suitable plan, timeline, and estimate."
+    }
+  ],
+  "posts": [
+    {
+      "title": "How I Use AI in Web Development — and Where I Don't",
+      "slug": "how-i-use-ai-in-web-development",
+      "description": "A practical look at my AI-assisted workflow: where Claude, Claude Code and ChatGPT speed up the work, and where human review stays non-negotiable.",
+      "date": "2026-11-21T06:30:00.000Z",
+      "pillar": "ai-development",
+      "tags": "AI-assisted development\nClaude Code\nNext.js\nWorkflow",
+      "service": "/services#service-2",
+      "cover": "@media:services/ai-coding",
+      "aiAssisted": true,
+      "reviewed": true,
+      "content": "\"Do you use AI to build websites?\" is one of the first questions clients ask me now. The short answer is yes — every day. The more useful answer is *how*, because the way a developer uses AI decides whether you get a faster project or a fragile one.\n\nSince June 2023 I've been building, migrating and maintaining client websites at Krushna53 with Next.js, React, Sanity CMS and WordPress. Over that time AI tools moved from \"interesting\" to a normal part of my workflow. Here's exactly where they help, and where I deliberately keep the work in my own hands.\n\n## The tools I actually use\n\n- **Claude** — thinking through requirements, planning features and explaining unfamiliar code.\n- **Claude Code** — working directly inside a codebase: building features, creating components, debugging.\n- **ChatGPT** — quick questions and second opinions.\n- **MCP** — connecting AI tools to the services and data a project already uses.\n- **Cursor** — AI help while editing code.\n\nNone of these replace the project. They speed up specific steps inside it.\n\n## Where AI speeds things up\n\n### 1. Understanding requirements and planning\n\nBefore writing code, I use AI to break a brief or a Figma design into pages, components and content types, and to spot questions I need to ask the client early. A clearer plan at the start means fewer surprises later.\n\n### 2. Building components and repetitive code\n\nA lot of web development is repetitive: similar React components, form handling, layout variations, TypeScript types. AI is very good at producing a solid first version of this kind of code, so I can spend my time on the parts that are specific to your project.\n\n### 3. Working inside existing codebases\n\nMany projects aren't new — they're an existing site that needs a feature, a fix or a cleanup. Claude Code helps me understand how an unfamiliar codebase is organised, find where a change belongs and trace bugs faster.\n\n### 4. CMS and migration work\n\nSetting up Sanity CMS schemas, modelling content, connecting APIs and moving content from WordPress all involve a lot of careful but repetitive steps. AI helps me move through them faster.\n\n![Sanity Studio with a blog post imported from WordPress, showing its slug, old URL redirect and SEO fields](@media:blog/how-i-use-ai-in-web-development/sanity-studio \"Example: a post migrated from WordPress into Sanity Studio, with its old URL kept as a 301 redirect\")\n\n## Where I don't rely on AI\n\nThis is the part that matters most for you as a client.\n\n- **Reviewing the code.** Every piece of AI-generated code is read and understood before it goes into your project. If I can't explain why it works, it doesn't ship.\n- **Debugging and verifying.** AI can suggest a fix; I confirm the real cause and check that the fix doesn't break something else.\n- **Testing the result.** I test the finished site across browsers and devices myself — layouts, forms, content editing and performance.\n- **Choosing the right tool.** Whether your project needs Next.js, Sanity or WordPress is a decision based on your requirements, your team and your budget — not on what's trendy or what an AI suggests by default.\n\nAI-generated code can look correct and still miss an edge case, a design detail or the way your content is actually structured. That's exactly why review and testing stay in my hands.\n\n> AI accelerates the process. Engineering judgment ensures the quality.\n\n## What my process looks like\n\n1. **Understand requirements** — your goals, design, current website and content.\n2. **Plan** — technology, structure, timeline and estimate.\n3. **AI-assisted development** — building faster with the tools above.\n4. **Human code review** — every change checked by me.\n5. **Testing** — responsive layouts, functionality and fixes.\n6. **Deployment** — launch, with preview links shared along the way.\n\n## What this means for your project\n\n- **Less time spent on the repetitive parts**, so more attention goes to the parts that make your site work for your business.\n- **Regular progress updates and preview links**, so you see the work as it develops.\n- **Code that a person has read, understood and tested** — not something generated and shipped blind.\n\nIf you're planning a new website, a WordPress to Next.js migration or AI features for an existing site, I'm happy to walk you through how this workflow would apply to your project. [Tell me about your project](/contact) and I'll reply with a practical approach, timeline and estimate.\n"
+    },
+    {
+      "title": "What It Really Takes to Add an AI Chatbot to Your Website",
+      "slug": "what-it-really-takes-to-add-an-ai-chatbot",
+      "description": "Learn what business owners need to prepare, how the build process works, and what shapes the technical scope when adding an AI chatbot to your website.",
+      "date": "2026-11-21T06:30:00.000Z",
+      "pillar": "ai-for-business",
+      "tags": "AI Chatbot\nAI Integration\nNext.js\nWeb Development",
+      "service": "/services#service-1",
+      "coverScene": {
+        "kind": "chat",
+        "labels": "What services do you offer for websites?\nI build Next.js websites and integrate AI APIs into applications."
+      },
+      "aiAssisted": true,
+      "reviewed": true,
+      "content": "Adding an AI feature to a business website often sounds complex. Many founders and marketing managers want a site assistant to answer customer questions, direct visitors, or assist with sales inquiries, but they are unsure where to begin or what technical steps are required.\r\n\r\nBuilding a useful AI chatbot is not just about placing a widget on a page. It requires clean technical integration, clear source business information, and careful human review to ensure every response is accurate and reliable for your visitors.\r\n\r\n## What an AI chatbot can handle on your website\r\n\r\nMany business owners assume an AI chatbot is either a basic decision-tree widget or a complex system that replaces human support entirely. In reality, a custom AI chatbot serves as a context-aware assistant tailored to your specific business content.\r\n\r\nUnlike traditional live chat systems that rely on scripted decision trees, an AI chatbot powered by modern AI APIs reads user prompts and formulates answers based on the knowledge base you provide. This allows it to handle routine customer questions effectively.\r\n\r\n- **Answering service queries:** Explaining your core services, capabilities, and delivery models based on your official documentation.\r\n- **Guiding visitors:** Helping prospective clients navigate to the right contact form, product category, or portfolio showcase.\r\n- **Gathering preliminary details:** Collecting key project requirements from visitors before handing the conversation off to a team member.\r\n- **Providing round-the-clock information:** Delivering immediate answers to common questions when your team is offline.\r\n\r\nIf you want to explore what intelligent features fit your application, you can check my [AI Integration & Development service](/services#service-1) details for more examples.\r\n\r\n## What you need to prepare before development begins\r\n\r\nBefore any code is written or APIs are connected, the single most important element of an AI chatbot is the quality of the information you provide. The chatbot can only be as accurate as the underlying business documentation it references.\r\n\r\nWhen I start an AI integration project, I work with clients to collect structured data. If your site content is scattered or out of date, the AI tool may produce inaccurate answers.\r\n\r\nHere is a practical breakdown of the material you should gather before initiating a chatbot build:\r\n\r\n- **Service descriptions:** Comprehensive overviews of what you offer, target clients, and deliverable structures.\r\n- **Frequently asked questions:** Real questions past customers have asked, along with verified answers.\r\n- **Brand voice guidelines:** Instructions on tone, formatting preference, and topics the chatbot should avoid.\r\n- **Escalation rules:** Direct instructions on when and how the assistant should prompt the user to fill out a contact form or send an email.\r\n\r\n```visual\r\n{\"kind\":\"checklist\",\"title\":\"Preparation Checklist for AI Chatbot Projects\",\"items\":[\"Organized product and service documentation\",\"Verified list of FAQs and answers\",\"Brand tone and voice guidelines\",\"Clear boundaries on off-topic questions\",\"Contact form and lead handoff rules\",\"Access to existing site codebase or API access\"]}\r\n```\r\n\r\n## How the technical build process works\r\n\r\nWhen building web applications, I follow a structured approach to ensure the interface is responsive and the backend integration remains stable.\r\n\r\nI build custom frontends using modern frameworks like Next.js and React. This ensures the chat widget fits seamlessly into your brand design without slowing down your site layout. For the backend logic, I connect your application to suitable AI models using modern APIs like the Claude API.\r\n\r\nIn my own development workflow, I use tools like Claude Code and Cursor to build components and speed up routine coding tasks. However, engineering judgment remains key. Every piece of AI logic and code is manually reviewed and tested by me before deployment. You can read more about this balance in my article on [how I use AI in web development](/blog/how-i-use-ai-in-web-development).\r\n\r\n### The standard build workflow\r\n\r\n1. **Data structuring:** Cleaning and organizing your documentation into clear context prompts.\r\n2. **UI component development:** Building custom React components for the chat box, chat bubble, and message stream.\r\n3. **API integration:** Connecting the frontend to secure API routes to pass user prompts to the AI model.\r\n4. **Context handling:** Ensuring the AI assistant stays on topic and references your business information.\r\n\r\n```visual\r\n{\"kind\":\"steps\",\"title\":\"The Step-by-Step AI Chatbot Build Workflow\",\"steps\":[{\"title\":\"Structure context data\",\"text\":\"Organize your business documentation, service guidelines, and FAQs into structured prompt context.\"},{\"title\":\"Build user interface\",\"text\":\"Develop responsive Next.js and React components for the chat window and message streams.\"},{\"title\":\"Connect AI APIs\",\"text\":\"Integrate secure API handlers to communicate directly with backend AI model endpoints.\"},{\"title\":\"Review and test\",\"text\":\"Test responses manually across devices to verify layout stability, speed, and output accuracy.\"}]}\r\n```\r\n\r\n## What affects project complexity and technical scope\r\n\r\nNot all AI chatbot implementations require the same level of effort. Understanding what factors increase complexity helps you plan your project goals effectively.\r\n\r\n- **Static context vs. dynamic data:** A chatbot that answers questions based on a fixed document is straightforward to build. If your chatbot needs to pull live inventory levels, pricing tables, or user account details from an external database, additional API endpoints and integration steps are required.\r\n- **Interface customizability:** Adding a basic floating chat widget takes less development effort than building a full-screen, custom-themed interactive assistant embedded directly within custom dashboard pages.\r\n- **Tech stack integration:** If your website is built on custom [Next.js & React Development](/services#service-3) architecture, adding custom server routes is very clean. Integrating AI capabilities into legacy systems may require additional configuration.\r\n- **Fallback and handoff handling:** Setting up graceful fallbacks—such as automatically capturing lead information when the chatbot encounters an unknown question—requires dedicated UI flows and form endpoints.\r\n\r\n## Ensuring quality, security, and human review\r\n\r\nOne of the biggest concerns business owners have is the risk of an AI chatbot generating incorrect information or off-brand responses. Preventing this requires strict prompt design and thorough edge-case testing.\r\n\r\nDuring development, I establish explicit instructions within the chatbot prompt architecture. These rules direct the model to admit when it does not possess specific information, rather than inventing answers. I also ensure that API keys and sensitive credentials remain secure on server-side environments, preventing public exposure.\r\n\r\nFinally, careful manual testing across mobile screens, tablets, and desktop browsers ensures the chat window opens smoothly, renders Markdown text correctly, and provides a pleasant user experience for your site visitors.\r\n\r\nAdding an AI chatbot to your website is a practical way to provide instant answers to visitors and streamline incoming inquiries. By pairing clear business documentation with modern AI APIs and clean Next.js architecture, you can give your website a powerful interactive feature.\r\n\r\nIf you are planning to integrate AI capabilities into your existing website or build a new application, I can help you plan and execute the project. [Tell me about your project](/contact) to discuss your goals, technical requirements, and timeline.\r\n"
+    },
+    {
+      "title": "5 AI Features a Small Business Website Can Actually Use",
+      "slug": "5-ai-features-a-small-business-website-can-actually",
+      "description": "Discover 5 practical AI features for small business websites, including custom site search, context Q&A, and smart lead forms that add real user value.",
+      "date": "2026-11-23T06:30:00.000Z",
+      "pillar": "ai-for-business",
+      "tags": "AI for Business\nAI Integration\nWeb Development\nSmall Business",
+      "service": "/services#service-1",
+      "coverScene": {
+        "kind": "search",
+        "labels": "how to integrate ai on site\nUse custom AI search or smart forms.\nAI Integration & Development\nAdding AI Chatbots Guide"
+      },
+      "aiAssisted": true,
+      "reviewed": true,
+      "content": "Many business owners feel strong pressure to add artificial intelligence to their websites. With headlines constantly promoting new software, it is easy to assume your site needs an AI feature to remain relevant. However, adding interactive tools just to look modern often leads to bloated code, higher monthly software costs, and frustrated users who simply want to find basic information.\r\n\r\nAs a developer who builds digital products with Next.js, React, and Sanity CMS, I focus on practical web software that solves concrete problems. You do not need complex gimmicks to benefit from modern AI APIs. Here are five practical AI features that provide immediate value to your website visitors, along with guidance on what you should avoid.\r\n\r\n## Intelligent site search that understands user intent\r\n\r\nTraditional website search relies heavily on exact keyword matching. If a visitor types \"affordable software consultation\" but your service page uses the heading \"budget-friendly application strategy,\" standard search components often return zero results. This disconnect forces potential clients to navigate your menu manually or leave your website entirely.\r\n\r\nSemantic search uses modern AI APIs to read the intent behind a query rather than matching literal letters. When a user enters a phrase in natural language, the system evaluates the underlying concept and retrieves the most relevant pages, products, or documentation.\r\n\r\nThis feature suits websites with large product catalogs, extensive documentation, or deep resource libraries. By implementing custom search through my [AI Integration & Development](/services#service-1) service, you help visitors get answers quickly while keeping your database structure clean. It turns complex site navigation into a simple experience.\r\n\r\n## Context-aware Q&A trained on your actual content\r\n\r\nStatic FAQ pages often fail to answer specific customer questions. Visitors have to scroll through long lists of generic questions, hoping to spot a sentence that applies to their situation. A context-aware Q&A feature replaces that static experience with a flexible input box.\r\n\r\nUnlike generic public AI models that pull answers from the broader internet, a context-aware system operates strictly on your approved knowledge base. It scans your existing website copy, service documents, or product guides to synthesize a direct answer. If the information does not exist in your reference files, the system clearly states that it does not know, rather than making up facts.\r\n\r\nThis setup is ideal for service providers, software platforms, and agencies that spend significant time answering repetitive inquiries. You can review my guide on [what it really takes to add an AI chatbot](/blog/what-it-really-takes-to-add-an-ai-chatbot) to understand the technical structure required for this feature.\r\n\r\n```visual\r\n{\"kind\":\"steps\",\"title\":\"How Context-Aware Q&A Operates\",\"steps\":[{\"title\":\"Visitor asks question\",\"text\":\"A user types a specific question about your services into the website query bar.\"},{\"title\":\"System scans context\",\"text\":\"The application searches your stored website pages and verified documentation files.\"},{\"title\":\"Answer is generated\",\"text\":\"The AI builds a clear answer using only your approved business information.\"},{\"title\":\"Sources are cited\",\"text\":\"The visitor sees the direct answer alongside links to full site documentation.\"}]}\r\n```\r\n\r\n## Smart forms and automated lead classification\r\n\r\nForm friction is one of the main reasons potential clients leave a website before reaching out. Long forms with rigid input requirements create frustration, especially on mobile devices. Smart forms use background processing to assist visitors as they complete your inquiry form.\r\n\r\nAs users type their project description or request details, an integrated AI model can automatically suggest appropriate categories, validate technical details, or clean up formatted entries. This reduces the number of steps a user must complete manually while keeping the incoming data structured for your team.\r\n\r\nBehind the scenes, the system can evaluate incoming messages and route them automatically. For example, urgent support requests can be tagged and forwarded to technical personnel, while high-intent project inquiries go straight to your sales inbox. This setup improves internal response times without adding work for your team.\r\n\r\n## Internal CMS content assistants for your team\r\n\r\nNot every useful AI feature needs to be visible to your website visitors. In fact, some of the most effective implementations operate inside your content management system to assist your marketing team.\r\n\r\nWhen I build custom content platforms using [Figma to Next.js + Sanity CMS](/services#service-4), I can integrate dedicated writing assistants inside Sanity Studio. Your team can use these tools to draft blog post outlines, reformat raw notes into structured sections, generate SEO metadata, or create product descriptions directly inside the editing panel.\r\n\r\nBecause these tools operate strictly within your internal workflow, you retain complete editorial control. No text reaches your live website until a human editor reviews, refines, and approves the content. This keeps your published writing accurate and consistent with your brand tone.\r\n\r\n## Dynamic page summaries for quick scanning\r\n\r\nOnline readers rarely read long articles or detailed service offerings line by line. Instead, most visitors scan headers, bullet points, and callout boxes to decide whether the page contains the information they need.\r\n\r\nDynamic summary blocks sit near the top of long-form pages, offering a concise overview of the key points covered below. Using background API routes, the system reads your main body content and extracts three to four distinct key takeaways.\r\n\r\nThis feature works exceptionally well for technical blogs, comprehensive service breakdowns, and multi-page guides. It allows busy readers to digest core concepts instantly, while keeping the full detailed text available for visitors who want a deeper breakdown.\r\n\r\n## AI features small businesses should skip\r\n\r\nWhile practical AI integrations improve user experience, adding features without a clear purpose can harm your business brand. Some popular AI tools sound impressive in marketing materials but deliver poor results in real-world usage.\r\n\r\nYou should avoid unrestricted public chatbots that draw answers from general internet training data. These bots frequently share incorrect information, misquote pricing, or promise services you do not offer. You should also avoid automated blog publishing systems that generate and publish articles without human oversight. Search engines penalize low-quality, fully automated content, and visitors quickly spot unrefined text.\r\n\r\nFinally, skip complex voice widgets and 3D animated avatars. Most web users prefer reading clear text and clicking straightforward buttons over speaking into their browser microphone or watching virtual characters load.\r\n\r\n```visual\r\n{\"kind\":\"compare\",\"title\":\"Evaluating AI Features for Your Website\",\"left\":{\"label\":\"Features to Adopt\",\"points\":[\"Intent-based semantic search\",\"Grounded content Q&A tools\",\"Smart form validation\",\"Internal CMS draft helpers\",\"Concise page takeaway blocks\"]},\"right\":{\"label\":\"Features to Skip\",\"points\":[\"Unrestricted public bots\",\"Automated unreviewed blog publishing\",\"Complex web voice widgets\",\"Animated 3D digital avatars\",\"Distracting auto popups\"]}}\r\n```\r\n\r\n## How to choose the right implementation strategy\r\n\r\nAdding AI to your website should always serve a practical business objective, such as reducing repetitive support questions, capturing better contact leads, or helping visitors find products faster. Starting with a clear technical scope ensures you spend resources on features that deliver measurable utility.\r\n\r\nWhen planning an implementation, your site structure and platform matter. Modern frameworks like Next.js handle API integrations efficiently on the server side, keeping API keys secure and page load speeds fast. If you want to see how I combine modern coding practices with artificial intelligence tools during development, read my breakdown on [How I Use AI in Web Development](/blog/how-i-use-ai-in-web-development).\r\n\r\nFocus on simple, context-aware tools that support your existing website content. A well-designed search input or a smart contact form will always provide more value than a flashy gimmick.\r\n\r\nBuilding useful AI features requires a balance between modern technology and clean engineering. If you are considering adding intelligent search, content Q&A, or smart forms to your website, I can help you select and build the right solution.\r\n\r\n[Contact me](/contact) to discuss your project requirements, receive a clear breakdown of technical options, and get an estimate for your website.\r\n"
+    }
+  ]
+}

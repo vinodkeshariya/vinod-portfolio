@@ -1,4 +1,5 @@
 import { assistantPrompt, readyAnswer, whatsappLink } from "@/lib/assistant";
+import { getContent } from "@/lib/content";
 import { geminiChat, type Turn } from "@/lib/gemini";
 
 /**
@@ -22,7 +23,8 @@ function limited(ip: string) {
   return false;
 }
 
-const fallback = `Sorry, I can't answer right now. You can message Vinod directly on [WhatsApp](${whatsappLink}) or use the [contact form](/contact) — he usually replies within 0–4 hours.`;
+const fallback = (wa: string) =>
+  `Sorry, I can't answer right now. You can message Vinod directly on [WhatsApp](${wa}) or use the [contact form](/contact) — he usually replies within 0–4 hours.`;
 
 export async function POST(req: Request) {
   // same-site requests only
@@ -30,9 +32,10 @@ export async function POST(req: Request) {
   const host = req.headers.get("x-forwarded-host") ?? req.headers.get("host");
   if (!origin || !host || new URL(origin).host !== host) return Response.json({ error: "Not allowed" }, { status: 403 });
 
+  const wa = whatsappLink((await getContent()).site);
   const ip = req.headers.get("x-forwarded-for")?.split(",")[0]?.trim() || "local";
   if (limited(ip)) {
-    return Response.json({ reply: `You've sent a lot of questions in a short time. Please try again in a few minutes, or message Vinod on [WhatsApp](${whatsappLink}).` });
+    return Response.json({ reply: `You've sent a lot of questions in a short time. Please try again in a few minutes, or message Vinod on [WhatsApp](${wa}).` });
   }
 
   let messages: { role?: unknown; text?: unknown }[];
@@ -55,14 +58,14 @@ export async function POST(req: Request) {
 
   // the suggestion chips are answered straight from the site's FAQ — instant and always available
   const question = turns[turns.length - 1].text;
-  const instant = readyAnswer(question);
+  const instant = await readyAnswer(question);
   if (instant) return Response.json({ reply: instant });
 
   try {
-    const reply = await geminiChat({ system: assistantPrompt(), turns });
+    const reply = await geminiChat({ system: await assistantPrompt(), turns });
     return Response.json({ reply });
   } catch (e) {
     console.error("[assistant]", (e as Error).message);
-    return Response.json({ reply: fallback, unavailable: true });
+    return Response.json({ reply: fallback(wa), unavailable: true });
   }
 }

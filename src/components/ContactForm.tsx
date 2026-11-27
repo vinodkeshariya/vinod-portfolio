@@ -3,7 +3,6 @@
 import { useState, useTransition } from "react";
 import { sendInquiry } from "@/app/(frontend)/contact/actions";
 import { track } from "@/lib/analytics";
-import { budgets, projectTypes, site } from "@/lib/data";
 import { Icon } from "./Icon";
 
 type Status = "idle" | "sent" | "failed" | "limited";
@@ -16,20 +15,21 @@ const card = "relative rounded-[22px] border border-line bg-surface p-6 shadow-[
 const text = (data: FormData, key: string) => String(data.get(key) || "").trim();
 
 /** Pre-filled email for the fallback "open in your email app" link */
-function mailtoHref(data: FormData) {
+function mailtoHref(email: string, data: FormData) {
   const body = `Name: ${text(data, "name")}\nEmail: ${text(data, "email")}\nCompany / website: ${text(data, "company") || "—"}\nProject type: ${text(data, "type")}\nBudget: ${text(data, "budget") || "—"}\n\n${text(data, "message")}`;
-  return `mailto:${site.email}?subject=${encodeURIComponent(`Project inquiry from ${text(data, "name")}`)}&body=${encodeURIComponent(body)}`;
+  return `mailto:${email}?subject=${encodeURIComponent(`Project inquiry from ${text(data, "name")}`)}&body=${encodeURIComponent(body)}`;
 }
 
 /**
  * Contact form. Validates in the browser, then sends the inquiry to the inbox
  * through the `sendInquiry` Server Action (Resend). If sending fails, the
  * visitor can still open their email app with the message pre-filled.
+ * The email address and the select options come from the CMS (via the contact page).
  */
-export function ContactForm() {
+export function ContactForm({ email, budgets, projectTypes }: { email: string; budgets: string[]; projectTypes: string[] }) {
   const [status, setStatus] = useState<Status>("idle");
   const [errors, setErrors] = useState<Record<string, string>>({});
-  const [fallback, setFallback] = useState(`mailto:${site.email}`);
+  const [fallback, setFallback] = useState(`mailto:${email}`);
   const [sending, startSending] = useTransition();
 
   function onSubmit(e: React.FormEvent<HTMLFormElement>) {
@@ -44,7 +44,7 @@ export function ContactForm() {
     if (Object.keys(next).length) return;
 
     setStatus("idle");
-    setFallback(mailtoHref(data));
+    setFallback(mailtoHref(email, data));
     startSending(async () => {
       try {
         const res = await sendInquiry(data);

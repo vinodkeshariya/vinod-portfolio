@@ -1,10 +1,10 @@
 import { Icon } from "@/components/Icon";
 import { MonitorArt } from "@/components/PageArt";
 import { CtaBand, MiniHead, PageHero } from "@/components/ui";
-import { aiWorkflow, certifications, experience, site, skillCards } from "@/lib/data";
+import { getContent } from "@/lib/content";
 import { pageMeta } from "@/lib/seo";
 
-export const metadata = pageMeta({
+export const generateMetadata = () => pageMeta({
   title: "Developer Experience & Skills | Vinod Keshariya",
   description:
     "Explore Vinod Keshariya's professional experience, technical skills, certifications, and AI-assisted development workflow.",
@@ -20,7 +20,8 @@ function Node({ live = false }: { live?: boolean }) {
   );
 }
 
-export default function ExperiencePage() {
+export default async function ExperiencePage() {
+  const { aiWorkflow, certifications, experience, site, skillCards } = await getContent();
   return (
     <>
       <PageHero

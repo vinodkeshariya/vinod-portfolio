@@ -2,16 +2,17 @@ import { JsonLd, abs } from "@/components/JsonLd";
 import { DeviceArt } from "@/components/PageArt";
 import { ProjectGrid } from "@/components/ProjectGrid";
 import { CtaBand, PageHero } from "@/components/ui";
-import { projects } from "@/lib/data";
+import { getContent } from "@/lib/content";
 import { pageMeta } from "@/lib/seo";
 
-export const metadata = pageMeta({
+export const generateMetadata = () => pageMeta({
   title: "Portfolio | Next.js, AI & Web Development",
   description: "Explore web development projects built with Next.js, React, Sanity CMS, WordPress, and modern technologies.",
   path: "/projects",
 });
 
-export default function ProjectsPage() {
+export default async function ProjectsPage() {
+  const { projects } = await getContent();
   return (
     <>
       <JsonLd
@@ -40,7 +41,7 @@ export default function ProjectsPage() {
       <section aria-label="Projects" className="bg-paper pb-14 pt-2 md:pb-16">
         <div className="wrap">
           <h2 className="sr-only">All projects</h2>
-          <ProjectGrid />
+          <ProjectGrid projects={projects} />
         </div>
       </section>
       <CtaBand

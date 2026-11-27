@@ -1,39 +1,42 @@
 import "server-only";
 import { getPosts } from "./blog";
-import { aiWorkflow, approach, certifications, experience, faqs, process as workProcess, projects, services, site, skillCards } from "./data";
+import { getContent } from "./content";
+import type { Content, Site } from "./data";
 
 /**
- * The site assistant's instructions, built from the same data the pages show —
+ * The site assistant's instructions, built from the same CMS content the pages show —
  * so it can only talk about what's actually on the website.
  */
 
-export const whatsappLink = `${site.socials.whatsapp}?text=${encodeURIComponent("Hi Vinod, I found you on your website and would like to discuss a project.")}`;
-
-const faq = (start: string) => faqs.find((f) => f.q.toLowerCase().startsWith(start.toLowerCase()))?.a ?? "";
+/** WhatsApp link with a ready first message */
+export const whatsappLink = (site: Site) =>
+  `${site.socials.whatsapp}?text=${encodeURIComponent("Hi Vinod, I found you on your website and would like to discuss a project.")}`;
 
 /**
  * Ready answers for the suggestion chips, straight from the site's FAQ —
  * used when Gemini is busy, so the chips always get a real answer.
  */
-const ready: Record<string, string> = {
-  "what services do you offer?": `Vinod offers:\n${services
-    .slice(0, 5)
-    .map((s, i) => `- [${s.title}](/services#service-${i + 1})`)
-    .join("\n")}\n\nSee everything on the [services page](/services).`,
-  "can you add ai to my website?": `${faq("Can you integrate AI").replace(/^Yes\. I can/, "Yes — Vinod can")} See [AI Integration & Development](/services#service-1), or share your idea on [WhatsApp](${whatsappLink}).`,
-  "how long does a website take?": `${faq("How long does a project take")} For a clear timeline and estimate, share your project details through the [contact form](/contact).`,
-  "how do i start a project?": `${faq("What do you need to start").replace(/I'll/g, "Vinod will")} Use the [contact form](/contact) or message him on [WhatsApp](${whatsappLink}).`,
-};
-
-export function readyAnswer(question: string) {
-  return ready[question.trim().toLowerCase()] ?? null;
+function readyAnswers({ site, services, faqs }: Content): Record<string, string> {
+  const faq = (start: string) => faqs.find((f) => f.q.toLowerCase().startsWith(start.toLowerCase()))?.a ?? "";
+  const wa = whatsappLink(site);
+  return {
+    "what services do you offer?": `Vinod offers:\n${services
+      .slice(0, 5)
+      .map((s, i) => `- [${s.title}](/services#service-${i + 1})`)
+      .join("\n")}\n\nSee everything on the [services page](/services).`,
+    "can you add ai to my website?": `${faq("Can you integrate AI").replace(/^Yes\. I can/, "Yes — Vinod can")} See [AI Integration & Development](/services#service-1), or share your idea on [WhatsApp](${wa}).`,
+    "how long does a website take?": `${faq("How long does a project take")} For a clear timeline and estimate, share your project details through the [contact form](/contact).`,
+    "how do i start a project?": `${faq("What do you need to start").replace(/I'll/g, "Vinod will")} Use the [contact form](/contact) or message him on [WhatsApp](${wa}).`,
+  };
 }
 
-let cached: string | null = null;
+export async function readyAnswer(question: string) {
+  return readyAnswers(await getContent())[question.trim().toLowerCase()] ?? null;
+}
 
-export function assistantPrompt() {
-  if (cached) return cached;
-  const posts = getPosts().filter((p) => !p.draft);
+export async function assistantPrompt() {
+  const [{ site, aiWorkflow, approach, certifications, experience, faqs, process: workProcess, projects, services, skillCards }, posts] =
+    await Promise.all([getContent(), getPosts()]);
 
   const facts = {
     name: site.name,
@@ -55,10 +58,10 @@ export function assistantPrompt() {
     faqs: faqs.map((f) => `Q: ${f.q} A: ${f.a}`),
     conceptProjects: projects.map((p) => ({ link: `/projects/${p.slug}`, title: p.title, note: "concept project built to show skills — not client work", tech: p.tech.join(", ") })),
     blogArticles: posts.map((p) => ({ link: `/blog/${p.slug}`, title: p.title })),
-    contact: { contactForm: "/contact", whatsapp: whatsappLink, email: `mailto:${site.email}` },
+    contact: { contactForm: "/contact", whatsapp: whatsappLink(site), email: `mailto:${site.email}` },
   };
 
-  cached = `You are the AI assistant on the portfolio website of ${site.name}, an ${site.role}. Visitors are potential clients.
+  return `You are the AI assistant on the portfolio website of ${site.name}, an ${site.role}. Visitors are potential clients.
 
 HOW TO ANSWER
 - Talk about Vinod in the third person ("Vinod can…", "He usually…"). You are his assistant, not Vinod himself.
@@ -74,5 +77,4 @@ HOW TO ANSWER
 
 FACTS
 ${JSON.stringify(facts)}`;
-  return cached;
 }

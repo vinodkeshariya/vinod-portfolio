@@ -5,23 +5,16 @@ import { Icon } from "@/components/Icon";
 import { JsonLd, abs } from "@/components/JsonLd";
 import { Cube } from "@/components/PageArt";
 import { CtaBand, MiniHead, PageHero } from "@/components/ui";
-import { ext, hasUpwork, helpWith, site, type IconName } from "@/lib/data";
+import { getContent } from "@/lib/content";
+import { ext, hasUpwork, type IconName } from "@/lib/data";
 import { pageMeta } from "@/lib/seo";
 
-export const metadata = pageMeta({
+export const generateMetadata = () => pageMeta({
   title: "Hire Vinod Keshariya | AI + Next.js Developer",
   description:
     "Contact Vinod Keshariya for AI-powered development, Next.js websites, AI integration, and modern web development projects.",
   path: "/contact",
 });
-
-const details: { icon: IconName; label: string; value: string; href?: string }[] = [
-  { icon: "mail", label: "Email", value: site.email, href: `mailto:${site.email}` },
-  { icon: "chat", label: "Phone · WhatsApp", value: site.phone, href: site.socials.whatsapp },
-  { icon: "pin", label: "Location", value: site.location },
-  { icon: "users", label: "Availability", value: "Open for Freelance Projects" },
-  { icon: "clock", label: "Response time", value: "Usually within 0–4 hours" },
-];
 
 const steps = [
   ["Send Details", "Figma file, website link or a short brief."],
@@ -29,13 +22,22 @@ const steps = [
   ["Start Building", "Live preview link and regular updates."],
 ];
 
-const socials = [
-  ["linkedin", "LinkedIn", site.socials.linkedin],
-  ["github", "GitHub", site.socials.github],
-  ...(hasUpwork ? [["upwork", "Upwork", site.socials.upwork] as const] : []),
-] as const;
+export default async function ContactPage() {
+  const { budgets, helpWith, projectTypes, site } = await getContent();
+  const upwork = hasUpwork(site);
+  const details: { icon: IconName; label: string; value: string; href?: string }[] = [
+    { icon: "mail", label: "Email", value: site.email, href: `mailto:${site.email}` },
+    { icon: "chat", label: "Phone · WhatsApp", value: site.phone, href: site.socials.whatsapp },
+    { icon: "pin", label: "Location", value: site.location },
+    { icon: "users", label: "Availability", value: "Open for Freelance Projects" },
+    { icon: "clock", label: "Response time", value: "Usually within 0–4 hours" },
+  ];
+  const socials = [
+    ["linkedin", "LinkedIn", site.socials.linkedin],
+    ["github", "GitHub", site.socials.github],
+    ...(upwork ? [["upwork", "Upwork", site.socials.upwork] as const] : []),
+  ] as const;
 
-export default function ContactPage() {
   return (
     <>
       <JsonLd
@@ -66,7 +68,7 @@ export default function ContactPage() {
             <Cube tone="forest" className="absolute -right-10 -top-10 hidden w-40 animate-float-slow sm:block" />
             <Cube tone="lime" className="absolute -bottom-8 -left-12 hidden w-28 animate-float sm:block" />
             <div className="relative">
-              <ContactForm />
+              <ContactForm email={site.email} budgets={budgets} projectTypes={projectTypes} />
             </div>
             <p className="relative mt-5 text-center text-[14.5px] text-muted">I look forward to hearing about your project.</p>
           </div>
@@ -117,7 +119,7 @@ export default function ContactPage() {
               <Icon name={icon} className="size-[18px]" />
             </Link>
           ))}
-          {hasUpwork && (
+          {upwork && (
             <Link href={site.socials.upwork} {...ext(site.socials.upwork)} className="btn btn-line btn-sm">
               Hire Me on Upwork <Icon name="arrowUpRight" />
             </Link>

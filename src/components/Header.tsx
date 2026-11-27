@@ -11,7 +11,7 @@ function isActive(pathname: string, href: string) {
   return href === "/" ? pathname === "/" : pathname.startsWith(href);
 }
 
-export function Header() {
+export function Header({ name }: { name: string }) {
   const pathname = usePathname();
   const [open, setOpen] = useState(false);
   const [scrolled, setScrolled] = useState(false);
@@ -56,7 +56,7 @@ export function Header() {
         style={{ width: "100%", transform: `scaleX(${progress})` }}
       />
       <nav aria-label="Main" className="wrap flex min-h-[76px] items-center justify-between gap-4 lg:min-h-[84px]">
-        <Logo />
+        <Logo name={name} />
 
         <ul className="hidden items-center gap-9 lg:flex">
           {links.map((item) => {

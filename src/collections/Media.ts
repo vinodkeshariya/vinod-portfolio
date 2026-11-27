@@ -1,4 +1,5 @@
 import type { CollectionConfig } from "payload";
+import { afterChange, afterDelete } from "../cms/revalidate.ts";
 
 /**
  * Uploaded images and documents. Files go to Vercel Blob when BLOB_READ_WRITE_TOKEN is set
@@ -11,7 +12,10 @@ export const Media: CollectionConfig = {
   },
   admin: {
     useAsTitle: "alt",
+    group: "Content",
   },
+  // a new description or a replaced file shows on the site straight away
+  hooks: { afterChange: [afterChange], afterDelete: [afterDelete] },
   upload: {
     mimeTypes: ["image/*", "application/pdf"],
     focalPoint: true,

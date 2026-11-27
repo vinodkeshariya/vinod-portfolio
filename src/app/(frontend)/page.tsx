@@ -3,14 +3,14 @@ import Link from "next/link";
 import { Faq } from "@/components/Faq";
 import { HeroShowcase } from "@/components/HeroShowcase";
 import { Icon } from "@/components/Icon";
-import { aiWorkflow, experience, featuredServices, problems, process, projects, site, stats, type IconName } from "@/lib/data";
+import { getContent } from "@/lib/content";
+import type { IconName } from "@/lib/data";
 import { pageMeta } from "@/lib/seo";
 
-export const metadata = pageMeta({
-  title: "Vinod Keshariya | AI + Next.js Developer",
-  description: site.description,
-  path: "/",
-});
+export async function generateMetadata() {
+  const { site } = await getContent();
+  return pageMeta({ title: "Vinod Keshariya | AI + Next.js Developer", description: site.description, path: "/" });
+}
 
 /* ---------- small brand marks for the technology strip ---------- */
 const badge = "grid size-8 shrink-0 place-items-center font-display font-extrabold leading-none";
@@ -50,11 +50,11 @@ function Eyebrow({ children }: { children: React.ReactNode }) {
 
 const serviceIcons: IconName[] = ["cpu", "monitor", "pen", "layers"];
 
-const featured = ["fashion-catalog", "ai-saas-landing"]
-  .map((slug) => projects.find((p) => p.slug === slug))
-  .filter((p): p is (typeof projects)[number] => Boolean(p));
+export default async function HomePage() {
+  const { aiWorkflow, experience, featuredServices, problems, process, projects, site, stats } = await getContent();
+  // projects ticked "Show on the home page" in the CMS (two fit the layout)
+  const featured = projects.filter((p) => p.featured).slice(0, 2);
 
-export default function HomePage() {
   return (
     <>
       {/* ============ HERO ============ */}

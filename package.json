@@ -23,8 +23,6 @@
     "@payloadcms/storage-vercel-blob": "3.94.2",
     "@payloadcms/ui": "3.94.2",
     "graphql": "^16.15.0",
-    "gray-matter": "^4.0.3",
-    "image-size": "^2.1.0",
     "next": "^16.4.6",
     "payload": "3.94.2",
     "react": "^19.3.1",

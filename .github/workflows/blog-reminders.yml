@@ -1,5 +1,8 @@
 # Daily: reminds Vinod about a blog draft still waiting for approval after 3 days,
-# and removes drafts (unpublished) after 7 days. See scripts/blog/reminders.mjs.
+# and removes drafts (unpublished) after 7 days. The work happens on the site — see
+# src/app/api/blog/reminders/route.ts and runReminders() in src/lib/blog-autopost.ts.
+#
+# Repository secret: BLOG_REVIEW_SECRET (same value as in Vercel)
 
 name: Blog approval reminders
 
@@ -8,24 +11,16 @@ on:
     - cron: "0 5 * * *" # every day, 10:30 India time
   workflow_dispatch:
 
-permissions:
-  contents: write
-  pull-requests: write
+permissions: {}
 
 jobs:
   remind:
     runs-on: ubuntu-latest
-    timeout-minutes: 10
+    timeout-minutes: 5
     steps:
-      - uses: actions/checkout@v4
-
-      - uses: actions/setup-node@v4
-        with:
-          node-version: 24
-
       - name: Remind about waiting drafts, remove expired ones
         env:
-          GITHUB_TOKEN: ${{ github.token }}
-          RESEND_API_KEY: ${{ secrets.RESEND_API_KEY }}
           BLOG_REVIEW_SECRET: ${{ secrets.BLOG_REVIEW_SECRET }}
-        run: node scripts/blog/reminders.mjs
+        run: |
+          curl --fail-with-body -sS -X POST "https://vinodkeshariya.vercel.app/api/blog/reminders" \
+            -H "Authorization: Bearer $BLOG_REVIEW_SECRET"

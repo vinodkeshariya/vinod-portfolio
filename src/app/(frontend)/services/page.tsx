@@ -3,10 +3,11 @@ import { Icon } from "@/components/Icon";
 import { JsonLd, personRef } from "@/components/JsonLd";
 import { LayersArt } from "@/components/PageArt";
 import { CtaBand, MiniHead, PageHero } from "@/components/ui";
-import { approach, packages, process, services, type IconName } from "@/lib/data";
+import { getContent } from "@/lib/content";
+import type { IconName } from "@/lib/data";
 import { pageMeta } from "@/lib/seo";
 
-export const metadata = pageMeta({
+export const generateMetadata = () => pageMeta({
   title: "AI Development & Next.js Services | Vinod Keshariya",
   description: "Explore AI integration, Claude Code development, Next.js, React, Sanity CMS, and WordPress migration services.",
   path: "/services",
@@ -53,7 +54,8 @@ function Discuss({ service }: { service: string }) {
   );
 }
 
-export default function ServicesPage() {
+export default async function ServicesPage() {
+  const { approach, packages, process, services, site } = await getContent();
   const grid = services.slice(0, 6);
   const last = services[6];
 
@@ -68,7 +70,7 @@ export default function ServicesPage() {
             serviceType: s.title,
             description: s.body,
             areaServed: "Worldwide",
-            provider: personRef,
+            provider: personRef(site),
           })),
         }}
       />

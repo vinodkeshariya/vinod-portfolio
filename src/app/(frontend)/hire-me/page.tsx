@@ -2,10 +2,11 @@ import { HeroShowcase } from "@/components/HeroShowcase";
 import Link from "next/link";
 import { Icon } from "@/components/Icon";
 import { CtaBand, PageHero, SectionHead } from "@/components/ui";
-import { ext, hasUpwork, process, services, site, type IconName } from "@/lib/data";
+import { getContent } from "@/lib/content";
+import { ext, hasUpwork, type IconName } from "@/lib/data";
 import { pageMeta } from "@/lib/seo";
 
-export const metadata = pageMeta({
+export const generateMetadata = () => pageMeta({
   title: "Hire an AI + Next.js Developer | Vinod Keshariya",
   description:
     "Hire Vinod Keshariya, an AI-powered Full-Stack Developer for AI integrations, Next.js and React websites, Sanity CMS and WordPress migrations.",
@@ -25,9 +26,11 @@ const expect: { icon: IconName; title: string; text: string }[] = [
   { icon: "users", title: "Long-term thinking", text: "Solutions built to be extended and maintained, not just launched once." },
 ];
 
-const areas = services.map((sv) => sv.title);
+export default async function HireMePage() {
+  const { process, services, site } = await getContent();
+  const upwork = hasUpwork(site);
+  const areas = services.map((sv) => sv.title);
 
-export default function HireMePage() {
   return (
     <>
       <PageHero
@@ -38,7 +41,7 @@ export default function HireMePage() {
       >
         <div className="grid w-full gap-3 sm:flex sm:w-auto sm:flex-wrap">
           <Link href="/contact" className="btn btn-primary min-h-13 px-7">Let&apos;s Build Your Project <Icon name="arrow" /></Link>
-          {hasUpwork ? (
+          {upwork ? (
             <Link href={site.socials.upwork} {...ext(site.socials.upwork)} className="btn btn-line min-h-13 px-7">Hire Me on Upwork <Icon name="arrowUpRight" /></Link>
           ) : (
             <Link href="/projects" className="btn btn-line min-h-13 px-7">Explore My Work</Link>
@@ -147,7 +150,7 @@ export default function HireMePage() {
         title="Ready to start?"
         text="Tell me about your project — I'll reply with a clear plan, timeline, and estimate, usually within 0–4 hours."
         primary={{ href: "/contact", label: "Share Your Project" }}
-        secondary={hasUpwork ? { href: site.socials.upwork, label: "Hire Me on Upwork" } : { href: "/projects", label: "Explore My Work" }}
+        secondary={upwork ? { href: site.socials.upwork, label: "Hire Me on Upwork" } : { href: "/projects", label: "Explore My Work" }}
       />
     </>
   );

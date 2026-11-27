@@ -3,10 +3,11 @@ import { Icon } from "@/components/Icon";
 import { JsonLd, personLd } from "@/components/JsonLd";
 import { CodeTileArt } from "@/components/PageArt";
 import { CtaBand, MiniHead, PageHero } from "@/components/ui";
-import { aboutFocus, certifications, experience, principles, site, type IconName } from "@/lib/data";
+import { getContent } from "@/lib/content";
+import type { IconName } from "@/lib/data";
 import { pageMeta } from "@/lib/seo";
 
-export const metadata = pageMeta({
+export const generateMetadata = () => pageMeta({
   title: "About Vinod Keshariya | Full-Stack Developer",
   description:
     "Learn about Vinod Keshariya, an AI-powered Full-Stack Developer specializing in Next.js, React, Claude Code, and modern web development.",
@@ -20,20 +21,22 @@ const stack: { title: string; icon: IconName; items: string[] }[] = [
   { title: "Tools", icon: "pen", items: ["Figma", "Vercel", "Git"] },
 ];
 
-const languages = site.languages.map((l) => l.split(" — ")[0]).join(", ");
+export default async function AboutPage() {
+  const content = await getContent();
+  const { aboutFocus, certifications, experience, principles, site } = content;
+  const languages = site.languages.map((l) => l.split(" — ")[0]).join(", ");
 
-/** Quick facts under the hero (previously on the profile card) */
-const facts: { icon: IconName; label: string }[] = [
-  { icon: "pin", label: "Ahmedabad, India" },
-  { icon: "globe", label: languages },
-  { icon: "briefcase", label: "3+ years experience" },
-  { icon: "clock", label: "Replies within 0–4 hours" },
-];
+  /** Quick facts under the hero (previously on the profile card) */
+  const facts: { icon: IconName; label: string }[] = [
+    { icon: "pin", label: "Ahmedabad, India" },
+    { icon: "globe", label: languages },
+    { icon: "briefcase", label: "3+ years experience" },
+    { icon: "clock", label: "Replies within 0–4 hours" },
+  ];
 
-export default function AboutPage() {
   return (
     <>
-      <JsonLd data={personLd()} />
+      <JsonLd data={personLd(content)} />
       <PageHero
         eyebrow="About"
         title={

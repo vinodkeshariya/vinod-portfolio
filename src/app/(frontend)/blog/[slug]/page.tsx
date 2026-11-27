@@ -7,20 +7,18 @@ import { PostCard } from "@/components/PostCard";
 import { PostView } from "@/components/PostView";
 import { CtaBand, MiniHead } from "@/components/ui";
 import { coverOf, getPost, getPosts, pillars } from "@/lib/blog";
-import { site } from "@/lib/data";
+import { getContent } from "@/lib/content";
 
 type Props = { params: Promise<{ slug: string }> };
 
-/** Only the posts that exist at build time; anything else is a 404 */
-export const dynamicParams = false;
-
-export function generateStaticParams() {
-  return getPosts().map((p) => ({ slug: p.slug }));
+/** Pages for the posts published at build time; posts published later in the CMS render on their first visit */
+export async function generateStaticParams() {
+  return (await getPosts()).map((p) => ({ slug: p.slug }));
 }
 
 export async function generateMetadata({ params }: Props): Promise<Metadata> {
-  const { slug } = await params;
-  const post = getPosts().find((p) => p.slug === slug);
+  const [{ slug }, posts, { site }] = await Promise.all([params, getPosts(), getContent()]);
+  const post = posts.find((p) => p.slug === slug);
   if (!post) return {};
   const title = `${post.title} | ${site.name}`;
   return {
@@ -48,12 +46,12 @@ export async function generateMetadata({ params }: Props): Promise<Metadata> {
 
 export default async function BlogPostPage({ params }: Props) {
   const { slug } = await params;
-  const post = await getPost(slug);
+  const [post, posts, { site }] = await Promise.all([getPost(slug), getPosts(), getContent()]);
   if (!post) notFound();
 
   const pillar = pillars[post.pillar];
   const cover = coverOf(post);
-  const more = getPosts()
+  const more = posts
     .filter((p) => p.slug !== post.slug)
     .sort((a, b) => Number(b.pillar === post.pillar) - Number(a.pillar === post.pillar))
     .slice(0, 3);
@@ -75,8 +73,8 @@ export default async function BlogPostPage({ params }: Props) {
               dateModified: post.updated ?? post.date,
               keywords: post.tags.join(", "),
               articleSection: pillar.label,
-              author: personRef,
-              publisher: personRef,
+              author: personRef(site),
+              publisher: personRef(site),
             },
             {
               "@type": "BreadcrumbList",

@@ -1,6 +1,6 @@
 import Link from "next/link";
 import { formatDate, keepDash, pillars, type Post } from "@/lib/blog-meta";
-import { site } from "@/lib/data";
+import { getContent } from "@/lib/content";
 import { CaseNav } from "./CaseNav";
 import { Icon } from "./Icon";
 import { LogoMark } from "./Logo";
@@ -11,7 +11,8 @@ import { PageHero } from "./ui";
  * A blog post's hero and body — shared by the live post page and the private review preview.
  * `sceneSrc` overrides the hero illustration (the review page passes a freshly drawn one).
  */
-export function PostView({ post, badge, sceneSrc }: { post: Post; badge?: React.ReactNode; sceneSrc?: string }) {
+export async function PostView({ post, badge, sceneSrc }: { post: Post; badge?: React.ReactNode; sceneSrc?: string }) {
+  const { site } = await getContent();
   const pillar = pillars[post.pillar];
 
   return (

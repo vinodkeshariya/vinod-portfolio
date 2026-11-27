@@ -2,49 +2,40 @@
  * Weekly blog auto-post.
  *
  * Takes the next unchecked topic from content/blog/_topics.md, has Gemini write the post from the
- * site's own data (src/lib/data.ts), then checks it:
+ * site's own content (fetched from the CMS through the site: GET /api/blog/autopost), then checks it:
  *   1. content rules  — no invented numbers/clients, only internal links, length, visuals…
  *   2. AI fact-check  — a second Gemini pass compares every claim with the site data
- * If something fails, Gemini gets one chance to fix it. The post file is written either way; the
- * GitHub Action (.github/workflows/blog-autopost.yml) then builds the site and opens a draft pull
- * request + approval email (default), or — with AUTO_PUBLISH=true and every check passed — publishes directly.
+ * If something fails, Gemini gets one chance to fix it. The post is then sent to the site
+ * (POST /api/blog/autopost), which saves it in the CMS as a draft and emails Vinod an approval link
+ * (default) — or, with AUTO_PUBLISH=true and every check passed, publishes it straight away.
+ * Run by .github/workflows/blog-autopost.yml every Monday.
  *
- * Local dry run (writes the post as a draft, no git, no email):
+ * Local dry run (prints the post, saves nothing, sends no email):
  *   node --env-file=.env.local scripts/blog/autopost.mjs --dry-run
  * Options:
  *   --topic "pillar | Title | angle"   write about this instead of the queue's next topic (or env TOPIC)
  * Env:
- *   GEMINI_API_KEY  required
- *   GEMINI_MODELS   optional comma list, best first (default below; busy/unavailable models fall through)
+ *   GEMINI_API_KEY      required
+ *   BLOG_REVIEW_SECRET  required — authorises the calls to the site
+ *   SITE_URL            optional, default https://vinodkeshariya.vercel.app (e.g. http://localhost:3000 for testing)
+ *   AUTO_PUBLISH        "true" = publish posts that pass every check without asking
+ *   GEMINI_MODELS       optional comma list, best first (default below; busy/unavailable models fall through)
  */
 import fs from "node:fs";
 import os from "node:os";
 import path from "node:path";
-import matter from "gray-matter";
 import { defaultScenes, pillars, SCENES } from "../../src/lib/blog-meta.ts";
 import { parseVisual } from "../../src/lib/blog-visuals.ts";
-import {
-  aboutFocus,
-  aiWorkflow,
-  approach,
-  certifications,
-  experience,
-  faqs,
-  principles,
-  process as workProcess,
-  projects,
-  services,
-  site,
-  skillCards,
-} from "../../src/lib/data.ts";
 
 const ROOT = path.resolve(import.meta.dirname, "../..");
-const BLOG = path.join(ROOT, "content", "blog");
-const TOPICS = path.join(BLOG, "_topics.md");
+const TOPICS = path.join(ROOT, "content", "blog", "_topics.md");
 const args = process.argv.slice(2);
 const dryRun = args.includes("--dry-run");
 const topicArg = args.includes("--topic") ? args[args.indexOf("--topic") + 1] : process.env.TOPIC;
 const KEY = process.env.GEMINI_API_KEY;
+const SECRET = process.env.BLOG_REVIEW_SECRET;
+const SITE = (process.env.SITE_URL || "https://vinodkeshariya.vercel.app").replace(/\/$/, "");
+const autoPublish = process.env.AUTO_PUBLISH === "true";
 // reliable model first; "latest" aliases follow so the script keeps working when older models retire
 const MODELS = (process.env.GEMINI_MODELS || "gemini-3.5-flash,gemini-flash-latest,gemini-3.8-flash")
   .split(",")
@@ -98,63 +89,22 @@ function markTopicDone(topic) {
   fs.writeFileSync(TOPICS, lines.join(eol));
 }
 
-/* ---------------- site facts the post may use ---------------- */
+/* ---------------- the site: facts the post may use, saving the post ---------------- */
 
-const existingPosts = fs
-  .readdirSync(BLOG)
-  .filter((f) => f.endsWith(".md") && !f.startsWith("_"))
-  .map((f) => {
-    const { data, content } = matter(fs.readFileSync(path.join(BLOG, f), "utf8"));
-    return { slug: f.replace(/\.md$/, ""), title: data.title, pillar: data.pillar, description: data.description, draft: data.draft === true, content };
+async function api(method, body) {
+  const res = await fetch(`${SITE}/api/blog/autopost`, {
+    method,
+    headers: { Authorization: `Bearer ${SECRET}`, ...(body ? { "Content-Type": "application/json" } : {}) },
+    body: body ? JSON.stringify(body) : undefined,
+    signal: AbortSignal.timeout(120_000),
   });
-const published = existingPosts.filter((p) => !p.draft);
+  const data = await res.json().catch(() => ({}));
+  if (!res.ok) throw new Error(`The site answered ${res.status}: ${data.error ?? "no details"}`);
+  return data;
+}
 
-const serviceLinks = services.map((s, i) => ({ link: `/services#service-${i + 1}`, title: s.title }));
-const conceptBrands = projects.map((p) => p.client.split(" — ")[0].trim()).filter(Boolean);
-
-const FACTS = {
-  person: {
-    name: site.name,
-    role: site.role,
-    location: site.location,
-    languages: site.languages,
-    availability: site.availability,
-    responseTime: "usually replies within 0–4 hours",
-    currentJob: { role: experience.role, company: experience.company, period: experience.period, summary: experience.summary, work: experience.points },
-    experienceSummary: "3+ years in web development",
-  },
-  certifications: certifications.map((c) => `${c.title} — ${c.issuer}, ${c.date}`),
-  aiTools: aiWorkflow.tools,
-  aiWorkflow: aiWorkflow.points,
-  aiWorkflowPrinciple: aiWorkflow.closing,
-  developmentApproach: approach,
-  howProjectsRun: workProcess,
-  principles: principles.map((p) => `${p.title}: ${p.text}`),
-  focusAreas: aboutFocus.map((f) => `${f.title}: ${f.text}`),
-  skills: skillCards.map((s) => ({ group: s.title, items: s.items })),
-  services: services.map((s, i) => ({ link: `/services#service-${i + 1}`, title: s.title, summary: s.body, includes: s.points, tech: s.tags })),
-  faqs,
-  conceptProjects: projects.map((p) => ({
-    link: `/projects/${p.slug}`,
-    title: p.title,
-    note: `${p.client} — a concept project built to demonstrate skills, NOT real client work`,
-    summary: p.summary,
-    tech: p.tech,
-  })),
-};
-
-const ALLOWED_LINKS = [
-  ...serviceLinks.map((s) => `${s.link} (${s.title})`),
-  "/services (all services)",
-  "/contact (contact form — use in the closing)",
-  "/about (about Vinod)",
-  "/experience (experience and skills)",
-  "/hire-me (hire Vinod)",
-  "/blog (all articles)",
-  ...published.map((p) => `/blog/${p.slug} (article: ${p.title})`),
-  ...projects.map((p) => `/projects/${p.slug} (concept project: ${p.title})`),
-];
-const allowedHrefs = new Set(ALLOWED_LINKS.map((l) => l.split(" ")[0]));
+// filled from the site in main()
+let site, FACTS, ALLOWED_LINKS, allowedHrefs, serviceLinks, conceptBrands, published, styleExample;
 
 const AUDIENCE = {
   "ai-for-business": "business owners, marketing managers and founders without a technical background who are considering AI features for their website",
@@ -219,7 +169,7 @@ const STR = { type: "STRING" };
 const LIST = { type: "ARRAY", items: STR };
 const side = { type: "OBJECT", properties: { label: STR, points: LIST }, required: ["label", "points"] };
 
-const POST_SCHEMA = {
+const postSchema = () => ({
   type: "OBJECT",
   properties: {
     title: STR,
@@ -256,7 +206,7 @@ const POST_SCHEMA = {
   },
   required: ["title", "description", "tags", "service", "cover", "intro", "sections", "closing"],
   propertyOrdering: ["title", "description", "tags", "service", "cover", "intro", "sections", "closing"],
-};
+});
 
 const CHECK_SCHEMA = {
   type: "OBJECT",
@@ -264,9 +214,7 @@ const CHECK_SCHEMA = {
   required: ["issues"],
 };
 
-const styleExample = existingPosts.find((p) => !p.draft)?.content ?? "";
-
-const WRITER_SYSTEM = `You write blog posts for the personal portfolio blog of ${site.name}, an ${site.role} based in ${site.location}.
+const writerSystem = () => `You write blog posts for the personal portfolio blog of ${site.name}, an ${site.role} based in ${site.location}.
 Write in the first person as Vinod. The blog's goal: show practical expertise in AI-powered web development and bring in client enquiries.
 
 HARD RULES — a post that breaks any of these is rejected:
@@ -336,22 +284,6 @@ Do NOT flag general, widely accepted explanations of technology, opinions framed
 Return {"issues": []} when nothing breaks these rules. Quote the exact sentence for every issue.`;
 
 /* ---------------- assemble + rule checks ---------------- */
-
-const today = new Date(Date.now() + 5.5 * 3600_000).toISOString().slice(0, 10); // India date
-
-function slugify(title) {
-  const base = title
-    .toLowerCase()
-    .replace(/['’]/g, "")
-    .replace(/[^a-z0-9]+/g, " ")
-    .trim()
-    .split(/\s+/)
-    .slice(0, 9)
-    .join("-");
-  let slug = base;
-  for (let n = 2; existingPosts.some((p) => p.slug === slug); n++) slug = `${base}-${n}`;
-  return slug;
-}
 
 function cleanVisual(v) {
   if (!v) return null;
@@ -449,54 +381,66 @@ async function factCheck(post) {
 
 async function main() {
   if (!KEY) throw new Error("GEMINI_API_KEY is not set");
+  if (!SECRET) throw new Error("BLOG_REVIEW_SECRET is not set");
   const topic = nextTopic();
   if (!topic) {
     finish("none", {}, ["The topic queue in content/blog/_topics.md is empty — add new topics."]);
+    if (!dryRun) await api("POST", { action: "notify", result: "none", issues: [] });
     return;
   }
   log(`topic: [${topic.pillar}] ${topic.title}`);
 
-  let { model, value: post } = await gemini({ system: WRITER_SYSTEM, prompt: writerPrompt(topic), schema: POST_SCHEMA, temperature: 0.7 });
+  ({ site, facts: FACTS, allowedLinks: ALLOWED_LINKS, serviceLinks, conceptBrands, published, styleExample } = await api("GET"));
+  allowedHrefs = new Set(ALLOWED_LINKS.map((l) => l.split(" ")[0]));
+  log(`site content loaded from ${SITE} (${published.length} published posts)`);
+
+  let { model, value: post } = await gemini({ system: writerSystem(), prompt: writerPrompt(topic), schema: postSchema(), temperature: 0.7 });
   log(`written by ${model}: "${post.title}"`);
   let issues = [...ruleCheck(post), ...(await factCheck(post))];
 
   if (issues.length) {
     log(`fixing ${issues.length} issue(s)…`);
     ({ model, value: post } = await gemini({
-      system: WRITER_SYSTEM,
+      system: writerSystem(),
       prompt: `${writerPrompt(topic)}\n\nYOUR PREVIOUS DRAFT:\n${JSON.stringify(post)}\n\nIt has these problems:\n${issues
         .map((i) => `- ${i}`)
         .join("\n")}\n\nReturn the complete corrected post as JSON. Fix every problem and keep everything else.`,
-      schema: POST_SCHEMA,
+      schema: postSchema(),
       temperature: 0.4,
     }));
     issues = [...ruleCheck(post), ...(await factCheck(post))];
   }
 
-  const slug = slugify(post.title);
-  const front = {
+  const draft = {
+    pillar: topic.pillar,
     title: post.title.trim(),
     description: post.description.trim(),
-    date: today,
-    pillar: topic.pillar,
     tags: post.tags.map((t) => t.trim()).slice(0, 6),
     service: post.service,
-    coverScene: coverScene(post, topic.pillar),
-    aiAssisted: true,
-    // approval mode (default): it only goes live after Vinod approves it; auto-publish mode: not reviewed
-    reviewed: process.env.AUTO_PUBLISH !== "true",
-    ...(dryRun ? { draft: true } : {}),
+    scene: coverScene(post, topic.pillar),
+    content: toBody(post),
   };
-  const file = path.join(BLOG, `${slug}.md`);
-  fs.writeFileSync(file, matter.stringify(toBody(post), front));
-  if (!dryRun) markTopicDone(topic);
 
-  const status = issues.length ? "review" : "publish";
-  finish(status, { slug, title: front.title, description: front.description, model, url: `${site.url}/blog/${slug}` }, issues);
-  log(`${dryRun ? "draft written (dry run)" : "post written"}: ${path.relative(ROOT, file)}`);
+  if (dryRun) {
+    const file = path.join(os.tmpdir(), "blog-autopost-dry-run.json");
+    fs.writeFileSync(file, JSON.stringify({ ...draft, issues }, null, 2));
+    finish(issues.length ? "review" : "publish", { title: draft.title, model }, issues);
+    log(`dry run — nothing saved. The post is in ${file}`);
+    return;
+  }
+
+  const saved = await api("POST", { action: "save", post: draft, issues, autoPublish });
+  markTopicDone(topic);
+  finish(saved.status, { id: saved.id, slug: saved.slug, title: draft.title, url: saved.url, model }, issues);
+  log(saved.status === "published" ? `published: ${saved.url}` : `saved as draft #${saved.id} — approval email sent`);
 }
 
-main().catch((e) => {
+main().catch(async (e) => {
   finish("failed", {}, [e.message]);
+  if (!dryRun && SECRET) {
+    const { GITHUB_SERVER_URL, GITHUB_REPOSITORY, GITHUB_RUN_ID } = process.env;
+    const runUrl = GITHUB_RUN_ID ? `${GITHUB_SERVER_URL}/${GITHUB_REPOSITORY}/actions/runs/${GITHUB_RUN_ID}` : undefined;
+    await api("POST", { action: "notify", result: "failed", issues: [e.message], runUrl }).catch((err) => log(`could not send the failure email: ${err.message}`));
+  }
   process.exit(1);
 });

@@ -4,7 +4,6 @@ import Link from "next/link";
 import { usePathname } from "next/navigation";
 import { useEffect, useRef, useState } from "react";
 import { track } from "@/lib/analytics";
-import { site } from "@/lib/data";
 import { Icon } from "./Icon";
 import { LogoMark } from "./Logo";
 
@@ -15,7 +14,6 @@ import { LogoMark } from "./Logo";
 
 type Msg = { role: "user" | "assistant"; text: string };
 
-const whatsapp = `${site.socials.whatsapp}?text=${encodeURIComponent("Hi Vinod, I found you on your website and would like to discuss a project.")}`;
 const greeting: Msg = {
   role: "assistant",
   text: "Hi! I'm Vinod's AI assistant. Ask me about his services, how he works, or how to start a project.",
@@ -56,7 +54,8 @@ function Rich({ text }: { text: string }) {
   );
 }
 
-export function Assistant() {
+/** `whatsapp`: the WhatsApp link with a ready first message (from the CMS site settings) */
+export function Assistant({ whatsapp }: { whatsapp: string }) {
   const pathname = usePathname();
   const [open, setOpen] = useState(false);
   const [messages, setMessages] = useState<Msg[]>([greeting]);
